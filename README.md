@@ -1,58 +1,73 @@
-# FortuneCrack 🥠
-**Break your fortune. Every day. Powered by Gemini.**
+# React + TypeScript + Vite
 
-FortuneCrack은 포춘쿠키를 깨는 몰입형 경험과 Gemini AI의 정밀한 운세 분석을 결합한 차세대 운세 플랫폼입니다.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 📜 Development Rules (VibeCodingGuide)
-본 프로젝트는 **VibeCodingGuide**를 준수합니다.
-1.  **Micro TDD**: 모든 기능은 테스트 코드와 함께 구현합니다. (Playwright/Vitest)
-2.  **Korean Commits**: 테스트 통과 시 **한국어**로 커밋 메시지를 작성합니다.
-3.  **Clean Architecture**: Presentation, Domain, Data 레이어를 엄격히 분리합니다.
-4.  **UI/UX**: Dark Mode, Glassmorphism, Mobile-First(375px~), Flutter WebView 호환성을 최우선으로 합니다.
+Currently, two official plugins are available:
 
-## 🛠 Tech Stack
--   **Frontend**: React 18, Vite, TypeScript
--   **Styling**: Tailwind CSS (Glassmorphism), Framer Motion
--   **Architecture**: Clean Architecture
--   **Testing**: Playwright (E2E), Vitest (Unit)
--   **Backend**: Firebase (Auth, Firestore, Functions)
--   **AI**: Google Gemini 2.0 Pro
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## 🚀 Getting Started
+## React Compiler
 
-### 1. Installation
-```bash
-pnpm install
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-### 2. Environment Setup (Security)
-> **WARNING**: `.env` 파일은 절대 Git에 커밋하지 마세요.
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-`.env.example`을 복사하여 `.env`를 생성하고 키를 입력합니다.
-```bash
-cp .env.example .env
-```
-```env
-VITE_FIREBASE_API_KEY=your_key
-VITE_GEMINI_API_KEY=your_key
-```
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-### 3. Run Development Server
-```bash
-pnpm dev
-```
-
-### 4. Run Tests
-```bash
-pnpm test:e2e  # Playwright
-pnpm test:unit # Vitest
-```
-
-## 📂 Project Structure (Clean Architecture)
-```
-src/
-├── presentation/  # UI Components, Pages, State
-├── domain/        # Entities, Use Cases, Interfaces
-├── data/          # Repositories, API, DTOs
-└── main.tsx
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
