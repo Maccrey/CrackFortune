@@ -55,11 +55,11 @@
     - [ ] `GetDailyFortuneUseCase` 구현.
     - [ ] *Test*: Unit Test (Vitest).
 
-### 5. Data Layer (Firebase & API)
-- [ ] **Firebase Integration**
-    - [ ] Auth (Google/Anonymous).
-    - [ ] Firestore Repository 구현.
-    - [ ] *Test*: Emulator 연동 테스트.
+### 5. Data Layer (Local Storage & API)
+- [ ] **Local Storage Integration**
+    - [ ] User Profile Management (Local).
+    - [ ] Local Storage Repository 구현.
+    - [ ] *Test*: Local Storage CRUD 테스트.
 - [ ] **Gemini API Integration**
     - [ ] Cloud Functions 설정.
     - [ ] Gemini Prompt Engineering (Persona, Locale).

@@ -12,33 +12,63 @@ const FortuneCookie: React.FC = () => {
         // Navigate after animation
         setTimeout(() => {
             navigate('/result');
-        }, 1500);
+        }, 3500);
     };
 
     return (
-        <div className="relative w-64 h-64 flex items-center justify-center cursor-pointer" onClick={handleCrack} data-testid="fortune-cookie">
+        <div className="relative w-80 h-80 flex items-center justify-center cursor-pointer" onClick={handleCrack} data-testid="fortune-cookie">
+            {/* Persistent Definitions for Gradients and Filters */}
+            <svg width="0" height="0" className="absolute pointer-events-none">
+                <defs>
+                    <linearGradient id="cookieGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#FCD34D" /> {/* yellow-300 */}
+                        <stop offset="100%" stopColor="#F59E0B" /> {/* amber-500 */}
+                    </linearGradient>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+                        <feMerge>
+                            <feMergeNode in="coloredBlur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+            </svg>
+
             <AnimatePresence>
                 {!isCracked ? (
                     <motion.div
                         key="cookie"
                         initial={{ scale: 0.8, y: 0 }}
                         animate={{
-                            y: [0, -10, 0],
-                            rotate: [0, 2, -2, 0]
+                            y: [0, -15, 0],
+                            rotate: [0, 1, -1, 0]
                         }}
                         transition={{
-                            duration: 4,
+                            duration: 6,
                             repeat: Infinity,
                             ease: "easeInOut"
                         }}
                         whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95, rotate: [0, -5, 5, 0], transition: { duration: 0.2 } }}
-                        className="w-48 h-48 bg-yellow-200 rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(253,224,71,0.3)] relative overflow-hidden"
+                        whileTap={{ scale: 0.95 }}
+                        className="w-full h-full flex items-center justify-center filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
                     >
-                        {/* Simple CSS shape for Cookie representation */}
-                        <div className="absolute w-full h-full bg-gradient-to-br from-yellow-300 to-orange-400 rounded-full transform rotate-45 skew-x-12 border-4 border-yellow-600/20"></div>
-                        <div className="absolute w-3/4 h-3/4 bg-yellow-100/20 rounded-full blur-xl"></div>
-                        <span className="relative z-10 text-6xl drop-shadow-lg">🥠</span>
+                        <svg viewBox="0 0 200 200" className="w-full h-full">
+                            {/* Main Cookie Shape - Uncracked */}
+                            <path
+                                d="M100,40 C60,40 30,70 30,110 C30,150 60,170 100,170 C140,170 170,150 170,110 C170,70 140,40 100,40 Z"
+                                fill="url(#cookieGradient)"
+                                stroke="#B45309"
+                                strokeWidth="2"
+                            />
+                            {/* Fold lines for detail */}
+                            <path d="M30,110 Q65,110 100,140" fill="none" stroke="#B45309" strokeWidth="1" opacity="0.5" />
+                            <path d="M170,110 Q135,110 100,140" fill="none" stroke="#B45309" strokeWidth="1" opacity="0.5" />
+                            <path d="M100,40 Q100,80 100,110" fill="none" stroke="#B45309" strokeWidth="1" opacity="0.3" />
+                        </svg>
+
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <span className="text-4xl opacity-0">🥠</span>
+                        </div>
                     </motion.div>
                 ) : (
                     <motion.div
@@ -47,35 +77,71 @@ const FortuneCookie: React.FC = () => {
                     >
                         {/* Left Half */}
                         <motion.div
-                            initial={{ x: 0, rotate: 0, opacity: 1 }}
-                            animate={{ x: -50, rotate: -20, opacity: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="absolute left-0 top-0 w-1/2 h-full bg-gradient-to-br from-yellow-300 to-orange-400 rounded-l-full flex items-center justify-end pr-4"
+                            initial={{ x: 0, rotate: 0 }}
+                            animate={{ x: -60, rotate: -25 }}
+                            transition={{ duration: 0.8, ease: "backOut" }}
+                            className="absolute inset-0 flex items-center justify-center"
                         >
-                            <span className="text-4xl">🍪</span>
+                            <svg viewBox="0 0 200 200" className="w-full h-full">
+                                <path
+                                    d="M100,40 C60,40 30,70 30,110 C30,150 60,170 100,170 L100,110 L100,40 Z"
+                                    fill="url(#cookieGradient)"
+                                    stroke="#B45309"
+                                    strokeWidth="2"
+                                />
+                                <path d="M30,110 Q65,110 100,140" fill="none" stroke="#B45309" strokeWidth="1" opacity="0.5" />
+                            </svg>
                         </motion.div>
 
                         {/* Right Half */}
                         <motion.div
-                            initial={{ x: 0, rotate: 0, opacity: 1 }}
-                            animate={{ x: 50, rotate: 20, opacity: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-bl from-yellow-300 to-orange-400 rounded-r-full flex items-center justify-start pl-4"
+                            initial={{ x: 0, rotate: 0 }}
+                            animate={{ x: 60, rotate: 25 }}
+                            transition={{ duration: 0.8, ease: "backOut" }}
+                            className="absolute inset-0 flex items-center justify-center"
                         >
-                            <span className="text-4xl">🍪</span>
+                            <svg viewBox="0 0 200 200" className="w-full h-full">
+                                <path
+                                    d="M100,40 L100,110 L100,170 C140,170 170,150 170,110 C170,70 140,40 100,40 Z"
+                                    fill="url(#cookieGradient)"
+                                    stroke="#B45309"
+                                    strokeWidth="2"
+                                />
+                                <path d="M170,110 Q135,110 100,140" fill="none" stroke="#B45309" strokeWidth="1" opacity="0.5" />
+                            </svg>
                         </motion.div>
 
                         {/* Fortune Slip */}
                         <motion.div
-                            initial={{ scale: 0, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1, rotate: [0, 5, -5, 0] }}
-                            transition={{ delay: 0.4, duration: 0.8 }}
-                            className="absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-white shadow-lg flex items-center justify-center p-2 z-20"
+                            initial={{ scale: 0.2, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0, rotate: [0, 2, -2, 0] }}
+                            transition={{
+                                scale: { type: "spring", bounce: 0.5, duration: 0.8, delay: 0.1 },
+                                y: { type: "spring", bounce: 0.5, duration: 0.8, delay: 0.1 },
+                                opacity: { duration: 0.8, delay: 0.1 },
+                                rotate: { duration: 0.8, ease: "easeInOut", delay: 0.1 }
+                            }}
+                            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-16 bg-white shadow-2xl flex items-center justify-center p-1 z-20 rotate-[-5deg]"
                         >
-                            <div className="w-full h-full border border-red-200 flex items-center justify-center">
-                                <span className="text-xs text-red-500 font-serif">Fortune Awaits...</span>
+                            <div className="w-full h-full border-2 border-red-400 border-double flex items-center justify-center bg-[#fffdf0]">
+                                <span className="text-xs text-red-600 font-serif font-bold tracking-widest">운세</span>
                             </div>
                         </motion.div>
+
+                        {/* Particle Effects (Crumbs) */}
+                        {[...Array(5)].map((_, i) => (
+                            <motion.div
+                                key={`crumb-${i}`}
+                                initial={{ x: 0, y: 0, opacity: 1 }}
+                                animate={{
+                                    x: (Math.random() - 0.5) * 150,
+                                    y: (Math.random() - 0.5) * 150,
+                                    opacity: 0
+                                }}
+                                transition={{ duration: 0.8, ease: "easeOut" }}
+                                className="absolute top-1/2 left-1/2 w-2 h-2 bg-yellow-600 rounded-full"
+                            />
+                        ))}
                     </motion.div>
                 )}
             </AnimatePresence>

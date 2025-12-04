@@ -16,7 +16,7 @@
 
 ### 개발 전략 (Gemini vs Codex)
 - **Phase 1 (Gemini)**: 프론트엔드 인터랙티브 디자인, UI/UX, 애니메이션, **라우팅(페이지 전환)** 구현. (Mock 데이터 사용)
-- **Phase 2 (Codex)**: 실제 기능 구현, Firebase 연동, Gemini API 연결, 비즈니스 로직.
+- **Phase 2 (Codex)**: 실제 기능 구현, 로컬 저장소(Local Storage) 연동, Gemini API 연결, 비즈니스 로직.
 
 ## 2. 핵심 가치 제안
 - **Hyper-Personalized**: 생시 정밀도(Precision)에 따른 차별화된 운세 분석.
@@ -40,13 +40,13 @@
 ### 4.1 Clean Architecture
 - **Presentation Layer**: UI, State Management (React, Framer Motion).
 - **Domain Layer**: Entities, Use Cases (Business Logic).
-- **Data Layer**: Repositories, Data Sources (Firebase, Gemini API).
+- **Data Layer**: Repositories, Data Sources (Browser Local Storage, Gemini API).
 
 ### 4.2 Tech Stack
 - **Frontend**: React 18, Vite, TypeScript, Tailwind CSS.
 - **State/Query**: React Query, Zustand (선택).
 - **Testing**: Playwright (E2E/Integration), Vitest (Unit).
-- **Backend**: Firebase (Auth, Firestore, Functions).
+- **Backend**: Browser Local Storage (No Backend).
 - **AI**: Gemini 2.0 Pro API.
 
 ## 5. UI/UX 요구사항
@@ -61,11 +61,11 @@
 - **Commit Rule**: 테스트 통과 후 **한국어 커밋 메시지** 작성.
 
 ## 7. 보안 및 운영
-- **Environment Variables**: API Key(Firebase, Gemini)는 반드시 `.env` 파일로 관리.
+- **Environment Variables**: API Key(Gemini)는 반드시 `.env` 파일로 관리.
 - **Git Security**: `.env` 파일은 `.gitignore`에 포함하여 절대 커밋하지 않음.
 - **CI/CD**: GitHub Actions (Lint, Test, Build).
 
-## 8. 데이터 모델 (Firestore)
+## 8. 데이터 모델 (Local Storage)
 - **users**: 프로필, 생시 정보, 정밀도(birthTimeAccuracy).
 - **fortunes**: 날짜별 운세 결과(summary, fullText), Gemini 모델 정보.
 - **chats**: Q&A 내역.
