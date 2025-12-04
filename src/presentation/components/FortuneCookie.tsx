@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 const FortuneCookie: React.FC = () => {
     const navigate = useNavigate();
+    const { t } = useLanguage();
     const [isCracked, setIsCracked] = useState(false);
 
     const handleCrack = () => {
@@ -124,7 +126,7 @@ const FortuneCookie: React.FC = () => {
                             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-16 bg-white shadow-2xl flex items-center justify-center p-1 z-20 rotate-[-5deg]"
                         >
                             <div className="w-full h-full border-2 border-red-400 border-double flex items-center justify-center bg-[#fffdf0]">
-                                <span className="text-xs text-red-600 font-serif font-bold tracking-widest">운세</span>
+                                <span className="text-xs text-red-600 font-serif font-bold tracking-widest">{t('cookie_slip_title')}</span>
                             </div>
                         </motion.div>
 
