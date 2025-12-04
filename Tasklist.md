@@ -1,150 +1,82 @@
-(규칙: Gemini → 인터랙티브 디자인·UI / Codex → 기능 구현)
-
-PHASE 0 — 구조
-[GitHub Pages SPA]
-   |
-   v
-[React + Tailwind + Framer Motion] ← Gemini 역할 (UI/애니메이션)
-   |
-   v
-[Firebase SDK] ← Codex 역할 (Auth/Firestore)
-   |
-   v
-[Cloud Functions → Gemini API] ← Codex 역할 (로직/데이터)
-
-PHASE 1 — GEMINI (UI/애니메이션/인터랙션)
-
-UI는 더미 데이터로 먼저 완성.
-
-1. 공통 UI/레이아웃
-
- 다국어 UI 스켈레톤
-
- 언어 토글(ko/en/ja)
-
- 헤더/푸터/다크테마
-
-2. 포춘쿠키
-
- 쿠키 idle/shake/crack 애니메이션
-
- slip 등장 애니메이션
-
- slip 펼치기 상세 보기
-
-3. Today 운세 목업
-
- dummy summary/precision
-
- locale 변경 시 UI 텍스트 동적 반영
-
-4. 연운/주간/월간 UI
-
- 카드 Carousel
-
- 카드 플립/페이드
-
- 연간 타임라인
-
-5. 검증
-
- Storybook
-
- visual regression
-
- axe 접근성
-
-(완료 조건)
-Firebase/AI 없이 100% UI/애니메이션이 동작.
-
-PHASE 2 — CODEX (기능/데이터/Gemini 연동)
-1. 데이터/타입
-
- Firestore 모델
-
- Precision 계산 로직
-
- locale fallback
-
-2. Firebase Auth/Firestore
-
- Auth 흐름
-
- profiles CRUD
-
- user today's opened-at 저장
-
-3. 포춘쿠키 기능(Gemini)
-
- Cloud Function: /api/fortune/daily
-
-Gemini 프롬프트 구성:
-
-locale, birth info, precision, 오늘 날짜
-
- FE에서 쿠키 개봉 시 요청 트리거
-
- 이미 본 날짜면 캐싱된 결과 사용
-
-4. 연운/주간/월간 (Gemini)
-
- fortune-yearly/weekly/monthly Functions
-
- Gemini: summary & fullText locale별 생성
-
-5. AI Q&A
-
- chat session/ message Firestore
-
- Gemini API with conversation context
-
-6. 테스트
-
- Unit: Precision, locale selection
-
- Emulator: Firestore/Functions
-
- E2E: Today Fortune Flow
-
- CI: LHCI(성능), Sentry 에러 검증
-
-PHASE 3 — 배포/운영
-GitHub Pages
-
- Vite build → gh-pages 브랜치
-
- Custom domain: fortunecrack.com (옵션)
-
-Firebase
-
- functions deploy
-
- security rules
-
-모니터링
-
- Sentry (FE/BE)
-
- Gemini API error logging
-
- Web Vitals → BigQuery
-
-요약
-
-이 문서는 FortuneCrack의:
-
-브랜드/제품 전략
-
-포춘쿠키 중심 UX
-
-Gemini 기반 운세 생성/다국어 대응
-
-Firebase 백엔드
-
-GitHub Pages 프런트엔드
-
-Gemini vs Codex 역할 분리
-
-지표/데이터 모델/CI/CD
-
-까지, 모든 요소가 완전한 형태로 통합된 최종본입니다.
+# FortuneCrack Tasklist
+
+## 📝 Development Rules (VibeCodingGuide)
+1.  **Micro TDD**: 기능 구현 전/후 테스트 작성 (Playwright 권장).
+2.  **Korean Commits**: 테스트 통과 시 한국어로 커밋 메시지 작성.
+3.  **Clean Architecture**: Presentation -> Domain -> Data 계층 준수.
+4.  **Security**: `.env` 필수 사용, API Key 커밋 금지.
+
+---
+
+## PHASE 1: GEMINI (Frontend Design & Interaction)
+*목표: Mock 데이터를 사용하여 완벽한 UI/UX 및 라우팅 구현*
+
+### 1. Project Setup & Architecture
+- [ ] **Initial Setup**
+    - [ ] React + Vite + TypeScript 프로젝트 생성 (Clean Architecture 폴더 구조).
+    - [ ] Tailwind CSS 설정 (Dark Mode, Custom Colors).
+    - [ ] `.env` 및 `.gitignore` 설정 (보안).
+    - [ ] *Test*: 빌드 및 환경변수 로드 확인.
+- [ ] **Assets & Meta**
+    - [ ] **Favicon**: 'Nano Banana' 컨셉의 파비콘 생성 및 적용.
+    - [ ] **Open Graph**: 메타 태그(Title, Desc, Image) 설정.
+    - [ ] *Test*: 브라우저 탭 아이콘 및 메타 데이터 확인.
+
+### 2. UI Components (Presentation Layer)
+- [ ] **Layout & Navigation**
+    - [ ] Header/Footer (Glassmorphism).
+    - [ ] **Routing**: React Router 설정 (Main, Result, History, Settings).
+    - [ ] *Test*: 페이지 간 이동 확인 (Playwright).
+- [ ] **Main Page (Fortune Cookie)**
+    - [ ] 3D 포춘쿠키 모델/이미지 배치.
+    - [ ] **Animation**: Idle(둥둥 떠있음), Shake(터치 시), Crack(깨짐).
+    - [ ] *Test*: 애니메이션 트리거 및 프레임 드랍 확인.
+- [ ] **Result Page (Fortune Slip)**
+    - [ ] Slip 등장 애니메이션 (종이가 펼쳐지는 효과).
+    - [ ] 운세 텍스트 타이포그래피 (가독성 최적화).
+    - [ ] *Test*: Mock 텍스트 렌더링 확인.
+
+### 3. Mobile & WebView Optimization
+- [ ] **Responsive Design**
+    - [ ] 375px 모바일 뷰포트 대응.
+    - [ ] Safe Area (Notch) 대응.
+- [ ] **WebView Check**
+    - [ ] 터치 제스처 충돌 방지.
+    - [ ] 스크롤 바운스 처리.
+
+---
+
+## PHASE 2: CODEX (Functional Implementation)
+*목표: 실제 데이터 및 로직 연동 (Domain & Data Layers)*
+
+### 4. Domain Layer (Business Logic)
+- [ ] **Entities & UseCases**
+    - [ ] User Entity / Fortune Entity 정의.
+    - [ ] `GetDailyFortuneUseCase` 구현.
+    - [ ] *Test*: Unit Test (Vitest).
+
+### 5. Data Layer (Firebase & API)
+- [ ] **Firebase Integration**
+    - [ ] Auth (Google/Anonymous).
+    - [ ] Firestore Repository 구현.
+    - [ ] *Test*: Emulator 연동 테스트.
+- [ ] **Gemini API Integration**
+    - [ ] Cloud Functions 설정.
+    - [ ] Gemini Prompt Engineering (Persona, Locale).
+    - [ ] *Test*: API 응답 형식 및 에러 처리.
+
+### 6. Integration & Polish
+- [ ] **Real Data Binding**
+    - [ ] Mock 데이터를 실제 Repository로 교체.
+    - [ ] Loading / Error State 처리.
+- [ ] **Final Testing**
+    - [ ] E2E Test (User Flow 전체).
+    - [ ] Performance Tuning (Lighthouse).
+
+---
+
+## ✅ Test Checklist (If Playwright N/A)
+*Playwright로 테스트가 불가능한 경우 아래 리스트를 활용하여 수동 검증*
+- [ ] [Manual] iOS Safari에서 쿠키 깨짐 애니메이션 부드러운가?
+- [ ] [Manual] Android WebView에서 뒤로가기 제스처 정상 동작하는가?
+- [ ] [Manual] 다크모드 해제 시(혹은 시스템 설정 변경 시) UI 깨짐 없는가?

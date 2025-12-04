@@ -1,139 +1,71 @@
-product: FortuneCrack — Interactive Gemini Fortune Cookie Platform
+# Product Requirements Document (PRD)
 
-1. 제품 개요
-제품명
+## 1. 제품 개요
+**제품명**: FortuneCrack  
+**슬로건**: Break your fortune. Every day. Powered by Gemini.
 
-FortuneCrack
+### 문제 정의
+- **몰입도 부족**: 텍스트 중심의 운세는 재미와 의식적 요소가 결여됨.
+- **개인화 부족**: 생시(정밀도)를 고려하지 않은 일반적인 텍스트.
+- **글로벌 한계**: 단순 번역 투의 어색한 다국어 지원.
 
-슬로건
+### 해결 방식 (FortuneCrack)
+- **Gemini 기반 개인화**: 명리 데이터를 바탕으로 Gemini가 자연스러운 스토리텔링 생성.
+- **인터랙티브 경험**: 포춘쿠키를 깨는(Crack) 애니메이션과 사운드로 의식적 경험 제공.
+- **글로벌 최적화**: 한국어/영어/일본어의 문화적 뉘앙스를 반영한 톤 앤 매너.
 
-Break your fortune. Every day. Powered by Gemini.
+### 개발 전략 (Gemini vs Codex)
+- **Phase 1 (Gemini)**: 프론트엔드 인터랙티브 디자인, UI/UX, 애니메이션, **라우팅(페이지 전환)** 구현. (Mock 데이터 사용)
+- **Phase 2 (Codex)**: 실제 기능 구현, Firebase 연동, Gemini API 연결, 비즈니스 로직.
 
-문제 정의
+## 2. 핵심 가치 제안
+- **Hyper-Personalized**: 생시 정밀도(Precision)에 따른 차별화된 운세 분석.
+- **Immersive UX**: 다크모드 + 글라스모피즘 기반의 신비롭고 고급스러운 디자인.
+- **Global Standard**: 전 세계 사용자가 위화감 없이 즐길 수 있는 다국어 지원.
 
-전통 운세 서비스는 템플릿 형태의 반복적 문구 제공 → 몰입도 낮음
+## 3. 핵심 기능
+### 3.1 오늘의 Gemini 포춘쿠키
+- **Flow**: 쿠키 흔들기 -> 깨기(Crack) -> 운세 종이(Slip) 등장 -> 상세 보기.
+- **UI**: 3D 느낌의 CSS/Canvas 애니메이션, 햅틱 피드백(모바일).
 
-생시(정확/대략/모름) 고려 부족 → 개인화 정확도 낮음
+### 3.2 대시보드 (연운/주간/월간)
+- **Visualization**: 카드 캐러셀 및 타임라인 UI.
+- **Content**: Gemini가 요약한 핵심 키워드 및 흐름 분석.
 
-글로벌 사용자(ko/en/ja) 모두를 위한 자연스러운 언어·톤 제공 어려움
+### 3.3 Gemini AI Q&A
+- **Context**: 오늘의 운세 결과를 바탕으로 심층 질문 가능.
+- **Persona**: 사용자의 언어 및 문화권에 맞는 페르소나 적용.
 
-단순 텍스트 중심의 ‘오늘 운세’ → 재미/의식성 낮음
+## 4. 아키텍처 및 기술 스택
+### 4.1 Clean Architecture
+- **Presentation Layer**: UI, State Management (React, Framer Motion).
+- **Domain Layer**: Entities, Use Cases (Business Logic).
+- **Data Layer**: Repositories, Data Sources (Firebase, Gemini API).
 
-상호작용·몰입형 애니메이션 부족
+### 4.2 Tech Stack
+- **Frontend**: React 18, Vite, TypeScript, Tailwind CSS.
+- **State/Query**: React Query, Zustand (선택).
+- **Testing**: Playwright (E2E/Integration), Vitest (Unit).
+- **Backend**: Firebase (Auth, Firestore, Functions).
+- **AI**: Gemini 2.0 Pro API.
 
-FortuneCrack의 해결 방식
+## 5. UI/UX 요구사항
+- **Design System**: **Dark Mode** 기본, **Glassmorphism** (블러, 투명도) 적용.
+- **Mobile First**: 375px~ 반응형 지원.
+- **WebView Compatibility**: Flutter WebView 임베딩 시 Safe Area, 제스처, 스크롤 충돌 방지.
+- **Navigation**: 직관적인 라우팅 (Main -> Result -> History -> Settings).
 
-Gemini 기반 개인 맞춤 운세 생성
+## 6. 테스트 및 품질 보증 (Micro TDD)
+- **Micro TDD**: 작은 단위의 기능 구현 시 테스트 코드 선행/병행 작성.
+- **Playwright**: UI 인터랙션 및 E2E 테스트 필수. (테스트 불가 시 `Testlist.md` 활용)
+- **Commit Rule**: 테스트 통과 후 **한국어 커밋 메시지** 작성.
 
-명리/토정 raw 계산 → Gemini로 자연스러운 스토리·요약·해석 생성
+## 7. 보안 및 운영
+- **Environment Variables**: API Key(Firebase, Gemini)는 반드시 `.env` 파일로 관리.
+- **Git Security**: `.env` 파일은 `.gitignore`에 포함하여 절대 커밋하지 않음.
+- **CI/CD**: GitHub Actions (Lint, Test, Build).
 
-한국어/영어/일본어 3개 언어의 톤·문화적 뉘앙스 자동 조정
-
-포춘쿠키 애니메이션 중심 UX
-
-오늘 운세는 “쿠키를 깨고 종이가 나오는” 의식적 인터랙션
-
-생시 정확도(Precision) UI/로직 반영
-
-GitHub Pages(Frontend) + Firebase(Backend) + Gemini AI
-
-디자인/인터랙션(Gemini) → 기능 구현(Codex) 순서 고정
-
-2. 핵심 가치 제안
-
-FortuneCrack은 Gemini 기반으로 개인에게 최적화된 오늘의 운세를, 포춘쿠키를 깨는 경험으로 제공합니다.
-한국어/영어/일본어를 자연스럽게 지원하고, 생시 정확도를 반영한 신뢰도 높은 글로벌 AI 운세 플랫폼입니다.
-
-3. 핵심 기능 (문제 → 해결 → 지표)
-3.1 오늘의 Gemini 포춘쿠키 운세
-
-문제: 텍스트만 보여주는 오늘 운세는 재미가 부족
-
-해결:
-
-포춘쿠키 → 흔들림 → crack → fortune slip 등장
-
-slip에는 Gemini 생성 요약 + Precision 배지(정밀/기본)
-
-“더 보기” → 상세 텍스트는 Gemini가 locale별로 생성
-
-지표:
-
-개봉률 ≥ 80%
-
-상세 보기 클릭률 ≥ 60%
-
-D1≥35%
-
-3.2 연운/주간/월간 대시보드 (Gemini 요약 기반)
-
-raw 명리 계산 → Gemini로 서사적 요약
-
-카드·타임라인 인터랙션
-
-주요 영역(재정/관계/건강/커리어) 스코어
-
-3.3 Gemini AI Q&A (ko/en/ja)
-
-기존 운세 결과 기반으로 후속 질문/상담 가능
-
-locale별 톤/경어/문체 Gemini 프롬프트에서 자동 조정
-
-맥락(오늘 요약·정밀도·프로필)을 context로 전달
-
-4. 유저 스토리 (요약)
-한국어 포춘쿠키
-Feature: 오늘의 포춘쿠키 운세
-  Scenario: 포춘쿠키를 깨고 오늘의 Gemini 운세를 확인
-    Given 나는 한국어 UI에서 메인 페이지에 접근했다
-    When 중앙 포춘쿠키를 탭한다
-    Then 포춘쿠키가 깨지는 애니메이션이 재생된다
-    And Gemini 생성 요약이 slip에 표시된다
-    And 정밀도 배지가 함께 보인다
-
-일본어 기본 언어 자동 적용
-Feature: 일본어 디폴트
-  Scenario: 브라우저 언어가 일본어일 때
-    Given 브라우저 언어=일본어
-    When 페이지 로드
-    Then 기본 언어는 일본어로 설정된다
-
-5. 성공 지표(최종)
-지표	목표	이벤트	계산식
-포춘쿠키 개봉률	≥ 80%	cookie_open	open/view
-Gemini 운세 상세 클릭률	≥ 60%	fortune_detail_open	detail/open
-다국어 유지율	≥ 80%	language_change	last_lang == selected_lang
-Precision-Exact 비율	≥ 40%	profile_created	exact/created
-LLM 오류율	≤ 1%	llm_error	error/llm_call
-LCP p75	≤ 2.5s	RUM	p75(LCP)
-6. 비기능 요구사항
-
-AI: Gemini 2.0 Pro API
-
-성능: 포춘쿠키 애니메이션 60fps
-
-PWA: 오늘 운세 캐싱
-
-보안: Firestore Rules + Function input validation
-
-국제화: ko/en/ja, Gemini 프롬프트의 locale template 적용
-
-7. 데이터 모델 (요약)
-profiles
-필드	타입	Firestore	설명
-locale	"ko"	"en"	"ja"
-birthTimeAccuracy	exact/range/unknown	string	정밀도 계산
-birthTimeRange	dawn/morning/…	string	null
-fortuneResults
-필드	타입	Firestore	설명
-summary	{ko,en,ja}	map	Gemini 요약
-fullText	{ko,en,ja}	map	Gemini 상세
-precision	high/basic	string	정밀도
-geminiModel	string	string	"gemini-pro-2.0" 등
-8. 런칭 플랜
-
-MVP: Today Fortune + ko/en
-
-MLP: ja + 연운/카드/타임라인
-
-GA: AI Q&A + 글로벌 캠페인
+## 8. 데이터 모델 (Firestore)
+- **users**: 프로필, 생시 정보, 정밀도(birthTimeAccuracy).
+- **fortunes**: 날짜별 운세 결과(summary, fullText), Gemini 모델 정보.
+- **chats**: Q&A 내역.
