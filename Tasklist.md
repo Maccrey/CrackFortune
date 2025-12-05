@@ -81,9 +81,9 @@
 ### 7. Firebase 초기 설정
 - [ ] **프로젝트/환경 구성**
     - [ ] Firebase 콘솔 프로젝트 생성, Web 앱 추가, `firebaseConfig` 발급.
-    - [ ] `.env` / `.env.example`에 Firebase 키 추가 (prod/dev 분리), Secrets 관리.
-    - [ ] SDK 설치 및 `firebase/app`, `firebase/auth`, `firebase/firestore` 초기화 유틸 생성.
-    - [ ] *Test*: 환경변수 누락 시 초기화 예외 단위 테스트.
+    - [x] `.env` / `.env.example`에 Firebase 키 추가 (prod/dev 분리), Secrets 관리.
+    - [x] SDK 설치 및 `firebase/app`, `firebase/auth`, `firebase/firestore` 초기화 유틸 생성.
+    - [x] *Test*: 환경변수 누락 시 초기화 예외 단위 테스트.
 
 ### 8. 인증 (Google Login Only)
 - [ ] **Auth 흐름**

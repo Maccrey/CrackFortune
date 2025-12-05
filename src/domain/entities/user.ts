@@ -11,10 +11,10 @@ export interface UserProfile {
   updatedAt: string; // ISO timestamp
 }
 
-export const createDefaultUserProfile = (locale: UserProfile['locale'] = 'en'): UserProfile => {
+export const createDefaultUserProfile = (locale: UserProfile['locale'] = 'en', id = 'local-user'): UserProfile => {
   const now = new Date().toISOString();
   return {
-    id: 'local-user',
+    id,
     name: 'Traveler',
     birthDate: '',
     birthTime: '',

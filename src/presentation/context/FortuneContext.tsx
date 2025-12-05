@@ -8,6 +8,7 @@ import { GeminiFortuneRepository } from '../../data/repositories/GeminiFortuneRe
 import { LocalUserRepository } from '../../data/repositories/LocalUserRepository';
 import { LocalStorageClient } from '../../data/storage/LocalStorageClient';
 import { GeminiClient } from '../../data/services/GeminiClient';
+import { useAuth } from './AuthContext';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
@@ -25,6 +26,7 @@ const FortuneContext = createContext<FortuneContextValue | undefined>(undefined)
 
 export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const storageClient = useMemo(() => new LocalStorageClient(typeof window !== 'undefined' ? window.localStorage : null), []);
+  const { user: authUser } = useAuth();
 
   const fortuneRepositoryRef = useRef(new LocalFortuneRepository(storageClient));
   const userRepositoryRef = useRef(new LocalUserRepository(storageClient));
@@ -47,13 +49,27 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const refreshUser = async () => {
     const profile = await userRepositoryRef.current.getProfile();
-    setUser(profile);
-    await loadCachedFortune(profile);
+    // 인증된 사용자가 있으면 프로필 id를 동기화
+    const mergedProfile = authUser
+      ? {
+        ...profile,
+        id: authUser.uid,
+        name: profile.name || authUser.displayName || 'Traveler',
+        updatedAt: new Date().toISOString(),
+      }
+      : profile;
+
+    if (mergedProfile.id !== profile.id) {
+      await userRepositoryRef.current.saveProfile(mergedProfile);
+    }
+
+    setUser(mergedProfile);
+    await loadCachedFortune(mergedProfile);
   };
 
   useEffect(() => {
     void refreshUser();
-  }, []);
+  }, [authUser]);
 
   const crackFortune = async () => {
     if (!user) return;

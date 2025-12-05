@@ -9,6 +9,7 @@ import SettingsPage from './presentation/pages/SettingsPage';
 import IntroOverlay from './presentation/components/IntroOverlay';
 import { LanguageProvider } from './presentation/context/LanguageContext';
 import { FortuneProvider } from './presentation/context/FortuneContext';
+import { AuthProvider } from './presentation/context/AuthContext';
 
 const App: React.FC = () => {
   const [showIntro, setShowIntro] = useState(true);
@@ -27,20 +28,22 @@ const App: React.FC = () => {
 
   return (
     <LanguageProvider>
-      <FortuneProvider>
-        <BrowserRouter>
-          {showIntro && <IntroOverlay onComplete={handleIntroComplete} />}
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<MainPage />} />
-              <Route path="result" element={<ResultPage />} />
-              <Route path="history" element={<HistoryPage />} />
-              <Route path="chat" element={<ChatPage />} />
-              <Route path="settings" element={<SettingsPage />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </FortuneProvider>
+      <AuthProvider>
+        <FortuneProvider>
+          <BrowserRouter>
+            {showIntro && <IntroOverlay onComplete={handleIntroComplete} />}
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<MainPage />} />
+                <Route path="result" element={<ResultPage />} />
+                <Route path="history" element={<HistoryPage />} />
+                <Route path="chat" element={<ChatPage />} />
+                <Route path="settings" element={<SettingsPage />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </FortuneProvider>
+      </AuthProvider>
     </LanguageProvider>
   );
 };
