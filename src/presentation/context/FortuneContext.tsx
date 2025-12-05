@@ -56,8 +56,16 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
   const refreshUser = async () => {
     const profile = await userRepositoryRef.current.getProfile();
     const normalized = normalizeLocale(language);
+    
+    console.log('[FortuneContext] Language sync:', { 
+      languageContext: language, 
+      profileLocale: profile.locale, 
+      normalized 
+    });
+
     const mergedProfile = profile.locale === normalized ? profile : { ...profile, locale: normalized };
     if (mergedProfile !== profile) {
+      console.log('[FortuneContext] Updating profile locale:', profile.locale, '→', normalized);
       await userRepositoryRef.current.saveProfile(mergedProfile);
     }
     setUser(mergedProfile);
