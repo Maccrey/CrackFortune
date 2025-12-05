@@ -4,11 +4,9 @@ import DesktopSidebar from '../components/DesktopSidebar';
 import ShamanCharacter from '../components/ShamanCharacter';
 import LanguageSelector from '../components/LanguageSelector';
 import { useLanguage } from '../context/LanguageContext';
-import { useAuth } from '../context/AuthContext';
 
 const LayoutContent: React.FC = () => {
     const { t } = useLanguage();
-    const { user, signIn, signOut, loading } = useAuth();
 
     return (
         <div className="h-screen flex flex-col bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden font-mystical">
@@ -26,14 +24,6 @@ const LayoutContent: React.FC = () => {
                     <Link to="/chat" data-testid="nav-chat" className="hover:text-white transition-colors">{t('nav_chat')}</Link>
                     <Link to="/settings" data-testid="nav-settings" className="hover:text-white transition-colors">{t('nav_settings')}</Link>
                     <LanguageSelector />
-                    <button
-                        onClick={() => (user ? signOut() : signIn())}
-                        className="px-3 py-1.5 rounded-full border border-white/20 bg-white/10 hover:bg-white/20 transition-colors text-xs"
-                        disabled={loading}
-                        data-testid="btn-auth"
-                    >
-                        {loading ? '...' : user ? 'Logout' : 'Login'}
-                    </button>
                 </nav>
             </header>
 
