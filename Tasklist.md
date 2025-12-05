@@ -71,7 +71,7 @@
     - [x] Loading / Error State 처리.
 - [ ] **Final Testing**
     - [x] E2E Test (User Flow 전체).
-    - [ ] Performance Tuning (Lighthouse).
+    - [x] Performance Tuning (Lighthouse).
 
 ---
 
