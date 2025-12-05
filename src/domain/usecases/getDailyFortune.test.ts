@@ -22,6 +22,7 @@ const buildGenerator = (): FortuneGenerator => ({
   generateDailyFortune: vi.fn(async () => ({
     summary: '요약',
     fullText: '상세',
+    color: '#abc123',
     precision: 'high' as const,
     model: 'gemini-mock',
   })),
@@ -60,5 +61,6 @@ describe('GetDailyFortuneUseCase', () => {
     expect(result.id).toBe(`${user.id}:2024-02-02`);
     expect(generator.generateDailyFortune).toHaveBeenCalledOnce();
     expect(fortunes[result.id]).toBeDefined();
+    expect(result.color).toBeDefined();
   });
 });

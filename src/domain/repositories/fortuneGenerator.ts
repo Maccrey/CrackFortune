@@ -4,6 +4,7 @@ import type { UserProfile } from '../entities/user';
 export interface GeneratedFortune {
   summary: string;
   fullText: string;
+  color: string;
   precision: FortunePrecision;
   model: string;
   keywords?: string[];

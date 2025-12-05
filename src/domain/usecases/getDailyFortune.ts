@@ -31,6 +31,7 @@ export class GetDailyFortuneUseCase {
       date: today,
       summary: generated.summary,
       fullText: generated.fullText,
+      color: generated.color,
       precision: generated.precision,
       locale: user.locale,
       model: generated.model,

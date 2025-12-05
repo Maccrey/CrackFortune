@@ -17,7 +17,7 @@ interface FortuneContextValue {
   recentFortunes: Fortune[];
   status: Status;
   error: string | null;
-  crackFortune: () => Promise<void>;
+  crackFortune: () => Promise<boolean>;
   refreshUser: () => Promise<void>;
 }
 
@@ -55,8 +55,22 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
     void refreshUser();
   }, []);
 
+  const isProfileComplete = (profile: UserProfile | null) => {
+    if (!profile) return false;
+    return Boolean(profile.name?.trim()) && Boolean(profile.birthDate?.trim());
+  };
+
   const crackFortune = async () => {
-    if (!user) return;
+    if (!user) {
+      setError('프로필을 먼저 입력해주세요.');
+      setStatus('error');
+      return false;
+    }
+    if (!isProfileComplete(user)) {
+      setError('프로필(이름, 생년월일)을 입력하면 맞춤 운세를 받을 수 있어요. 설정에서 저장해주세요.');
+      setStatus('error');
+      return false;
+    }
     setStatus('loading');
     setError(null);
     try {
@@ -65,9 +79,11 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
       const recents = await fortuneRepositoryRef.current.listRecentFortunes(user.id);
       setRecentFortunes(recents);
       setStatus('success');
+      return true;
     } catch (err) {
       setStatus('error');
       setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다');
+      return false;
     }
   };
 

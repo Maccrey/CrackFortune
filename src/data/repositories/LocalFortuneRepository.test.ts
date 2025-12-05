@@ -31,6 +31,7 @@ const buildFortune = (date: string): Fortune => ({
   date,
   summary: `summary ${date}`,
   fullText: 'fullText',
+  color: '#eab308',
   precision: 'high',
   locale: 'ko',
   model: 'gemini',

@@ -12,10 +12,12 @@ const FortuneCookie: React.FC = () => {
 
     const handleCrack = async () => {
         if (isCracked || status === 'loading') return;
+        const ok = await crackFortune();
+        if (!ok) return;
         setIsCracked(true);
 
         const waitForAnimation = new Promise((resolve) => setTimeout(resolve, 1400));
-        await Promise.all([waitForAnimation, crackFortune()]);
+        await waitForAnimation;
         navigate('/result');
     };
 
@@ -157,8 +159,9 @@ const FortuneCookie: React.FC = () => {
             </AnimatePresence>
 
             {error && (
-                <div className="absolute -bottom-8 text-xs text-red-300 bg-red-900/30 border border-red-400/30 rounded-full px-3 py-1 backdrop-blur-md shadow-inner">
+                <div className="absolute -bottom-8 text-xs text-red-300 bg-red-900/30 border border-red-400/30 rounded-full px-3 py-1 backdrop-blur-md shadow-inner text-center">
                     {error}
+                    <div className="mt-1 text-[10px] text-yellow-200">설정에서 프로필을 입력해 주세요.</div>
                 </div>
             )}
         </div>

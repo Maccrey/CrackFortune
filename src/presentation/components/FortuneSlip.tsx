@@ -5,9 +5,10 @@ interface FortuneSlipProps {
     summary: string;
     fullText: string;
     precision: string;
+    color: string;
 }
 
-const FortuneSlip: React.FC<FortuneSlipProps> = ({ summary, fullText, precision }) => {
+const FortuneSlip: React.FC<FortuneSlipProps> = ({ summary, fullText, precision, color }) => {
     return (
         <motion.div
             initial={{ scaleY: 0.1, opacity: 0 }}
@@ -46,6 +47,12 @@ const FortuneSlip: React.FC<FortuneSlipProps> = ({ summary, fullText, precision 
                 <p className="text-sm text-gray-600 leading-relaxed italic mb-8 px-4">
                     {fullText}
                 </p>
+
+                <div className="flex items-center gap-2 mb-6">
+                    <div className="w-4 h-4 rounded-full border border-gray-300" style={{ backgroundColor: color }} />
+                    <span className="text-xs uppercase tracking-wider text-gray-500">Today&apos;s Color</span>
+                    <span className="text-sm font-semibold text-gray-800">{color}</span>
+                </div>
 
                 {/* Footer */}
                 <div className="flex items-center gap-2 text-[10px] text-gray-400 uppercase tracking-widest">
