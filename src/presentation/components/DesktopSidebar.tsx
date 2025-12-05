@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { useFortuneContext } from '../context/FortuneContext';
 
 const DesktopSidebar: React.FC = () => {
     const { t } = useLanguage();
+    const { recentFortunes, fortune } = useFortuneContext();
     const [currentTime, setCurrentTime] = useState(new Date());
 
     useEffect(() => {
         const timer = setInterval(() => setCurrentTime(new Date()), 1000);
         return () => clearInterval(timer);
     }, []);
+
+    // 오늘 날짜의 운세가 있는지 확인
+    const today = new Date().toISOString().slice(0, 10);
+    const hasTodaysFortune = fortune && fortune.date === today;
+
+    // 최근 운세 3개까지 표시
+    const displayFortunes = recentFortunes.slice(0, 3);
 
     return (
         <div className="h-full flex flex-col p-8 relative overflow-hidden">
@@ -29,11 +38,13 @@ const DesktopSidebar: React.FC = () => {
             <div className="grid grid-cols-1 gap-4 mb-12 relative z-10">
                 <div className="bg-white/5 backdrop-blur-md border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors group">
                     <div className="text-gray-400 text-xs uppercase tracking-wider mb-1">{t('stats_cracked')}</div>
-                    <div className="text-2xl font-bold text-white group-hover:text-yellow-400 transition-colors">12</div>
+                    <div className="text-2xl font-bold text-white group-hover:text-yellow-400 transition-colors">{recentFortunes.length}</div>
                 </div>
                 <div className="bg-white/5 backdrop-blur-md border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors group">
                     <div className="text-gray-400 text-xs uppercase tracking-wider mb-1">{t('stats_streak')}</div>
-                    <div className="text-2xl font-bold text-white group-hover:text-green-400 transition-colors">5 {t('nav_today')}</div>
+                    <div className="text-2xl font-bold text-white group-hover:text-green-400 transition-colors">
+                        {hasTodaysFortune ? '🔥' : '-'} {t('nav_today')}
+                    </div>
                 </div>
             </div>
 
@@ -43,12 +54,16 @@ const DesktopSidebar: React.FC = () => {
                     {t('stats_recent')}
                 </h3>
                 <div className="space-y-3">
-                    {[1, 2, 3].map((i) => (
-                        <div key={i} className="flex items-center gap-3 text-sm text-gray-400 hover:text-white transition-colors cursor-pointer p-2 rounded-lg hover:bg-white/5">
-                            <div className="w-2 h-2 rounded-full bg-purple-500/50" />
-                            <span className="truncate">Great fortune awaits...</span>
-                        </div>
-                    ))}
+                    {displayFortunes.length > 0 ? (
+                        displayFortunes.map((f) => (
+                            <div key={f.id} className="flex items-center gap-3 text-sm text-gray-400 hover:text-white transition-colors cursor-pointer p-2 rounded-lg hover:bg-white/5">
+                                <div className="w-2 h-2 rounded-full bg-purple-500/50" />
+                                <span className="truncate">{f.summary}</span>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-sm text-gray-500 italic">쿠키를 깨트려 보세요!</div>
+                    )}
                 </div>
             </div>
 
@@ -56,7 +71,7 @@ const DesktopSidebar: React.FC = () => {
             <div className="mt-auto pt-8 border-t border-white/10 relative z-10">
                 <div className="text-xs text-purple-300 uppercase tracking-wider mb-2">{t('quote_title')}</div>
                 <blockquote className="text-sm text-gray-300 italic leading-relaxed font-serif">
-                    "The only way to predict the future is to create it."
+                    "{hasTodaysFortune && fortune?.quote ? fortune.quote : 'The future belongs to those who believe in the beauty of their dreams.'}"
                 </blockquote>
             </div>
         </div>

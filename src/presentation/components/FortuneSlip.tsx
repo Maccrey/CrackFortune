@@ -48,10 +48,12 @@ const FortuneSlip: React.FC<FortuneSlipProps> = ({ summary, fullText, precision,
                     {fullText}
                 </p>
 
-                <div className="flex items-center gap-2 mb-6">
-                    <div className="w-4 h-4 rounded-full border border-gray-300" style={{ backgroundColor: color }} />
-                    <span className="text-xs uppercase tracking-wider text-gray-500">Today&apos;s Color</span>
-                    <span className="text-sm font-semibold text-gray-800">{color}</span>
+                <div className="w-full px-4 mb-6">
+                    <div className="text-xs uppercase tracking-wider text-gray-500 mb-2 text-center">Today's Lucky Color</div>
+                    <div 
+                        className="w-full h-16 rounded-lg shadow-md border-2 border-white transition-transform hover:scale-105" 
+                        style={{ backgroundColor: color }}
+                    />
                 </div>
 
                 {/* Footer */}

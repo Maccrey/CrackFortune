@@ -36,6 +36,7 @@ export class GetDailyFortuneUseCase {
       locale: user.locale,
       model: generated.model,
       keywords: generated.keywords,
+      quote: generated.quote,
       createdAt: new Date().toISOString(),
     };
 

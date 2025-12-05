@@ -11,6 +11,7 @@ export interface Fortune {
   locale: 'en' | 'ko' | 'ja';
   model: string;
   keywords?: string[];
+  quote?: string; // AI generated inspirational quote
   createdAt: string;
 }
 

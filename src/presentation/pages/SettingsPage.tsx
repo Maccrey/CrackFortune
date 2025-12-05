@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useUserProfile } from '../hooks/useUserProfile';
 import { useLanguage } from '../context/LanguageContext';
+import { useFortuneContext } from '../context/FortuneContext';
 
 const SettingsPage: React.FC = () => {
     const { profile, isLoading, saveProfile } = useUserProfile();
     const { language } = useLanguage();
+    const { refreshUser } = useFortuneContext();
     const [toast, setToast] = useState('');
     const [form, setForm] = useState({ name: '', birthDate: '', birthTime: '' });
 
@@ -21,6 +23,7 @@ const SettingsPage: React.FC = () => {
     const handleSave = async () => {
         if (!profile) return;
         await saveProfile({ name: form.name, birthDate: form.birthDate, birthTime: form.birthTime });
+        await refreshUser(); // FortuneContext의 user 상태 즉시 업데이트
         setToast('프로필이 저장되었습니다');
         setTimeout(() => setToast(''), 2000);
     };

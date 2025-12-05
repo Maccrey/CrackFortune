@@ -7,11 +7,22 @@ import { useFortuneContext } from '../context/FortuneContext';
 const FortuneCookie: React.FC = () => {
     const navigate = useNavigate();
     const { t } = useLanguage();
-    const { crackFortune, status, error } = useFortuneContext();
+    const { crackFortune, status, error, fortune } = useFortuneContext();
     const [isCracked, setIsCracked] = useState(false);
+
+    // 오늘 날짜의 운세가 이미 있는지 확인
+    const today = new Date().toISOString().slice(0, 10);
+    const hasTodaysFortune = fortune && fortune.date === today;
 
     const handleCrack = async () => {
         if (isCracked || status === 'loading') return;
+        
+        // 이미 오늘의 운세가 있으면 애니메이션 없이 바로 이동
+        if (hasTodaysFortune) {
+            navigate('/result');
+            return;
+        }
+        
         const ok = await crackFortune();
         if (!ok) return;
         setIsCracked(true);
@@ -43,6 +54,12 @@ const FortuneCookie: React.FC = () => {
             {status === 'loading' && (
                 <div className="absolute -top-6 text-xs text-yellow-300 animate-pulse bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10 shadow-lg">
                     {t('cookie_hint')}
+                </div>
+            )}
+
+            {hasTodaysFortune && status !== 'loading' && (
+                <div className="absolute -top-6 text-xs text-cyan-300 bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10 shadow-lg">
+                    📖 오늘의 운세 다시 보기
                 </div>
             )}
 
