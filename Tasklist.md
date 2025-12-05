@@ -70,7 +70,7 @@
     - [x] Mock 데이터를 실제 Repository로 교체.
     - [x] Loading / Error State 처리.
 - [ ] **Final Testing**
-    - [ ] E2E Test (User Flow 전체).
+    - [x] E2E Test (User Flow 전체).
     - [ ] Performance Tuning (Lighthouse).
 
 ---
