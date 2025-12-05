@@ -30,7 +30,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json', 'package.json') }}
           restore-keys: ${{ runner.os }}-playwright-
 
       - name: Install Playwright browsers (chromium only)
@@ -38,7 +38,8 @@ jobs:
           npx playwright install-deps chromium
           npx playwright install chromium
 
-      - name: Run E2E tests
+      - name: Run E2E tests (optional)
+        if: env.CI_E2E == 'true'
         env:
           VITE_GEMINI_ENDPOINT: ''
           VITE_GEMINI_API_KEY: ''
