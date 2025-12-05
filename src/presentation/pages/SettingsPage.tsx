@@ -6,17 +6,27 @@ const SettingsPage: React.FC = () => {
     const { profile, isLoading, saveProfile } = useUserProfile();
     const { language } = useLanguage();
     const [toast, setToast] = useState('');
+    const [form, setForm] = useState({ name: '', birthDate: '', birthTime: '' });
+
+    useEffect(() => {
+        if (profile) {
+            setForm({
+                name: profile.name ?? '',
+                birthDate: profile.birthDate ?? '',
+                birthTime: profile.birthTime ?? '',
+            });
+        }
+    }, [profile]);
 
     const handleSave = async () => {
         if (!profile) return;
-        await saveProfile({ name: profile.name, birthDate: profile.birthDate, birthTime: profile.birthTime });
+        await saveProfile({ name: form.name, birthDate: form.birthDate, birthTime: form.birthTime });
         setToast('프로필이 저장되었습니다');
         setTimeout(() => setToast(''), 2000);
     };
 
     const handleFieldChange = (field: 'name' | 'birthDate' | 'birthTime', value: string) => {
-        if (!profile) return;
-        saveProfile({ [field]: value } as any).catch(() => setToast('저장에 실패했습니다'));
+        setForm((prev) => ({ ...prev, [field]: value }));
     };
 
     return (
@@ -42,7 +52,7 @@ const SettingsPage: React.FC = () => {
                             <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Name</label>
                             <input
                                 type="text"
-                                value={profile?.name ?? ''}
+                                value={form.name}
                                 onChange={(e) => handleFieldChange('name', e.target.value)}
                                 placeholder="Enter your name"
                                 className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors"
@@ -61,7 +71,7 @@ const SettingsPage: React.FC = () => {
                             <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Birth Date</label>
                             <input
                                 type="date"
-                                value={profile?.birthDate ?? ''}
+                                value={form.birthDate}
                                 onChange={(e) => handleFieldChange('birthDate', e.target.value)}
                                 className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors"
                                 data-testid="input-birthdate"
@@ -74,7 +84,7 @@ const SettingsPage: React.FC = () => {
                             <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Birth Time</label>
                             <input
                                 type="time"
-                                value={profile?.birthTime ?? ''}
+                                value={form.birthTime}
                                 onChange={(e) => handleFieldChange('birthTime', e.target.value)}
                                 className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors"
                                 data-testid="input-birthtime"
