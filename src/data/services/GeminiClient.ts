@@ -22,7 +22,8 @@ export class GeminiClient {
   private readonly apiKey?: string;
 
   constructor(endpoint = import.meta.env.VITE_GEMINI_ENDPOINT, apiKey = import.meta.env.VITE_GEMINI_API_KEY) {
-    this.endpoint = endpoint;
+    const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    this.endpoint = isLocal ? '/api/gemini' : endpoint;
     this.apiKey = apiKey;
   }
 
