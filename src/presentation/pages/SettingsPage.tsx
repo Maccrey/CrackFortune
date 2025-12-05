@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useUserProfile } from '../hooks/useUserProfile';
+import { useLanguage } from '../context/LanguageContext';
 
 const SettingsPage: React.FC = () => {
     const { profile, isLoading, saveProfile } = useUserProfile();
+    const { language } = useLanguage();
     const [toast, setToast] = useState('');
 
     const handleSave = async () => {
@@ -47,6 +49,10 @@ const SettingsPage: React.FC = () => {
                                 data-testid="input-name"
                                 disabled={isLoading}
                                 inputMode="text"
+                                autoComplete="name"
+                                autoCorrect="off"
+                                autoCapitalize="none"
+                                lang={language}
                             />
                         </div>
 
