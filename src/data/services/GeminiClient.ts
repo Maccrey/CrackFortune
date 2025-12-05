@@ -32,11 +32,12 @@ export class GeminiClient {
     }
 
     try {
+      const isRelative = this.endpoint.startsWith('/');
       const response = await fetch(this.endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': this.apiKey,
+          ...(isRelative ? {} : { 'x-api-key': this.apiKey }),
         },
         body: JSON.stringify({
           user,
