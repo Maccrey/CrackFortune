@@ -1,7 +1,7 @@
 // Vercel Serverless Function: Gemini Proxy
 // 요청 본문을 그대로 Gemini API로 전달하며, API 키는 서버 환경변수(GEMINI_API_KEY)로 보호합니다.
 
-const TARGET_PATH = '/v1beta/models/gemini-2.0-flash:generateContent';
+const TARGET_PATH = process.env.GEMINI_MODEL_PATH || '/v1beta/models/gemini-2.0-flash-latest:generateContent';
 const TARGET_HOST = 'https://generativelanguage.googleapis.com';
 
 export default async function handler(req, res) {

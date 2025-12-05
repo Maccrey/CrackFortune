@@ -34,6 +34,8 @@ export class GeminiClient {
     }
 
     try {
+      const prompt = `locale:${user.locale}\nname:${user.name}\nbirthDate:${user.birthDate}\nbirthTime:${user.birthTime}\nprecision:${user.birthTimeAccuracy}\ndate:${date}\n`;
+
       const response = await fetch(this.endpoint, {
         method: 'POST',
         headers: {
@@ -41,9 +43,19 @@ export class GeminiClient {
           ...(isRelative ? {} : { 'x-api-key': this.apiKey }),
         },
         body: JSON.stringify({
-          user,
-          date,
-          locale: user.locale,
+          contents: [
+            {
+              role: 'user',
+              parts: [
+                {
+                  text: `${prompt}\n오늘의 운세를 1) summary(한 줄) 2) fullText(3~4문장) 3) color(HEX) 로 JSON 형태로 응답해 주세요.`
+                },
+              ],
+            },
+          ],
+          generationConfig: {
+            temperature: 0.7,
+          },
         }),
       });
 

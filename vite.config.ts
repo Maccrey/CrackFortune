@@ -3,12 +3,13 @@ import react from '@vitejs/plugin-react'
 
 const GEMINI_PATH = '/api/gemini';
 const GEMINI_TARGET = 'https://generativelanguage.googleapis.com';
-const GEMINI_MODEL_PATH = '/v1beta/models/gemini-2.0-flash:generateContent';
+const DEFAULT_MODEL_PATH = '/v1beta/models/gemini-2.0-flash-latest:generateContent';
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const apiKey = env.VITE_GEMINI_API_KEY;
+  const modelPath = env.VITE_GEMINI_MODEL_PATH || DEFAULT_MODEL_PATH;
 
   return {
     plugins: [react()],
@@ -18,7 +19,7 @@ export default defineConfig(({ mode }) => {
           target: GEMINI_TARGET,
           changeOrigin: true,
           secure: true,
-          rewrite: () => GEMINI_MODEL_PATH,
+          rewrite: () => modelPath,
           configure: (proxy) => {
             proxy.on('proxyReq', (proxyReq) => {
               if (apiKey) {
