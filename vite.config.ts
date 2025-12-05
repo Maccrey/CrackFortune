@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
           configure: (proxy) => {
             proxy.on('proxyReq', (proxyReq) => {
               if (apiKey) {
-                proxyReq.setHeader('x-api-key', apiKey);
+                proxyReq.setHeader('x-goog-api-key', apiKey);
               }
             });
           },

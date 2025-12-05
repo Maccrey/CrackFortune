@@ -28,12 +28,12 @@ export class GeminiClient {
   }
 
   async requestDailyFortune(user: UserProfile, date: string): Promise<GeminiResponse> {
-    if (!this.endpoint || !this.apiKey) {
+    const isRelative = this.endpoint?.startsWith('/');
+    if (!this.endpoint || (!isRelative && !this.apiKey)) {
       throw new Error('Gemini 설정을 확인해주세요. (VITE_GEMINI_ENDPOINT, VITE_GEMINI_API_KEY)');
     }
 
     try {
-      const isRelative = this.endpoint.startsWith('/');
       const response = await fetch(this.endpoint, {
         method: 'POST',
         headers: {
