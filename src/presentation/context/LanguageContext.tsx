@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 import { translations } from '../utils/translations';
 import type { Language } from '../utils/translations';
@@ -11,19 +11,39 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [language, setLanguage] = useState<Language>('en');
+const LANGUAGE_STORAGE_KEY = 'fortunecrack:language';
 
-    useEffect(() => {
-        const browserLang = navigator.language.split('-')[0];
-        if (browserLang === 'ko') {
-            setLanguage('ko');
-        } else if (browserLang === 'ja') {
-            setLanguage('ja');
-        } else {
-            setLanguage('en');
-        }
-    }, []);
+// 브라우저 언어 감지 함수
+const detectBrowserLanguage = (): Language => {
+  // localStorage에 저장된 언어 우선
+  const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  if (stored && (stored === 'ko' || stored === 'ja' || stored === 'en')) {
+    return stored as Language;
+  }
+
+  // 브라우저 언어 감지
+  const browserLang = navigator.language.toLowerCase();
+  
+  // 한국어 체크
+  if (browserLang.startsWith('ko')) {
+    return 'ko';
+  }
+  // 일본어 체크
+  if (browserLang.startsWith('ja')) {
+    return 'ja';
+  }
+  // 그 외는 모두 영어
+  return 'en';
+};
+
+export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    // 초기 상태부터 브라우저 언어 적용
+    const [language, setLanguageState] = useState<Language>(detectBrowserLanguage);
+
+    const setLanguage = (lang: Language) => {
+        setLanguageState(lang);
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+    };
 
     const t = (key: keyof typeof translations['en']) => {
         return translations[language][key] || translations['en'][key];
