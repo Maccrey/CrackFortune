@@ -2,19 +2,21 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { useFortuneContext } from '../context/FortuneContext';
 
 const FortuneCookie: React.FC = () => {
     const navigate = useNavigate();
     const { t } = useLanguage();
+    const { crackFortune, status, error } = useFortuneContext();
     const [isCracked, setIsCracked] = useState(false);
 
-    const handleCrack = () => {
-        if (isCracked) return;
+    const handleCrack = async () => {
+        if (isCracked || status === 'loading') return;
         setIsCracked(true);
-        // Navigate after animation
-        setTimeout(() => {
-            navigate('/result');
-        }, 3500);
+
+        const waitForAnimation = new Promise((resolve) => setTimeout(resolve, 1400));
+        await Promise.all([waitForAnimation, crackFortune()]);
+        navigate('/result');
     };
 
     return (
@@ -35,6 +37,12 @@ const FortuneCookie: React.FC = () => {
                     </filter>
                 </defs>
             </svg>
+
+            {status === 'loading' && (
+                <div className="absolute -top-6 text-xs text-yellow-300 animate-pulse bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10 shadow-lg">
+                    {t('cookie_hint')}
+                </div>
+            )}
 
             <AnimatePresence>
                 {!isCracked ? (
@@ -147,6 +155,12 @@ const FortuneCookie: React.FC = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {error && (
+                <div className="absolute -bottom-8 text-xs text-red-300 bg-red-900/30 border border-red-400/30 rounded-full px-3 py-1 backdrop-blur-md shadow-inner">
+                    {error}
+                </div>
+            )}
         </div>
     );
 };

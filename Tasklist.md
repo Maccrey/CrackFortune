@@ -50,25 +50,25 @@
 *목표: 실제 데이터 및 로직 연동 (Domain & Data Layers)*
 
 ### 4. Domain Layer (Business Logic)
-- [ ] **Entities & UseCases**
-    - [ ] User Entity / Fortune Entity 정의.
-    - [ ] `GetDailyFortuneUseCase` 구현.
-    - [ ] *Test*: Unit Test (Vitest).
+- [x] **Entities & UseCases**
+    - [x] User Entity / Fortune Entity 정의.
+    - [x] `GetDailyFortuneUseCase` 구현.
+    - [x] *Test*: Unit Test (Vitest).
 
 ### 5. Data Layer (Local Storage & API)
-- [ ] **Local Storage Integration**
-    - [ ] User Profile Management (Local).
-    - [ ] Local Storage Repository 구현.
-    - [ ] *Test*: Local Storage CRUD 테스트.
-- [ ] **Gemini API Integration**
-    - [ ] Cloud Functions 설정.
-    - [ ] Gemini Prompt Engineering (Persona, Locale).
-    - [ ] *Test*: API 응답 형식 및 에러 처리.
+- [x] **Local Storage Integration**
+    - [x] User Profile Management (Local).
+    - [x] Local Storage Repository 구현.
+    - [x] *Test*: Local Storage CRUD 테스트.
+- [x] **Gemini API Integration**
+    - [x] Cloud Functions 설정.
+    - [x] Gemini Prompt Engineering (Persona, Locale).
+    - [x] *Test*: API 응답 형식 및 에러 처리.
 
 ### 6. Integration & Polish
-- [ ] **Real Data Binding**
-    - [ ] Mock 데이터를 실제 Repository로 교체.
-    - [ ] Loading / Error State 처리.
+- [x] **Real Data Binding**
+    - [x] Mock 데이터를 실제 Repository로 교체.
+    - [x] Loading / Error State 처리.
 - [ ] **Final Testing**
     - [ ] E2E Test (User Flow 전체).
     - [ ] Performance Tuning (Lighthouse).

@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { useFortuneContext } from '../context/FortuneContext';
 
 const HistoryPage: React.FC = () => {
     const { t } = useLanguage();
+    const { recentFortunes, status } = useFortuneContext();
     const [activeTab, setActiveTab] = useState<'daily' | 'weekly' | 'monthly' | 'yearly'>('daily');
 
     const tabs = [
@@ -11,6 +13,12 @@ const HistoryPage: React.FC = () => {
         { id: 'monthly', label: t('tab_monthly') },
         { id: 'yearly', label: t('tab_yearly') },
     ];
+
+    const filteredFortunes = useMemo(() => {
+        if (activeTab === 'daily') return recentFortunes;
+        // For now, simple grouping placeholder until weekly/monthly aggregation is added.
+        return recentFortunes;
+    }, [activeTab, recentFortunes]);
 
     return (
         <div className="flex-1 flex flex-col p-6 h-full overflow-hidden">
@@ -36,19 +44,27 @@ const HistoryPage: React.FC = () => {
 
             {/* Content Area (Scrollable) */}
             <div className="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-2">
-                {[1, 2, 3, 4, 5].map((i) => (
-                    <div key={i} className="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl hover:bg-white/10 transition-all cursor-pointer group">
+                {status === 'loading' && (
+                    <div className="text-sm text-gray-400">최근 운세를 불러오는 중...</div>
+                )}
+
+                {!filteredFortunes.length && status !== 'loading' && (
+                    <div className="text-sm text-gray-400">아직 저장된 운세가 없습니다. 쿠키를 깨트려 보세요!</div>
+                )}
+
+                {filteredFortunes.map((fortune) => (
+                    <div key={fortune.id} className="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl hover:bg-white/10 transition-all cursor-pointer group">
                         <div className="flex justify-between items-start mb-2">
-                            <div className="text-xs text-purple-300 font-mono">2023.10.{10 + i}</div>
+                            <div className="text-xs text-purple-300 font-mono">{fortune.date}</div>
                             <div className="text-xs text-gray-500 uppercase tracking-wider group-hover:text-yellow-400 transition-colors">
                                 {activeTab === 'daily' ? 'Daily' : activeTab === 'weekly' ? 'Weekly' : 'Monthly'}
                             </div>
                         </div>
                         <h3 className="text-white font-bold mb-1 group-hover:text-purple-200 transition-colors">
-                            The stars align for new beginnings.
+                            {fortune.summary}
                         </h3>
                         <p className="text-sm text-gray-400 line-clamp-2">
-                            Your patience will soon be rewarded. Trust the process and keep moving forward with confidence.
+                            {fortune.fullText}
                         </p>
                     </div>
                 ))}

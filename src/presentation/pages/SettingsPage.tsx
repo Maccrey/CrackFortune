@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
+import { useUserProfile } from '../hooks/useUserProfile';
 
 const SettingsPage: React.FC = () => {
-    const [name, setName] = useState('');
-    const [birthDate, setBirthDate] = useState('');
-    const [birthTime, setBirthTime] = useState('');
+    const { profile, isLoading, saveProfile } = useUserProfile();
+    const [toast, setToast] = useState('');
 
-    const handleSave = () => {
-        // Mock save functionality
-        console.log('Saved:', { name, birthDate, birthTime });
-        alert('Settings Saved!');
+    const handleSave = async () => {
+        if (!profile) return;
+        await saveProfile({ name: profile.name, birthDate: profile.birthDate, birthTime: profile.birthTime });
+        setToast('프로필이 저장되었습니다');
+        setTimeout(() => setToast(''), 2000);
+    };
+
+    const handleFieldChange = (field: 'name' | 'birthDate' | 'birthTime', value: string) => {
+        if (!profile) return;
+        saveProfile({ [field]: value } as any).catch(() => setToast('저장에 실패했습니다'));
     };
 
     return (
         <div className="p-6 pb-24 overflow-y-auto h-full">
             <h2 className="text-2xl font-bold mb-6 text-white tracking-wide">Settings</h2>
+
+            {toast && (
+                <div className="mb-4 text-sm text-yellow-200 bg-white/10 border border-white/20 rounded-lg px-4 py-2 inline-flex">
+                    {toast}
+                </div>
+            )}
 
             <div className="space-y-6">
                 {/* User Profile Section */}
@@ -28,11 +40,12 @@ const SettingsPage: React.FC = () => {
                             <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Name</label>
                             <input
                                 type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                value={profile?.name ?? ''}
+                                onChange={(e) => handleFieldChange('name', e.target.value)}
                                 placeholder="Enter your name"
                                 className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors"
                                 data-testid="input-name"
+                                disabled={isLoading}
                             />
                         </div>
 
@@ -41,10 +54,11 @@ const SettingsPage: React.FC = () => {
                             <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Birth Date</label>
                             <input
                                 type="date"
-                                value={birthDate}
-                                onChange={(e) => setBirthDate(e.target.value)}
+                                value={profile?.birthDate ?? ''}
+                                onChange={(e) => handleFieldChange('birthDate', e.target.value)}
                                 className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors"
                                 data-testid="input-birthdate"
+                                disabled={isLoading}
                             />
                         </div>
 
@@ -53,10 +67,11 @@ const SettingsPage: React.FC = () => {
                             <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Birth Time</label>
                             <input
                                 type="time"
-                                value={birthTime}
-                                onChange={(e) => setBirthTime(e.target.value)}
+                                value={profile?.birthTime ?? ''}
+                                onChange={(e) => handleFieldChange('birthTime', e.target.value)}
                                 className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors"
                                 data-testid="input-birthtime"
+                                disabled={isLoading}
                             />
                         </div>
                     </div>
@@ -65,8 +80,9 @@ const SettingsPage: React.FC = () => {
                         onClick={handleSave}
                         className="w-full mt-6 bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-bold py-3 rounded-lg shadow-lg hover:shadow-yellow-500/20 active:scale-95 transition-all"
                         data-testid="btn-save"
+                        disabled={isLoading}
                     >
-                        Save Profile
+                        {isLoading ? 'Loading...' : 'Save Profile'}
                     </button>
                 </section>
 
