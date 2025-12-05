@@ -10,14 +10,11 @@ interface GeminiResponse {
   keywords?: string[];
 }
 
-const fallbackFortune: GeminiResponse = {
-  summary: '새로운 여정이 당신을 부르고 있습니다.',
-  fullText:
-    '당신의 선택이 곧 큰 변화를 만들어낼 것입니다. 오늘은 작은 결정을 신중히 하고, 주변의 도움을 기꺼이 받아들이세요. 직관을 믿고 한 걸음씩 나아가면 좋은 흐름이 이어집니다.',
-  color: '#eab308',
-  precision: 'medium',
-  model: 'gemini-mock',
-  keywords: ['변화', '직관', '흐름'],
+const palette = ['#eab308', '#22d3ee', '#a855f7', '#f97316', '#10b981'];
+
+const pickColor = (user: UserProfile) => {
+  const seed = (user.name || user.id || '').split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  return palette[Math.abs(seed) % palette.length];
 };
 
 export class GeminiClient {
@@ -31,11 +28,7 @@ export class GeminiClient {
 
   async requestDailyFortune(user: UserProfile, date: string): Promise<GeminiResponse> {
     if (!this.endpoint || !this.apiKey) {
-      return {
-        ...fallbackFortune,
-        summary: `${user.name || '당신'}에게 다가오는 흐름을 살펴보세요.`,
-        fullText: `${user.birthDate ? `${user.birthDate}에 태어난 ` : ''}${user.name || '여행자'}님, 오늘은 ${date} 기준으로 에너지가 변화하고 있습니다. 주변의 따뜻한 색감을 활용하면 집중력과 직관이 높아집니다.`,
-      };
+      throw new Error('Gemini 설정을 확인해주세요. (VITE_GEMINI_ENDPOINT, VITE_GEMINI_API_KEY)');
     }
 
     try {
@@ -57,17 +50,13 @@ export class GeminiClient {
       }
 
       const data = (await response.json()) as GeminiResponse;
-      return data;
-    } catch (error) {
-      console.warn('[GeminiClient] Falling back to mock fortune', error);
-      const palette = ['#eab308', '#22d3ee', '#a855f7', '#f97316', '#10b981'];
-      const index = Math.abs((user.name ?? user.id ?? '').split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0)) % palette.length;
       return {
-        ...fallbackFortune,
-        color: palette[index],
-        summary: `${user.name || '여행자'}님, 오늘의 색은 ${palette[index]} 입니다.`,
-        fullText: `${user.name || '여행자'}님, ${user.birthDate ? `${user.birthDate}에 태어나 ` : ''}당신에게 어울리는 컬러가 오늘의 흐름을 안정시켜 줍니다. ${palette[index]} 톤의 아이템을 활용해 집중력을 높여 보세요.`,
+        ...data,
+        color: data.color || pickColor(user),
       };
+    } catch (error) {
+      console.warn('[GeminiClient] Gemini 호출 실패', error);
+      throw new Error('Gemini 호출에 실패했습니다. 엔드포인트/키 또는 네트워크를 확인해주세요.');
     }
   }
 }

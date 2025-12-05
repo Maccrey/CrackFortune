@@ -5,15 +5,9 @@ import { createDefaultUserProfile } from '../../domain/entities/user';
 describe('GeminiClient', () => {
   const user = createDefaultUserProfile('ko');
 
-  it('엔드포인트가 없으면 목 운세를 반환한다', async () => {
+  it('엔드포인트가 없으면 오류를 던진다', async () => {
     const client = new GeminiClient('', '');
-    const fetchSpy = vi.spyOn(globalThis, 'fetch' as any);
-
-    const result = await client.requestDailyFortune(user, '2024-01-01');
-
-    expect(result.summary).toBeDefined();
-    expect(fetchSpy).not.toHaveBeenCalled();
-    fetchSpy.mockRestore();
+    await expect(() => client.requestDailyFortune(user, '2024-01-01')).rejects.toThrow();
   });
 
   it('엔드포인트가 있으면 fetch를 호출한다', async () => {
@@ -22,6 +16,7 @@ describe('GeminiClient', () => {
       fullText: '테스트 본문',
       precision: 'high',
       model: 'gemini-test',
+      color: '#123456',
     };
     const fetchStub = vi.fn().mockResolvedValue({ ok: true, json: async () => mockResponse });
     vi.stubGlobal('fetch', fetchStub as any);
