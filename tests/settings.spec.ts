@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+        window.sessionStorage.setItem('visited', 'true');
+    });
+});
+
 test('설정 페이지에서 프로필을 저장한다', async ({ page }) => {
     await page.goto('/settings');
 

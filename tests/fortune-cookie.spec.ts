@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+        window.sessionStorage.setItem('visited', 'true');
+    });
+});
+
 test('쿠키를 깨면 운세 결과 페이지로 이동한다', async ({ page }) => {
     await page.goto('/');
 

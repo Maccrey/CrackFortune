@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+        window.sessionStorage.setItem('visited', 'true');
+    });
+});
+
 test('mobile viewport configuration', async ({ page }) => {
     await page.goto('/');
 

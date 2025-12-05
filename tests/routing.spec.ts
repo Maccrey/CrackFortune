@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+        window.sessionStorage.setItem('visited', 'true');
+    });
+});
+
 test('네비게이션 링크로 페이지를 이동한다', async ({ page }) => {
     await page.goto('/');
 
