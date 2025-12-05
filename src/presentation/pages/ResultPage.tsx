@@ -23,7 +23,7 @@ const ResultPage: React.FC = () => {
         <div className="flex-1 flex flex-col items-center justify-center p-6">
             <FortuneSlip summary={fortune.summary} fullText={fortune.fullText} precision={fortune.precision.toUpperCase()} />
 
-            <Link to="/" className="mt-12 px-8 py-3 bg-white/10 rounded-full hover:bg-white/20 transition-all text-sm font-medium tracking-wider backdrop-blur-md border border-white/10">
+            <Link to="/" data-testid="btn-open-another" className="mt-12 px-8 py-3 bg-white/10 rounded-full hover:bg-white/20 transition-all text-sm font-medium tracking-wider backdrop-blur-md border border-white/10">
                 {t('btn_open_another')}
             </Link>
         </div>

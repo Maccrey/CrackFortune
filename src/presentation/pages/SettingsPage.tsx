@@ -22,7 +22,7 @@ const SettingsPage: React.FC = () => {
             <h2 className="text-2xl font-bold mb-6 text-white tracking-wide">Settings</h2>
 
             {toast && (
-                <div className="mb-4 text-sm text-yellow-200 bg-white/10 border border-white/20 rounded-lg px-4 py-2 inline-flex">
+                <div className="mb-4 text-sm text-yellow-200 bg-white/10 border border-white/20 rounded-lg px-4 py-2 inline-flex" data-testid="toast-message">
                     {toast}
                 </div>
             )}

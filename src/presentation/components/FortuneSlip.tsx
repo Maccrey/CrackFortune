@@ -14,6 +14,7 @@ const FortuneSlip: React.FC<FortuneSlipProps> = ({ summary, fullText, precision 
             animate={{ scaleY: 1, opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
             className="bg-[#fdfbf7] text-gray-800 p-8 rounded-sm shadow-2xl max-w-md w-full relative overflow-hidden font-serif"
+            data-testid="fortune-slip"
             style={{ transformOrigin: 'top' }}
         >
             {/* Paper Texture/Pattern */}

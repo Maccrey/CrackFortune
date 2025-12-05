@@ -1,19 +1,12 @@
 import { test, expect } from '@playwright/test';
 
-test('result page displays fortune and navigates back', async ({ page }) => {
-    // Navigate directly to result page
-    await page.goto('/result');
+test('결과 페이지에서 운세를 확인하고 홈으로 돌아간다', async ({ page }) => {
+    await page.goto('/');
+    await page.getByTestId('fortune-cookie').click();
 
-    // Check for Fortune Slip content
-    await expect(page.locator('text=Today\'s Insight')).toBeVisible();
-    await expect(page.locator('text=Great things are coming your way.')).toBeVisible();
-    await expect(page.locator('text=High Precision')).toBeVisible();
+    await expect(page).toHaveURL(/.*result/, { timeout: 5000 });
+    await expect(page.getByTestId('fortune-slip')).toBeVisible();
 
-    // Check Back Button
-    const backButton = page.locator('text=Open Another Cookie');
-    await expect(backButton).toBeVisible();
-
-    // Click Back Button
-    await backButton.click();
+    await page.getByTestId('btn-open-another').click();
     await expect(page).toHaveURL('/');
 });

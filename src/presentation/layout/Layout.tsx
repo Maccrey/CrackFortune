@@ -19,10 +19,10 @@ const LayoutContent: React.FC = () => {
                     </Link>
                 </div>
                 <nav className="flex gap-6 text-sm font-medium text-gray-300 items-center">
-                    <Link to="/" className="hover:text-white transition-colors">{t('nav_today')}</Link>
-                    <Link to="/history" className="hover:text-white transition-colors">{t('nav_history')}</Link>
-                    <Link to="/chat" className="hover:text-white transition-colors">{t('nav_chat')}</Link>
-                    <Link to="/settings" className="hover:text-white transition-colors">{t('nav_settings')}</Link>
+                    <Link to="/" data-testid="nav-today" className="hover:text-white transition-colors">{t('nav_today')}</Link>
+                    <Link to="/history" data-testid="nav-history" className="hover:text-white transition-colors">{t('nav_history')}</Link>
+                    <Link to="/chat" data-testid="nav-chat" className="hover:text-white transition-colors">{t('nav_chat')}</Link>
+                    <Link to="/settings" data-testid="nav-settings" className="hover:text-white transition-colors">{t('nav_settings')}</Link>
                     <LanguageSelector />
                 </nav>
             </header>

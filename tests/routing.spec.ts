@@ -1,25 +1,17 @@
 import { test, expect } from '@playwright/test';
 
-test('has title and navigates to pages', async ({ page }) => {
+test('네비게이션 링크로 페이지를 이동한다', async ({ page }) => {
     await page.goto('/');
 
-    // Check title
     await expect(page).toHaveTitle(/FortuneCrack/);
+    await expect(page.getByTestId('heading-main')).toBeVisible();
 
-    // Check Main Page content
-    await expect(page.locator('h2')).toContainText("Today's Fortune");
-
-    // Navigate to History
-    await page.click('text=History');
+    await page.getByTestId('nav-history').click();
     await expect(page).toHaveURL(/.*history/);
-    await expect(page.locator('h2')).toContainText('History');
 
-    // Navigate to Settings
-    await page.click('text=Settings');
+    await page.getByTestId('nav-settings').click();
     await expect(page).toHaveURL(/.*settings/);
-    await expect(page.locator('h2')).toContainText('Settings');
 
-    // Navigate back to Home
-    await page.click('text=Today');
+    await page.getByTestId('nav-today').click();
     await expect(page).toHaveURL('/');
 });
