@@ -8,6 +8,7 @@ import { GeminiFortuneRepository } from '../../data/repositories/GeminiFortuneRe
 import { LocalUserRepository } from '../../data/repositories/LocalUserRepository';
 import { LocalStorageClient } from '../../data/storage/LocalStorageClient';
 import { GeminiClient } from '../../data/services/GeminiClient';
+import { useLanguage } from './LanguageContext';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
@@ -25,6 +26,7 @@ const FortuneContext = createContext<FortuneContextValue | undefined>(undefined)
 
 export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const storageClient = useMemo(() => new LocalStorageClient(typeof window !== 'undefined' ? window.localStorage : null), []);
+  const { language } = useLanguage();
 
   const fortuneRepositoryRef = useRef(new LocalFortuneRepository(storageClient));
   const userRepositoryRef = useRef(new LocalUserRepository(storageClient));
@@ -45,15 +47,26 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
     setRecentFortunes(recents);
   };
 
+  const normalizeLocale = (lang: string): UserProfile['locale'] => {
+    if (lang.startsWith('ko')) return 'ko';
+    if (lang.startsWith('ja')) return 'ja';
+    return 'en';
+  };
+
   const refreshUser = async () => {
     const profile = await userRepositoryRef.current.getProfile();
-    setUser(profile);
-    await loadCachedFortune(profile);
+    const normalized = normalizeLocale(language);
+    const mergedProfile = profile.locale === normalized ? profile : { ...profile, locale: normalized };
+    if (mergedProfile !== profile) {
+      await userRepositoryRef.current.saveProfile(mergedProfile);
+    }
+    setUser(mergedProfile);
+    await loadCachedFortune(mergedProfile);
   };
 
   useEffect(() => {
     void refreshUser();
-  }, []);
+  }, [language]);
 
   const isProfileComplete = (profile: UserProfile | null) => {
     if (!profile) return false;
