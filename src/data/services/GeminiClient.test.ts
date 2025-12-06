@@ -11,14 +11,32 @@ describe('GeminiClient', () => {
   });
 
   it('엔드포인트가 있으면 fetch를 호출한다', async () => {
-    const mockResponse = {
-      summary: '테스트 요약',
-      fullText: '테스트 본문',
-      precision: 'high',
-      model: 'gemini-test',
-      color: '#123456',
+    // Gemini API의 실제 응답 구조에 맞게 mock
+    const mockApiResponse = {
+      candidates: [
+        {
+          content: {
+            parts: [
+              {
+                text: JSON.stringify({
+                  summary: '테스트 요약',
+                  fullText: '테스트 본문',
+                  color: '황금색',
+                  precision: 'high',
+                  quote: '테스트 명언'
+                })
+              }
+            ],
+            role: 'model'
+          }
+        }
+      ]
     };
-    const fetchStub = vi.fn().mockResolvedValue({ ok: true, json: async () => mockResponse });
+
+    const fetchStub = vi.fn().mockResolvedValue({ 
+      ok: true, 
+      json: async () => mockApiResponse 
+    });
     vi.stubGlobal('fetch', fetchStub as any);
 
     const client = new GeminiClient('https://mock-endpoint', 'api-key');
@@ -26,6 +44,7 @@ describe('GeminiClient', () => {
 
     expect(fetchStub).toHaveBeenCalledOnce();
     expect(result.summary).toBe('테스트 요약');
+    expect(result.fullText).toBe('테스트 본문');
 
     (globalThis.fetch as any).mockRestore();
   });
