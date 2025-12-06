@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useFortuneContext } from '../context/FortuneContext';
 
@@ -15,9 +14,12 @@ interface ChatSession {
     date: string;
     startTime: number;
     totalTimeUsed: number; // seconds
+    adWatchCount?: number; // 광고 시청 횟수 (최대 3회)
 }
 
 const CHAT_TIME_LIMIT = 180; // 3 minutes in seconds
+const AD_DURATION = 3; // 3 seconds ad simulation
+const MAX_AD_WATCHES = 3; // 최대 광고 시청 횟수
 const STORAGE_KEY = 'fortunecrack:chat_session';
 
 const ChatPage: React.FC = () => {
@@ -28,9 +30,13 @@ const ChatPage: React.FC = () => {
     const [isTyping, setIsTyping] = useState(false);
     const [remainingTime, setRemainingTime] = useState(CHAT_TIME_LIMIT);
     const [isTimeOver, setIsTimeOver] = useState(false);
+    const [isWatchingAd, setIsWatchingAd] = useState(false);
+    const [adCountdown, setAdCountdown] = useState(AD_DURATION);
+    const [adWatchCount, setAdWatchCount] = useState(0); // 오늘 광고 시청 횟수
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const sessionRef = useRef<ChatSession | null>(null);
     const timerRef = useRef<number | null>(null);
+    const adTimerRef = useRef<number | null>(null);
 
     // Initialize session
     useEffect(() => {
@@ -45,12 +51,14 @@ const ChatPage: React.FC = () => {
                 const remaining = Math.max(0, CHAT_TIME_LIMIT - timeUsed);
                 setRemainingTime(remaining);
                 setIsTimeOver(remaining === 0);
+                setAdWatchCount(session.adWatchCount || 0);
             } else {
                 // New day, reset session
                 const newSession: ChatSession = {
                     date: today,
                     startTime: Date.now(),
-                    totalTimeUsed: 0
+                    totalTimeUsed: 0,
+                    adWatchCount: 0
                 };
                 sessionRef.current = newSession;
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(newSession));
@@ -60,7 +68,8 @@ const ChatPage: React.FC = () => {
             const newSession: ChatSession = {
                 date: today,
                 startTime: Date.now(),
-                totalTimeUsed: 0
+                totalTimeUsed: 0,
+                adWatchCount: 0
             };
             sessionRef.current = newSession;
             localStorage.setItem(STORAGE_KEY, JSON.stringify(newSession));
@@ -233,6 +242,44 @@ Only answer questions related to the user's fortune using a fortune teller's voi
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
+    const handleWatchAd = () => {
+        if (adWatchCount >= MAX_AD_WATCHES) return;
+
+        setIsWatchingAd(true);
+        setAdCountdown(AD_DURATION);
+
+        // Ad simulation countdown
+        adTimerRef.current = window.setInterval(() => {
+            setAdCountdown(prev => {
+                const next = prev - 1;
+                if (next <= 0) {
+                    // Ad completed
+                    if (adTimerRef.current) {
+                        clearInterval(adTimerRef.current);
+                    }
+                    
+                    // Add 3 minutes
+                    setRemainingTime(CHAT_TIME_LIMIT);
+                    setIsTimeOver(false);
+                    setIsWatchingAd(false);
+                    const newCount = adWatchCount + 1;
+                    setAdWatchCount(newCount);
+
+                    // Update session
+                    if (sessionRef.current) {
+                        sessionRef.current.totalTimeUsed = 0;
+                        sessionRef.current.startTime = Date.now();
+                        sessionRef.current.adWatchCount = newCount;
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(sessionRef.current));
+                    }
+
+                    return 0;
+                }
+                return next;
+            });
+        }, 1000);
+    };
+
     return (
         <div className="flex-1 flex flex-col h-full overflow-hidden relative">
             {/* Header */}
@@ -331,12 +378,51 @@ Only answer questions related to the user's fortune using a fortune teller's voi
                             <div className="text-4xl mb-4">⏰</div>
                             <h3 className="text-xl font-bold text-white mb-2">{t('chat_time_over')}</h3>
                             <p className="text-gray-300 text-sm mb-6">{t('chat_time_over_message')}</p>
-                            <Link
-                                to="/"
-                                className="inline-block px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-full transition-colors"
+                            
+                            <button
+                                onClick={handleWatchAd}
+                                disabled={adWatchCount >= MAX_AD_WATCHES}
+                                className={`px-6 py-3 rounded-full transition-all font-bold ${
+                                    adWatchCount >= MAX_AD_WATCHES
+                                        ? 'bg-gray-600 cursor-not-allowed opacity-50' 
+                                        : 'bg-gradient-to-r from-yellow-500 to-orange-600 hover:shadow-lg hover:shadow-yellow-500/30 active:scale-95'
+                                } text-white`}
                             >
-                                {t('btn_open_another')}
-                            </Link>
+                                {adWatchCount >= MAX_AD_WATCHES 
+                                    ? t('ad_already_watched') 
+                                    : t('btn_watch_ad_extend_count').replace('{count}', String(MAX_AD_WATCHES - adWatchCount))
+                                }
+                            </button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+            
+            {/* Ad Watching Overlay */}
+            <AnimatePresence>
+                {isWatchingAd && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center z-50"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="text-center"
+                        >
+                            <div className="text-6xl mb-6 animate-pulse">📺</div>
+                            <h3 className="text-2xl font-bold text-white mb-4">{t('ad_watching')}</h3>
+                            <motion.div 
+                                key={adCountdown}
+                                initial={{ scale: 1.5, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                className="text-7xl font-bold text-yellow-400 mb-2"
+                            >
+                                {adCountdown}
+                            </motion.div>
+                            <p className="text-gray-400 text-lg">{t('ad_countdown')}</p>
                         </motion.div>
                     </motion.div>
                 )}

@@ -73,12 +73,32 @@
     - [x] E2E Test (User Flow 전체).
     - [x] Performance Tuning (Lighthouse).
 
+
 ---
 
-## PHASE 3: FIREBASE INTEGRATION (Auth + Storage)
+## PHASE 3: 광고 기반 채팅 연장 기능 (Ad-based Chat Extension)
+*목표: 3분 채팅 시간 종료 후 광고를 시청하고 추가 3분 연장*
+
+### 7. 광고 연장 기능
+- [x] **UI 변경**
+    - [x] "다른 쿠키 열기" 버튼을 "광고보고 '운세상담' 연장하기"로 변경
+    - [x] 번역 파일 업데이트 (en, ko, ja)
+    - [x] *Test*: 3분 후 팝업에 새 버튼 텍스트 표시 확인
+- [x] **광고 통합**
+    - [x] 광고 시뮬레이션 구현 (3초 카운트다운)
+    - [x] 광고 재생 후 콜백 처리
+    - [x] *Test*: 광고 완료 후 시간 연장 확인 (수동 테스트 필요)
+- [x] **시간 관리 로직**
+    - [x] 광고 시청 후 3분 추가 연장 로직
+    - [x] localStorage에 연장 횟수/상태 저장
+    - [x] *Test*: 연장 후 타이머 리셋 및 채팅 재개 확인 (수동 테스트 필요)
+
+---
+
+## PHASE 4: FIREBASE INTEGRATION (Auth + Storage)
 *목표: Firebase 기반 인증/저장/원격 캐싱으로 실사용 데이터 흐름 완성*
 
-### 7. Firebase 통합 (보류)
+### 8. Firebase 통합 (보류)
 - [ ] 향후 Firebase(인증/DB) 재도입 시 계획 재수립
 
 ## ✅ Test Checklist (If Playwright N/A)
