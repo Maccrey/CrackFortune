@@ -2,11 +2,5 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "devCommand": "vite",
-  "installCommand": "npm install",
-  "rewrites": [
-    {
-      "source": "/api/gemini",
-      "destination": "/api/gemini.ts"
-    }
-  ]
+  "installCommand": "npm install"
 }
