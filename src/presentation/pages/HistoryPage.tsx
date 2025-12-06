@@ -1,11 +1,13 @@
 import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useFortuneContext } from '../context/FortuneContext';
 
 const HistoryPage: React.FC = () => {
     const { t } = useLanguage();
-    const { recentFortunes, status } = useFortuneContext();
+    const { recentFortunes, status, selectFortune } = useFortuneContext();
     const [activeTab, setActiveTab] = useState<'daily' | 'weekly' | 'monthly' | 'yearly'>('daily');
+    const navigate = useNavigate();
 
     const tabs = [
         { id: 'daily', label: t('tab_daily') },
@@ -19,6 +21,11 @@ const HistoryPage: React.FC = () => {
         // For now, simple grouping placeholder until weekly/monthly aggregation is added.
         return recentFortunes;
     }, [activeTab, recentFortunes]);
+
+    const handleFortuneClick = (fortune: typeof recentFortunes[0]) => {
+        selectFortune(fortune);
+        navigate('/result');
+    };
 
     return (
         <div className="flex-1 flex flex-col p-6 h-full overflow-hidden">
@@ -53,7 +60,11 @@ const HistoryPage: React.FC = () => {
                 )}
 
                 {filteredFortunes.map((fortune) => (
-                    <div key={fortune.id} className="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl hover:bg-white/10 transition-all cursor-pointer group">
+                    <div 
+                        key={fortune.id} 
+                        className="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl hover:bg-white/10 transition-all cursor-pointer group"
+                        onClick={() => handleFortuneClick(fortune)}
+                    >
                         <div className="flex justify-between items-start mb-2">
                             <div className="text-xs text-purple-300 font-mono">{fortune.date}</div>
                             <div className="text-xs text-gray-500 uppercase tracking-wider group-hover:text-yellow-400 transition-colors">

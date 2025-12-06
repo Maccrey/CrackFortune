@@ -76,7 +76,7 @@ const SettingsPage: React.FC = () => {
                                 type="date"
                                 value={form.birthDate}
                                 onChange={(e) => handleFieldChange('birthDate', e.target.value)}
-                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors"
+                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors [color-scheme:dark]"
                                 data-testid="input-birthdate"
                                 disabled={isLoading}
                             />
@@ -89,7 +89,7 @@ const SettingsPage: React.FC = () => {
                                 type="time"
                                 value={form.birthTime}
                                 onChange={(e) => handleFieldChange('birthTime', e.target.value)}
-                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors"
+                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors [color-scheme:dark]"
                                 data-testid="input-birthtime"
                                 disabled={isLoading}
                             />

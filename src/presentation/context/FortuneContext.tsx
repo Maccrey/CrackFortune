@@ -20,6 +20,7 @@ interface FortuneContextValue {
   error: string | null;
   crackFortune: () => Promise<boolean>;
   refreshUser: () => Promise<void>;
+  selectFortune: (fortune: Fortune) => void;
 }
 
 const FortuneContext = createContext<FortuneContextValue | undefined>(undefined);
@@ -108,6 +109,10 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
     }
   };
 
+  const selectFortune = (fortune: Fortune) => {
+    setFortune(fortune);
+  };
+
   const value: FortuneContextValue = {
     user,
     fortune,
@@ -116,6 +121,7 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
     error,
     crackFortune,
     refreshUser,
+    selectFortune,
   };
 
   return <FortuneContext.Provider value={value}>{children}</FortuneContext.Provider>;

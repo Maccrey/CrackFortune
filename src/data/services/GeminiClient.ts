@@ -70,7 +70,13 @@ export class GeminiClient {
 **포함할 내용:**
 재물운, 건강운, 인간관계운, 직업운 중 오늘 특히 중요한 부분을 강조하여 구체적이고 실용적인 조언을 제공해주세요.
 
-JSON 형식으로 응답: {"summary":"한 줄 핵심 운세","fullText":"3-4문장으로 오늘의 운세 상세 설명","color":"오늘의 길한 색상 HEX","precision":"${user.birthTimeAccuracy}","quote":"오늘의 운세에 어울리는 사주명리 격언 또는 좌우명 (한 문장)"}`,
+**중요: 색상 표현 규칙**
+- 헥사 코드(#로 시작하는 코드)를 절대 사용하지 마세요
+- 오직 일반인이 이해할 수 있는 색 이름만 사용하세요 (예: 황금색, 빨간색, 파란색, 초록색, 보라색)
+- fullText에서도 헥사 코드를 언급하지 마세요
+
+JSON 형식으로 응답: {"summary":"한 줄 핵심 운세","fullText":"3-4문장으로 오늘의 운세 상세 설명 (헥사 코드 언급 금지)","color":"오늘의 길한 색상을 일반적인 색 이름으로만 (예: 황금색, 빨간색, 파란색)","precision":"${user.birthTimeAccuracy}","quote":"오늘의 운세에 어울리는 사주명리 격언 또는 좌우명 (한 문장)"}`,
+        
         
         ja: `あなたは四柱推命の専門家です。上記の出生四柱（生年月日時）と本日の日付（${todayInfo.year}年${todayInfo.month}月${todayInfo.day}日 ${todayInfo.dayOfWeek}）をもとに運勢を分析してください。
 
@@ -84,7 +90,13 @@ JSON 형식으로 응답: {"summary":"한 줄 핵심 운세","fullText":"3-4문�
 **含める内容:**
 金運、健康運、人間関係運、仕事運の中で、本日特に重要な部分を強調し、具体的で実用的なアドバイスを提供してください。
 
-JSON形式で回答: {"summary":"一行の核心運勢","fullText":"3-4文で本日の運勢の詳細説明","color":"本日の吉祥色HEX","precision":"${user.birthTimeAccuracy}","quote":"本日の運勢にふさわしい四柱推命の格言または座右の銘（一文）"}`,
+**重要：色の表現ルール**
+- ヘキサコード（#で始まるコード）は絶対に使用しないでください
+- 一般人が理解できる色の名前のみ使用してください（例：金色、赤色、青色、緑色、紫色）
+- fullTextでもヘキサコードを言及しないでください
+
+JSON形式で回答: {"summary":"一行の核心運勢","fullText":"3-4文で本日の運勢の詳細説明（ヘキサコード言及禁止）","color":"本日の吉祥色を一般的な色の名前でのみ（例：金色、赤色、青色）","precision":"${user.birthTimeAccuracy}","quote":"本日の運勢にふさわしい四柱推命の格言または座右の銘（一文）"}`,
+        
         
         en: `You are a professional Four Pillars of Destiny (Ba Zi) fortune teller. Analyze the fortune based on the birth Four Pillars (birth year, month, day, and time) and today's date (${todayInfo.dayOfWeek}, ${todayInfo.month}/${todayInfo.day}/${todayInfo.year}).
 
@@ -98,7 +110,12 @@ JSON形式で回答: {"summary":"一行の核心運勢","fullText":"3-4文で本
 **Include:**
 Emphasize the most important aspects among wealth, health, relationships, and career for today, providing specific and practical advice.
 
-Respond in JSON format: {"summary":"One-line core fortune","fullText":"3-4 sentences detailed fortune for today","color":"Today's auspicious color HEX","precision":"${user.birthTimeAccuracy}","quote":"A Four Pillars wisdom or motto that matches today's fortune (one sentence)"}`
+**IMPORTANT: Color Expression Rules**
+- NEVER use hex codes (codes starting with #)
+- ONLY use common color names that regular people understand (e.g., golden, red, blue, green, purple)
+- Do NOT mention hex codes in fullText either
+
+Respond in JSON format: {"summary":"One-line core fortune","fullText":"3-4 sentences detailed fortune for today (NO hex codes)","color":"Today's auspicious color using ONLY common color names (e.g., golden, red, blue)","precision":"${user.birthTimeAccuracy}","quote":"A Four Pillars wisdom or motto that matches today's fortune (one sentence)"}`
       };
 
       const fortunePrompt = localePrompts[user.locale] || localePrompts.en;
