@@ -13,7 +13,7 @@ const LayoutContent: React.FC = () => {
             {/* Glassmorphism Header */}
             <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/10 border-b border-white/10 h-16 flex items-center justify-between px-6">
                 <div className="flex items-center gap-3">
-                    <img src="/favicon.png" alt="Logo" className="w-8 h-8" />
+                    <img src={`${import.meta.env.BASE_URL}logo.png`} alt="Logo" className="w-8 h-8" />
                     <Link to="/" className="text-xl font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-500 font-mystical">
                         FortuneCrack
                     </Link>

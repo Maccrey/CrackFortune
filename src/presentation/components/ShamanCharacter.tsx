@@ -17,7 +17,7 @@ const ShamanCharacter: React.FC = () => {
                 }}
             >
                 <motion.img
-                    src="/shaman.png"
+                    src={`${import.meta.env.BASE_URL}shaman.png`}
                     alt="Shaman"
                     className="w-full h-full object-contain"
                     style={{
