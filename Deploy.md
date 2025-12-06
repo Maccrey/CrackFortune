@@ -1,212 +1,242 @@
-# FortuneCrack GitHub Pages 배포 가이드
+# Firebase Hosting 배포 가이드
 
-이 문서는 FortuneCrack 프로젝트를 GitHub Pages에 배포하는 방법을 설명합니다.
+## 📋 개요
 
-## 📋 사전 준비사항
+FortuneCrack 애플리케이션을 Firebase Hosting에 배포하는 가이드입니다.
 
-### 1. Gemini API Key 설정
+Firebase Hosting은 정적 웹 호스팅 서비스로, SPA(Single Page Application)를 쉽게 배포하고 관리할 수 있습니다.
 
-GitHub Pages에서 Gemini API를 사용하려면 GitHub Secrets에 API 키를 등록해야 합니다.
+## 🔑 사전 준비
 
-**방법:**
-1. GitHub 저장소로 이동
-2. `Settings` → `Secrets and variables` → `Actions` 클릭
-3. `New repository secret` 클릭
-4. Name: `VITE_GEMINI_API_KEY`
-5. Secret: 본인의 Gemini API 키 입력
-6. `Add secret` 클릭
+### 1. Firebase 계정 및 프로젝트 생성
 
-### 2. GitHub Pages 설정
+1. [Firebase Console](https://console.firebase.google.com/) 접속
+2. **프로젝트 추가** 클릭
+3. 프로젝트 이름 입력 (예: `fortune-crack`)
+4. Google 애널리틱스 설정 (선택사항)
+5. 프로젝트 생성 완료
 
-**방법:**
-1. GitHub 저장소로 이동
-2. `Settings` → `Pages` 클릭
-3. **Source** 섹션에서:
-   - Source: `GitHub Actions` 선택
-4. 저장
-
-> ⚠️ **중요:** `Deploy from a branch`가 아닌 **`GitHub Actions`**를 선택해야 합니다!
-
-## 🚀 자동 배포 (추천)
-
-main 브랜치에 푸시하면 자동으로 배포됩니다.
+### 2. Firebase CLI 설치
 
 ```bash
-# 변경사항 커밋
-git add .
-git commit -m "feat: 새로운 기능 추가"
-
-# main 브랜치에 푸시
-git push origin main
+npm install -g firebase-tools
 ```
 
-**배포 확인:**
-1. GitHub 저장소의 `Actions` 탭으로 이동
-2. 가장 최근 workflow 실행 확인
-3. 빌드 및 배포가 완료되면 🟢 녹색 체크마크 표시
-4. 배포된 사이트 확인: `https://<username>.github.io/FortuneCrack/`
-
-## 🏗️ 수동 배포
-
-자동 배포가 실패하거나 수동으로 배포하고 싶은 경우:
-
-### 방법 1: GitHub Actions에서 수동 실행
-
-1. GitHub 저장소의 `Actions` 탭으로 이동
-2. 왼쪽 사이드바에서 `Deploy to GitHub Pages` workflow 선택
-3. `Run workflow` 버튼 클릭
-4. 브랜치 선택 (보통 `main`)
-5. `Run workflow` 클릭
-
-### 방법 2: 로컬에서 빌드 후 배포
+### 3. Firebase 로그인
 
 ```bash
-# 1. 프로덕션 빌드
+firebase login
+```
+
+브라우저에서 Google 계정으로 로그인합니다.
+
+### 4. Gemini API 키 발급
+
+1. [Google AI Studio](https://aistudio.google.com/app/apikey) 접속
+2. **Create API Key** 클릭
+3. API 키 복사
+
+## ⚙️ 환경 설정
+
+### 1. 환경 변수 파일 생성
+
+프로젝트 루트에 `.env` 파일을 생성하고 다음 내용을 추가:
+
+```env
+VITE_GEMINI_API_KEY=your_api_key_here
+VITE_GEMINI_MODEL_PATH=/v1/models/gemini-2.0-flash:generateContent
+```
+
+> **⚠️ 보안 주의사항**: 
+> - `.env` 파일은 `.gitignore`에 포함되어 Git에 추가되지 않습니다
+> - API 키는 빌드 시 번들에 포함되므로 **공개 프로젝트에서는 주의**가 필요합니다
+> - 프로덕션 환경에서는 API 키 제한(HTTP referrer 등)을 설정하세요
+
+### 2. Firebase 프로젝트 연결
+
+```bash
+firebase init hosting
+```
+
+다음 질문에 답변:
+
+1. **Use an existing project or create a new one?** → Use an existing project
+2. **Select a project:** → 앞서 생성한 프로젝트 선택
+3. **What do you want to use as your public directory?** → `dist`
+4. **Configure as a single-page app?** → Yes
+5. **Set up automatic builds and deploys with GitHub?** → No (수동 배포)
+6. **File dist/index.html already exists. Overwrite?** → No
+
+## 🚀 배포하기
+
+### 1. 프로젝트 빌드
+
+```bash
 npm run build
-
-# 2. 빌드 결과물 확인
-ls -la dist/
-
-# 3. GitHub에 푸시하여 자동 배포 트리거
-git add .
-git commit -m "build: 프로덕션 빌드"
-git push origin main
 ```
 
-## 🔧 빌드 설정
+`.env` 파일의 환경 변수가 번들에 포함됩니다.
 
-### Base URL
+### 2. Firebase에 배포
 
-커스텀 도메인(`crackfortune.maccrey.com`)을 사용하므로 모든 환경에서 base URL은 `/`입니다:
-
-```typescript
-// vite.config.ts
-base: '/',
+```bash
+firebase deploy --only hosting
 ```
 
-- **로컬 개발**: `http://localhost:5173/`
-- **프로덕션**: `http://crackfortune.maccrey.com/`
-
-### React Router 설정
-
-React Router도 base path를 인식하도록 basename을 설정했습니다:
-
-```tsx
-// src/App.tsx
-<BrowserRouter basename={import.meta.env.BASE_URL}>
-  {/* routes */}
-</BrowserRouter>
+배포 완료 후 제공되는 URL로 접속:
+```
+https://[project-id].web.app
 ```
 
-`import.meta.env.BASE_URL`은 Vite의 `base` 설정 값을 자동으로 가져옵니다.
+## 🔧 배포 스크립트 (선택사항)
 
-### 환경 변수
+`package.json`에 배포 스크립트 추가:
 
-프로덕션 빌드 시 필요한 환경 변수:
+```json
+{
+  "scripts": {
+    "deploy": "npm run build && firebase deploy --only hosting",
+    "deploy:preview": "npm run build && firebase hosting:channel:deploy preview"
+  }
+}
+```
 
-- `VITE_GEMINI_API_KEY`: Gemini API 키 (GitHub Secrets에 등록)
-- `VITE_GEMINI_ENDPOINT`: Gemini API엔드포인트 (workflow에서 자동 설정됨)
+사용법:
 
-> 💡 **참고:** `VITE_GEMINI_ENDPOINT`는 workflow 파일에 하드코딩되어 있으므로 별도로 설정할 필요 없습니다.
+```bash
+# 프로덕션 배포
+npm run deploy
 
-## 🔍 문제 해결
+# 프리뷰 배포 (테스트용)
+npm run deploy:preview
+```
 
-### 1. 404 에러 발생
+## 🌐 커스텀 도메인 설정
 
-**원인:** base URL이 잘못 설정됨
+### 1. Firebase Console에서 설정
 
-**해결:**
-- `vite.config.ts`의 `base` 설정이 `'/'`인지 확인
-- 커스텀 도메인(`crackfortune.maccrey.com`) 사용 시 서브패스 불필요
+1. Firebase Console → **Hosting** 메뉴
+2. **Add custom domain** 클릭
+3. 도메인 입력 (예: `crackfortune.maccrey.com`)
+4. Firebase가 제공하는 DNS 레코드 확인
 
-### 2. Gemini API 호출 실패
+### 2. 도메인 DNS 설정
 
-**원인:** API Key가 설정되지 않음
+도메인 등록 업체(가비아, 호스팅케이알 등)에서:
 
-**해결:**
-1. GitHub Secrets에 `VITE_GEMINI_API_KEY` 등록 확인
-2. Actions workflow에서 환경 변수 전달 확인:
-   ```yaml
-   env:
-     VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
+**A 레코드:**
+```
+Name: @ (또는 crackfortune)
+Value: [Firebase가 제공한 IP]
+```
+
+또는 **CNAME 레코드:**
+```
+Name: crackfortune
+Value: [Firebase가 제공한 호스트명]
+```
+
+### 3. SSL 인증서
+
+Firebase Hosting은 자동으로 SSL 인증서를 발급하고 갱신합니다 (Let's Encrypt).
+
+DNS 설정 후 24-48시간 내에 자동 활성화됩니다.
+
+## 🔒 Gemini API 키 보안
+
+### 1. API 키 제한 설정
+
+[Google Cloud Console](https://console.cloud.google.com/apis/credentials)에서:
+
+1. API 키 선택
+2. **Application restrictions** → **HTTP referrers**
+3. 허용할 도메인 추가:
+   ```
+   https://[project-id].web.app/*
+   https://crackfortune.maccrey.com/*
    ```
 
-### 3. 빌드 실패
+### 2. API 제한
 
-**원인:** TypeScript 또는 Lint 오류
+**API restrictions** → **Restrict key**:
+- Generative Language API만 선택
 
-**해결:**
-```bash
-# 로컬에서 빌드 테스트
-npm run build
+## 📊 배포 확인
 
-# Lint 확인
-npm run lint
+### 1. Firebase Console에서 확인
 
-# TypeScript 타입 체크
-npx tsc --noEmit
-```
+Firebase Console → **Hosting** → **Dashboard**:
+- 배포 히스토리
+- 트래픽 통계
+- 성능 메트릭
 
-### 4. 빈 페이지 표시
+### 2. 브라우저에서 테스트
 
-**원인:** JavaScript 파일 경로가 잘못됨
+1. 배포된 URL 접속
+2. 개발자 도구 (F12) 열기
+3. Console 탭 확인:
+   - `[vite.config] API Key loaded: ✓ (hidden)`
+   - `[GeminiClient] Calling Gemini API...`
+4. 프로필 설정 후 포춘쿠키 클릭
+5. 운세 생성 확인
 
-**해결:**
-- 브라우저 개발자 도구(F12) → Console 탭에서 에러 확인
-- Network 탭에서 404 에러가 있는 리소스 확인
-- `vite.config.ts`의 `base` 설정이 올바른지 확인
+## 🛠️ 문제 해결
 
-## 📊 배포 상태 확인
+### 빌드 에러
 
-### GitHub Actions Dashboard
+**문제**: `[vite.config] API Key loaded: ✗ Missing`
 
-1. 저장소의 `Actions` 탭에서 workflow 실행 상태 확인
-2. 각 단계(Checkout, Build, Deploy)의 로그 확인 가능
+**해결**: `.env` 파일에 `VITE_GEMINI_API_KEY` 추가
 
-### 배포된 사이트 확인
+### CORS 에러
 
-```
-http://crackfortune.maccrey.com/
-```
+**문제**: Gemini API 호출 시 CORS 에러
 
-## 🔄 배포 흐름
+**해결**: 
+- API 키 제한 설정에서 도메인 확인
+- 브라우저 캐시 삭제 후 재시도
+
+### 404 에러 (라우팅 문제)
+
+**문제**: `/result` 등의 경로에서 404
+
+**해결**: `firebase.json`의 `rewrites` 설정 확인
+
+### API 키 노출
+
+**문제**: 번들에 API 키가 포함됨
+
+**해결**:
+- Google Cloud Console에서 API 키 제한 설정
+- HTTP referrer로 특정 도메인만 허용
+
+## 📝 추가 참고사항
+
+### Firebase Hosting vs Vercel
+
+| 기능 | Firebase Hosting | Vercel |
+|------|------------------|---------|
+| 정적 호스팅 | ✅ | ✅ |
+| 서버리스 함수 | Firebase Functions | Vercel Functions |
+| 커스텀 도메인 | ✅ 무료 | ✅ 무료 |
+| SSL 인증서 | ✅ 자동 | ✅ 자동 |
+| CDN | ✅ 글로벌 | ✅ 글로벌 |
+| 무료 한도 | 10GB/월 | 100GB/월 |
+
+### 배포 플로우
 
 ```mermaid
 graph LR
-    A[코드 수정] --> B[git commit]
-    B --> C[git push origin main]
-    C --> D[GitHub Actions 트리거]
-    D --> E[Dependencies 설치]
-    E --> F[빌드 npm run build]
-    F --> G[dist 폴더 생성]
-    G --> H[GitHub Pages에 업로드]
-    H --> I[배포 완료]
+    A[로컬 개발] --> B[빌드]
+    B --> C[Firebase 배포]
+    C --> D[CDN 배포]
+    D --> E[사용자 접근]
 ```
 
-## 📝 참고사항
+## 🎉 배포 완료!
 
-### API 프록시
+배포가 완료되었습니다! 🎊
 
-- **로컬 개발**: Vite 개발 서버의 프록시 사용 (`/api/gemini` → Gemini API)
-- **프로덕션**: 클라이언트에서 직접 Gemini API 호출 (API 키는 빌드 시 포함)
+**배포된 URL**: `https://[project-id].web.app`
 
-> ⚠️ **보안 주의:** 프로덕션 빌드에 API 키가 포함되므로, 클라이언트에서 직접 API를 호출합니다. API 키가 브라우저에서 노출될 수 있으니, Gemini API의 사용량 제한을 설정하는 것을 권장합니다.
-
-### Vercel vs GitHub Pages
-
-이 프로젝트는 Vercel과 GitHub Pages 모두 지원합니다:
-
-- **Vercel**: Serverless Functions 사용 가능, API 키 숨길 수 있음
-- **GitHub Pages**: 정적 호스팅, 무료, 간편함
-
-선택은 프로젝트 요구사항에 따라 결정하세요.
-
-## 🎉 배포 성공!
-
-배포가 완료되면 다음 URL에서 애플리케이션을 확인할 수 있습니다:
-
-```
-http://crackfortune.maccrey.com/
-```
-
-즐거운 개발 되세요! 🚀
+**커스텀 도메인** (설정 시): `https://crackfortune.maccrey.com`

@@ -19,18 +19,23 @@ const pickColor = (user: UserProfile) => {
 };
 
 export class GeminiClient {
-  private readonly endpoint: string;
+  private readonly apiKey: string;
+  private readonly modelPath: string;
+  private readonly baseUrl: string = 'https://generativelanguage.googleapis.com';
 
   constructor() {
-    // 모든 환경에서 /api/gemini 사용
-    // - 로컬: Vite dev server 프록시
-    // - Vercel: 서버리스 함수
-    this.endpoint = '/api/gemini';
+    // Firebase Hosting: 빌드 시 환경 변수 포함
+    this.apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
+    this.modelPath = import.meta.env.VITE_GEMINI_MODEL_PATH || '/v1/models/gemini-2.0-flash:generateContent';
+    
+    if (!this.apiKey) {
+      console.error('[GeminiClient] Missing VITE_GEMINI_API_KEY');
+    }
   }
 
   async requestDailyFortune(user: UserProfile, date: string): Promise<GeminiResponse> {
-    if (!this.endpoint) {
-      throw new Error('Gemini 엔드포인트가 설정되지 않았습니다.');
+    if (!this.apiKey) {
+      throw new Error('Gemini API 키가 설정되지 않았습니다. .env 파일을 확인해주세요.');
     }
 
     try {
@@ -119,7 +124,11 @@ Respond in JSON format: {"summary":"One-line core fortune","fullText":"3-4 sente
 
       const fortunePrompt = localePrompts[user.locale] || localePrompts.en;
 
-      const response = await fetch(this.endpoint, {
+      const apiUrl = `${this.baseUrl}${this.modelPath}?key=${this.apiKey}`;
+      
+      console.log('[GeminiClient] Calling Gemini API...');
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
