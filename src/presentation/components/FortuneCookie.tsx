@@ -53,7 +53,7 @@ const FortuneCookie: React.FC = () => {
 
             {status === 'loading' && (
                 <div className="absolute -top-6 text-xs text-yellow-300 animate-pulse bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10 shadow-lg">
-                    {t('cookie_hint')}
+                    ✨ {t('cookie_generating')}
                 </div>
             )}
 
