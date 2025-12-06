@@ -1,4 +1,4 @@
-import type { Fortune, FortunePrecision } from '../entities/fortune';
+import type { Fortune } from '../entities/fortune';
 import type { UserProfile } from '../entities/user';
 
 export interface GeneratedFortune {
