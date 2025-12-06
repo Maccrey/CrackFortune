@@ -85,7 +85,20 @@ base: mode === 'production' ? '/CrackFortune/' : '/'
 ```
 
 - **로컬 개발**: `http://localhost:5173/` (base: `/`)
-- **GitHub Pages**: `https://<username>.github.io/CrackFortune/` (base: `/CrackFortune/`)
+- **GitHub Pages**: `https://maccrey.github.io/CrackFortune/` (base: `/CrackFortune/`)
+
+### React Router 설정
+
+React Router도 base path를 인식하도록 basename을 설정했습니다:
+
+```tsx
+// src/App.tsx
+<BrowserRouter basename={import.meta.env.BASE_URL}>
+  {/* routes */}
+</BrowserRouter>
+```
+
+`import.meta.env.BASE_URL`은 Vite의 `base` 설정 값을 자동으로 가져옵니다.
 
 ### 환경 변수
 

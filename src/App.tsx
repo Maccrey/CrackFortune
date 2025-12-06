@@ -28,7 +28,7 @@ const App: React.FC = () => {
   return (
     <LanguageProvider>
       <FortuneProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
           {showIntro && <IntroOverlay onComplete={handleIntroComplete} />}
           <Routes>
             <Route path="/" element={<Layout />}>
