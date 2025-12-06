@@ -93,13 +93,6 @@
     - [x] localStorage에 연장 횟수/상태 저장
     - [x] *Test*: 연장 후 타이머 리셋 및 채팅 재개 확인 (수동 테스트 필요)
 
----
-
-## PHASE 4: FIREBASE INTEGRATION (Auth + Storage)
-*목표: Firebase 기반 인증/저장/원격 캐싱으로 실사용 데이터 흐름 완성*
-
-### 8. Firebase 통합 (보류)
-- [ ] 향후 Firebase(인증/DB) 재도입 시 계획 재수립
 
 ## ✅ Test Checklist (If Playwright N/A)
 *Playwright로 테스트가 불가능한 경우 아래 리스트를 활용하여 수동 검증*
