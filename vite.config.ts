@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
   console.log('[vite.config] Model Path:', modelPath);
 
   return {
-    base: mode === 'production' ? '/FortuneCrack/' : '/',
+    base: mode === 'production' ? '/CrackFortune/' : '/',
     plugins: [
       react(),
       {

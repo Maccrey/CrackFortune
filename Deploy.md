@@ -81,11 +81,11 @@ Vite 설정에서 GitHub Pages의 repository 경로를 base URL로 설정했습�
 
 ```typescript
 // vite.config.ts
-base: mode === 'production' ? '/FortuneCrack/' : '/'
+base: mode === 'production' ? '/CrackFortune/' : '/'
 ```
 
 - **로컬 개발**: `http://localhost:5173/` (base: `/`)
-- **GitHub Pages**: `https://<username>.github.io/FortuneCrack/` (base: `/FortuneCrack/`)
+- **GitHub Pages**: `https://<username>.github.io/CrackFortune/` (base: `/CrackFortune/`)
 
 ### 환경 변수
 
@@ -104,7 +104,7 @@ base: mode === 'production' ? '/FortuneCrack/' : '/'
 
 **해결:**
 - `vite.config.ts`의 `base` 설정 확인
-- Repository 이름이 `FortuneCrack`인지 확인
+- Repository 이름이 `CrackFortune`인지 확인
 
 ### 2. Gemini API 호출 실패
 
@@ -153,10 +153,8 @@ npx tsc --noEmit
 ### 배포된 사이트 확인
 
 ```
-https://<username>.github.io/FortuneCrack/
+https://maccrey.github.io/CrackFortune/
 ```
-
-예: `https://maccrey.github.io/FortuneCrack/`
 
 ## 🔄 배포 흐름
 
@@ -195,7 +193,7 @@ graph LR
 배포가 완료되면 다음 URL에서 애플리케이션을 확인할 수 있습니다:
 
 ```
-https://<username>.github.io/FortuneCrack/
+https://maccrey.github.io/CrackFortune/
 ```
 
 즐거운 개발 되세요! 🚀
