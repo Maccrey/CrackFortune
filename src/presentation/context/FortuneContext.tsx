@@ -75,6 +75,18 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   useEffect(() => {
     void refreshUser();
+  }, []);
+
+  // 언어 변경 시 프로필 locale 동기화
+  useEffect(() => {
+    if (user) {
+      const normalized = normalizeLocale(language);
+      if (user.locale !== normalized) {
+        const mergedProfile = { ...user, locale: normalized };
+        userRepositoryRef.current.saveProfile(mergedProfile);
+        setUser(mergedProfile);
+      }
+    }
   }, [language]);
 
   const isProfileComplete = (profile: UserProfile | null) => {
