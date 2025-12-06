@@ -19,19 +19,18 @@ const pickColor = (user: UserProfile) => {
 };
 
 export class GeminiClient {
-  private readonly endpoint?: string;
-  private readonly apiKey?: string;
+  private readonly endpoint: string;
 
-  constructor(endpoint = import.meta.env.VITE_GEMINI_ENDPOINT, apiKey = import.meta.env.VITE_GEMINI_API_KEY) {
-    const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-    this.endpoint = isLocal ? '/api/gemini' : endpoint;
-    this.apiKey = apiKey;
+  constructor() {
+    // 모든 환경에서 /api/gemini 사용
+    // - 로컬: Vite dev server 프록시
+    // - Vercel: 서버리스 함수
+    this.endpoint = '/api/gemini';
   }
 
   async requestDailyFortune(user: UserProfile, date: string): Promise<GeminiResponse> {
-    const isRelative = this.endpoint?.startsWith('/');
-    if (!this.endpoint || (!isRelative && !this.apiKey)) {
-      throw new Error('Gemini 설정을 확인해주세요. (VITE_GEMINI_ENDPOINT, VITE_GEMINI_API_KEY)');
+    if (!this.endpoint) {
+      throw new Error('Gemini 엔드포인트가 설정되지 않았습니다.');
     }
 
     try {
@@ -124,7 +123,6 @@ Respond in JSON format: {"summary":"One-line core fortune","fullText":"3-4 sente
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...(isRelative ? {} : { 'x-api-key': this.apiKey }),
         },
         body: JSON.stringify({
           contents: [
