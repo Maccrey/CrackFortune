@@ -77,15 +77,15 @@ git push origin main
 
 ### Base URL
 
-Vite 설정에서 GitHub Pages의 repository 경로를 base URL로 설정했습니다:
+커스텀 도메인(`crackfortune.maccrey.com`)을 사용하므로 모든 환경에서 base URL은 `/`입니다:
 
 ```typescript
 // vite.config.ts
-base: mode === 'production' ? '/CrackFortune/' : '/'
+base: '/',
 ```
 
-- **로컬 개발**: `http://localhost:5173/` (base: `/`)
-- **GitHub Pages**: `https://maccrey.github.io/CrackFortune/` (base: `/CrackFortune/`)
+- **로컬 개발**: `http://localhost:5173/`
+- **프로덕션**: `http://crackfortune.maccrey.com/`
 
 ### React Router 설정
 
@@ -116,8 +116,8 @@ React Router도 base path를 인식하도록 basename을 설정했습니다:
 **원인:** base URL이 잘못 설정됨
 
 **해결:**
-- `vite.config.ts`의 `base` 설정 확인
-- Repository 이름이 `CrackFortune`인지 확인
+- `vite.config.ts`의 `base` 설정이 `'/'`인지 확인
+- 커스텀 도메인(`crackfortune.maccrey.com`) 사용 시 서브패스 불필요
 
 ### 2. Gemini API 호출 실패
 
@@ -166,7 +166,7 @@ npx tsc --noEmit
 ### 배포된 사이트 확인
 
 ```
-https://maccrey.github.io/CrackFortune/
+http://crackfortune.maccrey.com/
 ```
 
 ## 🔄 배포 흐름
@@ -206,7 +206,7 @@ graph LR
 배포가 완료되면 다음 URL에서 애플리케이션을 확인할 수 있습니다:
 
 ```
-https://maccrey.github.io/CrackFortune/
+http://crackfortune.maccrey.com/
 ```
 
 즐거운 개발 되세요! 🚀
