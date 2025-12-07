@@ -7,6 +7,13 @@
 - `npm run build`: 프로덕션 빌드
 - `npm test`: Vitest 단위 테스트 (도메인/리포지토리)
 - `npm run test:e2e`: Playwright E2E 테스트
+- `npm run test:e2e`: Playwright E2E 테스트
+
+## 주요 기능
+- **포춘 쿠키**: 3D 애니메이션과 함께 오늘의 운세 확인.
+- **AI 점술가 채팅**: 운세 결과를 바탕으로 AI와 3분간 무료 상담.
+- **시간 연장**: 로그인 유저는 광고 시청을 통해 상담 시간을 연장 가능.
+- **데이터 동기화**: 게스트 모드(로컬 저장) 지원 및 로그인 시 클라우드(Firebase) 자동 동기화.
 
 ## Gemini API 연결
 - 개발: `.env`에 `VITE_GEMINI_ENDPOINT` 등 설정. Firebase Auth/Firestore 사용 시 `VITE_FIREBASE_*` 키 필수.

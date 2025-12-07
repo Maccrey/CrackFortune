@@ -20,8 +20,8 @@
 - **Phase 1 (Gemini)**: 프론트엔드 인터랙티브 디자인, UI/UX, 애니메이션, **라우팅(페이지 전환)** 구현. (Mock 데이터 사용)
 - **Phase 1 (Gemini)**: 프론트엔드 인터랙티브 디자인, UI/UX, 애니메이션, **라우팅(페이지 전환)** 구현. (Mock 데이터 사용)
 - **Phase 2 (Codex)**: 실제 기능 구현, 로컬 저장소(Local Storage) 연동, Gemini API 연결, 비즈니스 로직.
-- **Phase 3 (Ad Extension)**: 광고 기반 채팅 연장 기능 구현.
-- **Phase 4 (Dragon)**: Firebase (Auth/Firestore) 연동, 로그인 유도 UX (3초 딜레이), 중국어 지원 추가.
+- **Phase 3 (Ad Extension)**: 광고 기반 채팅 연장 기능 구현 (로그인 유저 전용).
+- **Phase 4 (Dragon)**: Firebase (Auth/Firestore) 연동, 로그인 유도 UX (3초 딜레이/채팅 종료 시), 데이터 마이그레이션 전략 수립.
 
 ## 2. 핵심 가치 제안
 - **Hyper-Personalized**: 생시 정밀도(Precision)에 따른 차별화된 운세 분석.
@@ -75,4 +75,11 @@
 - **User Collection**: `users/{uid}` (프로필, 설정).
 - **Fortune Collection**: `users/{uid}/fortunes/{date}` (운세 결과).
 - **Chat Collection**: `users/{uid}/chats/{date}` (대화 내역).
-- **Guest Data**: Local Storage 유지, 로그인 시 Firestore로 마이그레이션.
+- **Data Strategy**:
+    - **Guest**: Local Storage 사용.
+    - **User**: Firestore 사용.
+    - **Migration**: 로그인 성공 시 Local Storage 데이터를 Firestore로 업로드 후 Local Storage 데이터 삭제 (Clean-up).
+- **Chat Extension Rule**:
+    - 채팅 시간(3분) 종료 시:
+        - **Guest**: 로그인 팝업 노출 -> 로그인 완료 시 광고 시청 버튼 활성화.
+        - **User**: 광고 시청 버튼 노출 -> 광고 시청 후 시간 연장.
