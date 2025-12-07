@@ -36,6 +36,10 @@ export const translations = {
         chat_time_over_message: "You've used all 3 minutes for today. Come back tomorrow to continue chatting about your fortune!",
         chat_fortune_context: "About today's fortune",
         shaman_alt: "Shaman Character",
+        login_prompt_title: "Save Your Fortune",
+        login_prompt_desc: "Log in to save this fortune to your history and track your destiny over time.",
+        login_prompt_google: "Continue with Google",
+        login_prompt_later: "Maybe later",
     },
     ko: {
         greeting: "좋은 오후입니다",
@@ -72,6 +76,10 @@ export const translations = {
         chat_time_over_message: "오늘 3분을 모두 사용하셨습니다. 내일 다시 운세에 대해 이야기 나눠요!",
         chat_fortune_context: "오늘의 운세에 대해",
         shaman_alt: "주술사 캐릭터",
+        login_prompt_title: "운세를 저장하세요",
+        login_prompt_desc: "로그인하여 오늘의 운세를 기록하고, 당신의 운명 흐름을 확인하세요.",
+        login_prompt_google: "Google로 계속하기",
+        login_prompt_later: "나중에 하기",
     },
     ja: {
         greeting: "こんにちは",
@@ -108,6 +116,10 @@ export const translations = {
         chat_time_over_message: "本日の3分を使い切りました。また明日、運勢について話しましょう！",
         chat_fortune_context: "今日の運勢について",
         shaman_alt: "シャーマンキャラクター",
+        login_prompt_title: "運勢を保存",
+        login_prompt_desc: "ログインして今日の運勢を保存し、運命の流れを確認しましょう。",
+        login_prompt_google: "Googleで続ける",
+        login_prompt_later: "後でする",
     },
     zh: {
         greeting: "下午好",
@@ -144,5 +156,9 @@ export const translations = {
         chat_time_over_message: "您今天的3分钟时间已用完。明天再来聊聊运势吧！",
         chat_fortune_context: "关于今天的运势",
         shaman_alt: "萨满角色",
+        login_prompt_title: "保存您的运势",
+        login_prompt_desc: "登录以保存今日运势，并追踪您的命运轨迹。",
+        login_prompt_google: "通过 Google 继续",
+        login_prompt_later: "稍后再说",
     }
 };

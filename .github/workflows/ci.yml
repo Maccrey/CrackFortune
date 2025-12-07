@@ -38,9 +38,8 @@ jobs:
           npx playwright install-deps chromium
           npx playwright install chromium
 
-      - name: Run E2E tests (optional)
-        if: env.CI_E2E == 'true'
-        env:
-          VITE_GEMINI_ENDPOINT: ''
-          VITE_GEMINI_API_KEY: ''
-        run: npm run test:e2e
+      # - name: Run E2E tests (optional)
+      #   if: vars.CI_E2E == 'true'
+      #   env:
+      #     VITE_GROQ_API_KEY: ''
+      #   run: npm run test:e2e

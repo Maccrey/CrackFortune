@@ -133,16 +133,17 @@
     - [x] **Condition Check**: 채팅 3분 종료 시 로그인 여부 확인.
     - [x] **Guest Flow**: "로그인하고 상담 계속하기" 버튼 노출 -> `LoginPromptModal` 또는 직접 로그인 트리거.
     - [x] **User Flow**: "광고 보고 연장하기" 버튼 노출.
-    - [x] *Test*: 비로그인 상태에서 시간 종료 -> 로그인 -> 광고 버튼 활성화 확인.
+    - [x] **Test**: 비로그인 상태에서 시간 종료 -> 로그인 -> 광고 버튼 활성화 확인.
 
 ### 12. Data Persistence Strategy Refinement
 - [x] **Migration Logic Verification** (`AuthContext.tsx`)
     - [x] Login -> Firestore Upload.
     - [x] Upload Success -> Local Storage Clear.
-    - [x] *Test*: 로그인 후 `localStorage`의 `fortunecrack:user`, `fortunecrack:fortunes` 삭제 여부 확인.
+    - [x] **Test**: 로그인 후 `localStorage`의 `fortunecrack:user`, `fortunecrack:fortunes` 삭제 여부 확인.
 - [x] **Storage Separation**
     - [x] **Guest**: Local Storage 전용.
     - [x] **User**: Firestore 전용 (Context에서 분기 처리 완료).
+    - [x] **Cleanup**: Removed usage of `VITE_GEMINI_API_KEY` across the project.
 
 
 

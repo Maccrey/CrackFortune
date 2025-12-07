@@ -24,7 +24,7 @@
 
 ```
 VITE_GEMINI_ENDPOINT=your-endpoint
-VITE_GEMINI_API_KEY=your-api-key
+VITE_GROQ_API_KEY=your-groq-api-key
 ```
 
 엔드포인트/키가 비어 있으면 안전한 목(mock) 운세로 동작합니다.

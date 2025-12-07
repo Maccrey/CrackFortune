@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useFortuneContext } from '../context/FortuneContext';
+import { useLanguage } from '../context/LanguageContext';
 
 interface LoginPromptModalProps {
   isOpen: boolean;
@@ -10,6 +11,8 @@ interface LoginPromptModalProps {
 export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ isOpen, onClose }) => {
   const { loginWithGoogle } = useAuth();
   const { refreshUser } = useFortuneContext();
+
+  const { t } = useLanguage();
 
   if (!isOpen) return null;
 
@@ -38,9 +41,9 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ isOpen, onCl
           </div>
 
           <div className="space-y-2">
-            <h3 className="text-xl font-bold text-white">Save Your Fortune</h3>
+            <h3 className="text-xl font-bold text-white">{t('login_prompt_title')}</h3>
             <p className="text-white/70">
-              Log in to save this fortune to your history and track your destiny over time.
+              {t('login_prompt_desc')}
             </p>
           </div>
 
@@ -52,14 +55,14 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ isOpen, onCl
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z" />
               </svg>
-              Continue with Google
+              {t('login_prompt_google')}
             </button>
             
             <button
               onClick={onClose}
               className="w-full py-2.5 px-4 bg-white/5 hover:bg-white/10 text-white/60 hover:text-white font-medium rounded-xl transition-colors duration-200"
             >
-              Maybe later
+              {t('login_prompt_later')}
             </button>
           </div>
         </div>
