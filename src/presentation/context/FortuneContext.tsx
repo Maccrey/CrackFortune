@@ -4,10 +4,10 @@ import type { Fortune } from '../../domain/entities/fortune';
 import type { UserProfile } from '../../domain/entities/user';
 import { GetDailyFortuneUseCase } from '../../domain/usecases/getDailyFortune';
 import { LocalFortuneRepository } from '../../data/repositories/LocalFortuneRepository';
-import { GeminiFortuneRepository } from '../../data/repositories/GeminiFortuneRepository';
+import { GroqFortuneRepository } from '../../data/repositories/GroqFortuneRepository';
 import { LocalUserRepository } from '../../data/repositories/LocalUserRepository';
 import { LocalStorageClient } from '../../data/storage/LocalStorageClient';
-import { GeminiClient } from '../../data/services/GeminiClient';
+import { GroqClient } from '../../data/services/GroqClient';
 import { useLanguage } from './LanguageContext';
 import { analyticsEvents } from '../../config/firebase';
 
@@ -32,7 +32,7 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const fortuneRepositoryRef = useRef(new LocalFortuneRepository(storageClient));
   const userRepositoryRef = useRef(new LocalUserRepository(storageClient));
-  const generatorRef = useRef(new GeminiFortuneRepository(new GeminiClient()));
+  const generatorRef = useRef(new GroqFortuneRepository(new GroqClient()));
   const useCaseRef = useRef(new GetDailyFortuneUseCase(fortuneRepositoryRef.current, generatorRef.current));
 
   const [user, setUser] = useState<UserProfile | null>(null);

@@ -60,9 +60,10 @@
     - [x] User Profile Management (Local).
     - [x] Local Storage Repository 구현.
     - [x] *Test*: Local Storage CRUD 테스트.
-- [x] **Gemini API Integration**
-    - [x] Cloud Functions 설정.
-    - [x] Gemini Prompt Engineering (Persona, Locale).
+- [x] **AI API Integration (Switch to Groq)**
+    - [x] **Groq SDK Integration**: Replace Gemini with Groq (gpt-oss-20b).
+    - [x] **Environment Update**: Consolidate to `.env` and remove `.env.local/.env.example`.
+    - [x] **Service Migration**: `GeminiClient` -> `GroqClient`.
     - [x] *Test*: API 응답 형식 및 에러 처리.
 
 ### 6. Integration & Polish
@@ -99,3 +100,4 @@
 - [ ] [Manual] iOS Safari에서 쿠키 깨짐 애니메이션 부드러운가?
 - [ ] [Manual] Android WebView에서 뒤로가기 제스처 정상 동작하는가?
 - [ ] [Manual] 다크모드 해제 시(혹은 시스템 설정 변경 시) UI 깨짐 없는가?
+- [ ] [Manual] Groq API Response Speed Check (Is it faster than Gemini?)

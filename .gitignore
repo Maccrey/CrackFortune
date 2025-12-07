@@ -24,6 +24,8 @@ dist-ssr
 *.sw?
 
 .env
+.env.example
+.env.local
 lighthouse-report.*
 
 # Firebase

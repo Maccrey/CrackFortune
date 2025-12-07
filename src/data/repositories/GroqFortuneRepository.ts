@@ -1,11 +1,11 @@
 import type { UserProfile } from '../../domain/entities/user';
 import type { GeneratedFortune, FortuneGenerator } from '../../domain/repositories/fortuneGenerator';
-import { GeminiClient } from '../services/GeminiClient';
+import { GroqClient } from '../services/GroqClient';
 
-export class GeminiFortuneRepository implements FortuneGenerator {
-  private readonly client: GeminiClient;
+export class GroqFortuneRepository implements FortuneGenerator {
+  private readonly client: GroqClient;
 
-  constructor(client: GeminiClient) {
+  constructor(client: GroqClient) {
     this.client = client;
   }
 

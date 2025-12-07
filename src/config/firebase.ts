@@ -13,13 +13,20 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-// Firebase 초기화 (환경 변수가 있을 때만)
+// Firebase 초기화 (환경 변수가 유효하고 placeholder가 아닐 때만)
 let app: FirebaseApp | null = null;
 let analytics: Analytics | null = null;
 
-const isFirebaseConfigured = firebaseConfig.projectId && firebaseConfig.apiKey;
+const isValidConfig = (config: typeof firebaseConfig) => {
+  if (!config.projectId || !config.apiKey) return false;
+  // placeholder 값 체크
+  if (config.projectId.includes('your-project-id')) return false;
+  if (config.apiKey.includes('your_firebase_api_key')) return false;
+  if (config.appId?.includes('1:123:web:abc')) return false;
+  return true;
+};
 
-if (isFirebaseConfigured) {
+if (isValidConfig(firebaseConfig)) {
   try {
     app = initializeApp(firebaseConfig);
     
