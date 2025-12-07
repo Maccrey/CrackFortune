@@ -15,7 +15,7 @@ export const createDefaultUserProfile = (locale: UserProfile['locale'] = 'en', i
   const now = new Date().toISOString();
   return {
     id,
-    name: 'Traveler',
+    name: '',
     birthDate: '',
     birthTime: '',
     birthTimeAccuracy: 'unknown',
