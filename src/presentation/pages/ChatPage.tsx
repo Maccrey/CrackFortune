@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useFortuneContext } from '../context/FortuneContext';
+import { useAuth } from '../context/AuthContext';
 
 interface Message {
     id: string;
@@ -24,7 +25,9 @@ const STORAGE_KEY = 'fortunecrack:chat_session';
 
 const ChatPage: React.FC = () => {
     const { t, language } = useLanguage();
-    const { fortune, user } = useFortuneContext();
+    const { fortune, user, refreshUser } = useFortuneContext();
+    const { user: authUser, loginWithGoogle } = useAuth();
+    
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState('');
     const [isTyping, setIsTyping] = useState(false);
@@ -33,6 +36,7 @@ const ChatPage: React.FC = () => {
     const [isWatchingAd, setIsWatchingAd] = useState(false);
     const [adCountdown, setAdCountdown] = useState(AD_DURATION);
     const [adWatchCount, setAdWatchCount] = useState(0); // 오늘 광고 시청 횟수
+    
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const sessionRef = useRef<ChatSession | null>(null);
     const timerRef = useRef<number | null>(null);
@@ -143,7 +147,7 @@ const ChatPage: React.FC = () => {
 
         try {
             // Build system prompt based on fortune and language (fortune teller persona)
-            const systemPrompts = {
+            const systemPrompts: Record<string, string> = {
                 ko: `당신은 50년 경력의 노련한 점술가입니다. 고풍스럽고 신비로운 말투로 운세를 풀이합니다. "~하시게", "~다네", "~하겠구만" 같은 점쟁이 특유의 말투를 사용하세요.
 
 [오늘의 운세]
@@ -173,6 +177,21 @@ ${fortune ? `要約: ${fortune.summary}
 - "ご安心を。吉運が共にあります..."
 
 ユーザーの運勢に関連する質問にのみ占い師の口調で答えてください。他のトピックは「それは占いの領域ではございません...」のように丁重に断り、運勢相談に誘導してください。`,
+
+                zh: `你是一位拥有50年经验的资深算命师。用古朴神秘的语气解读运势。使用算命师特有的语气。
+
+[今日运势]
+${fortune ? `摘要: ${fortune.summary}
+详细: ${fortune.fullText}
+幸运色: ${fortune.color}` : '你还没敲开饼干呢。先去查看今日运势吧。'}
+
+**语气示例:**
+- "嗯... 看你的八字..."
+- "今天财运有上升的迹象啊"
+- "要小心... 下午的时候..."
+- "别担心。吉星高照..."
+
+仅用算命师的口吻回答与用户运势相关的问题。其他话题请礼貌地拒绝，例如"这不在我能预见的范围内..."，并引导回运势咨询。`,
 
                 en: `You are a seasoned fortune teller with 50 years of experience. Speak in a mystical, wise, and slightly cryptic manner, as a traditional fortune teller would.
 
@@ -281,6 +300,16 @@ Only answer questions related to the user's fortune using a fortune teller's voi
         }, 1000);
     };
 
+    const handleLoginAndExtend = async () => {
+        try {
+            await loginWithGoogle();
+            await refreshUser(); // Data migration & sync
+            // Login success will trigger re-render, showing Watch Ad button
+        } catch (error) {
+            console.error('Login prompt failed:', error);
+        }
+    };
+
     return (
         <div className="flex-1 flex flex-col h-full overflow-hidden relative">
             {/* Header */}
@@ -380,20 +409,33 @@ Only answer questions related to the user's fortune using a fortune teller's voi
                             <h3 className="text-xl font-bold text-white mb-2">{t('chat_time_over')}</h3>
                             <p className="text-gray-300 text-sm mb-6">{t('chat_time_over_message')}</p>
                             
-                            <button
-                                onClick={handleWatchAd}
-                                disabled={adWatchCount >= MAX_AD_WATCHES}
-                                className={`px-6 py-3 rounded-full transition-all font-bold ${
-                                    adWatchCount >= MAX_AD_WATCHES
-                                        ? 'bg-gray-600 cursor-not-allowed opacity-50' 
-                                        : 'bg-gradient-to-r from-yellow-500 to-orange-600 hover:shadow-lg hover:shadow-yellow-500/30 active:scale-95'
-                                } text-white`}
-                            >
-                                {adWatchCount >= MAX_AD_WATCHES 
-                                    ? t('ad_already_watched') 
-                                    : t('btn_watch_ad_extend_count').replace('{count}', String(MAX_AD_WATCHES - adWatchCount))
-                                }
-                            </button>
+                            {/* Conditional Button: Login or Watch Ad */}
+                            {!authUser ? (
+                                <button
+                                    onClick={handleLoginAndExtend}
+                                    className="px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 hover:shadow-lg hover:shadow-purple-500/30 active:scale-95 text-white font-bold transition-all flex items-center justify-center gap-2 mx-auto"
+                                >
+                                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z" />
+                                    </svg>
+                                    Login to Extend
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={handleWatchAd}
+                                    disabled={adWatchCount >= MAX_AD_WATCHES}
+                                    className={`px-6 py-3 rounded-full transition-all font-bold ${
+                                        adWatchCount >= MAX_AD_WATCHES
+                                            ? 'bg-gray-600 cursor-not-allowed opacity-50' 
+                                            : 'bg-gradient-to-r from-yellow-500 to-orange-600 hover:shadow-lg hover:shadow-yellow-500/30 active:scale-95'
+                                    } text-white`}
+                                >
+                                    {adWatchCount >= MAX_AD_WATCHES 
+                                        ? t('ad_already_watched') 
+                                        : t('btn_watch_ad_extend_count').replace('{count}', String(MAX_AD_WATCHES - adWatchCount))
+                                    }
+                                </button>
+                            )}
                         </motion.div>
                     </motion.div>
                 )}
