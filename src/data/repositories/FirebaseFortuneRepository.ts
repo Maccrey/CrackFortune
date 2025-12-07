@@ -1,15 +1,18 @@
 
-import { collection, doc, getDoc, setDoc, query, orderBy, getDocs, limit, where } from 'firebase/firestore';
+import { collection, doc, getDoc, setDoc, query, orderBy, getDocs, limit } from 'firebase/firestore';
 import type { FortuneRepository } from '../../domain/repositories/fortuneRepository';
 import type { Fortune } from '../../domain/entities/fortune';
 import { db } from '../../config/firebase';
 
 export class FirebaseFortuneRepository implements FortuneRepository {
-  constructor(private readonly authUserId: string) {
+  private readonly authUserId: string;
+
+  constructor(authUserId: string) {
+    this.authUserId = authUserId;
     if (!db) throw new Error('Firebase Firestore is not initialized');
   }
 
-  async getFortuneByDate(userId: string, date: string): Promise<Fortune | null> {
+  async getFortuneByDate(_userId: string, date: string): Promise<Fortune | null> {
     if (!db) return null;
     // userId param is redudant if we enforce authUserId, but we check to be safe or ignore it.
     // We'll use authUserId to ensure security.
@@ -32,7 +35,7 @@ export class FirebaseFortuneRepository implements FortuneRepository {
     await setDoc(fortuneRef, fortune);
   }
 
-  async listRecentFortunes(userId: string, limitCount = 10): Promise<Fortune[]> {
+  async listRecentFortunes(_userId: string, limitCount = 10): Promise<Fortune[]> {
     if (!db) return [];
     
     const fortunesRef = collection(db, 'users', this.authUserId, 'fortunes');

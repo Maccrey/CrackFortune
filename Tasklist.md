@@ -8,6 +8,13 @@
 
 ---
 
+## 🚨 URGENT: Security Maintenance
+- [x] **CVE-2025-55182 (React Security Patch)**
+    - [x] Update `react` & `react-dom` to `^19.2.1`.
+    - [x] Verify Build & Test.
+
+---
+
 ## PHASE 1: GEMINI (Frontend Design & Interaction)
 *목표: Mock 데이터를 사용하여 완벽한 UI/UX 및 라우팅 구현*
 

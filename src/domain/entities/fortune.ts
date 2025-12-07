@@ -8,7 +8,7 @@ export interface Fortune {
   fullText: string;
   color: string;
   precision: FortunePrecision;
-  locale: 'en' | 'ko' | 'ja';
+  locale: 'en' | 'ko' | 'ja' | 'zh';
   model: string;
   keywords?: string[];
   quote?: string; // AI generated inspirational quote

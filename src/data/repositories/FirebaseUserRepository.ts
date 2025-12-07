@@ -5,7 +5,10 @@ import type { UserRepository } from '../../domain/repositories/userRepository';
 import type { UserProfile } from '../../domain/entities/user';
 
 export class FirebaseUserRepository implements UserRepository {
-  constructor(private readonly authUserId: string) {
+  private readonly authUserId: string;
+
+  constructor(authUserId: string) {
+    this.authUserId = authUserId;
     if (!db) throw new Error('Firebase Firestore is not initialized');
   }
 
