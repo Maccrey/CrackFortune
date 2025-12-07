@@ -205,6 +205,9 @@ Emphasize the most important aspects among wealth, health, relationships, and ca
       }
       throw new Error('Groq request failed. Please check endpoint/key or network.');
 
+    }
+  }
+
   async chat(messages: { role: 'system' | 'user' | 'assistant'; content: string }[], temperature: number = 0.7): Promise<string> {
     if (!import.meta.env.VITE_GROQ_API_KEY) {
       throw new Error('Groq API Key is not set. Please check .env file.');
