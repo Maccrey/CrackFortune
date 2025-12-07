@@ -57,14 +57,14 @@ const SettingsPage: React.FC = () => {
                                 type="text"
                                 value={form.name}
                                 onChange={(e) => handleFieldChange('name', e.target.value)}
-                                placeholder="Enter your name"
-                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors"
+                                placeholder=""
+                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500 focus:bg-black/30 focus:ring-2 focus:ring-yellow-500/20 transition-all"
                                 data-testid="input-name"
                                 disabled={isLoading}
                                 inputMode="text"
                                 autoComplete="name"
                                 autoCorrect="off"
-                                autoCapitalize="none"
+                                autoCapitalize="words"
                                 lang={language}
                             />
                         </div>

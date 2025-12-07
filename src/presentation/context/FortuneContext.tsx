@@ -9,6 +9,7 @@ import { LocalUserRepository } from '../../data/repositories/LocalUserRepository
 import { LocalStorageClient } from '../../data/storage/LocalStorageClient';
 import { GeminiClient } from '../../data/services/GeminiClient';
 import { useLanguage } from './LanguageContext';
+import { analyticsEvents } from '../../config/firebase';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
@@ -113,6 +114,10 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
       const recents = await fortuneRepositoryRef.current.listRecentFortunes(user.id);
       setRecentFortunes(recents);
       setStatus('success');
+      
+      // Analytics: 포춘 생성 이벤트
+      analyticsEvents.fortuneCracked(result.date);
+      
       return true;
     } catch (err) {
       setStatus('error');

@@ -14,6 +14,7 @@
     "test:perf": "npm run build && (npm run preview -- --host 127.0.0.1 --port 4173 >/dev/null 2>&1 & preview_pid=$!; npx lighthouse http://127.0.0.1:4173 --preset=desktop --output=json --output-path=./lighthouse-report.json --quiet --chrome-flags='--headless=new' && kill $preview_pid)"
   },
   "dependencies": {
+    "firebase": "^12.6.0",
     "framer-motion": "^12.23.25",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

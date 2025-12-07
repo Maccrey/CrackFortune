@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 import { translations } from '../utils/translations';
 import type { Language } from '../utils/translations';
+import { analyticsEvents } from '../../config/firebase';
 
 interface LanguageContextType {
     language: Language;
@@ -43,6 +44,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     const setLanguage = (lang: Language) => {
         setLanguageState(lang);
         localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+        analyticsEvents.languageChanged(lang);
     };
 
     const t = (key: keyof typeof translations['en']) => {
