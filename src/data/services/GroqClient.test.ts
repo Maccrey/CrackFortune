@@ -63,7 +63,7 @@ describe('GroqClient', () => {
     expect(mockCreate).toHaveBeenCalledOnce();
     expect(result.summary).toBe('테스트 요약');
     expect(result.fullText).toBe('테스트 본문');
-    expect(result.model).toBe('gpt-oss-20b');
+    expect(result.model).toBe('openai/gpt-oss-20b');
   });
 
   it('JSON 파싱 실패 시 텍스트를 fallback으로 사용한다', async () => {

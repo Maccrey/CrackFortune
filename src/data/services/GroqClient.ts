@@ -25,7 +25,7 @@ export class GroqClient {
 
   constructor() {
     const apiKey = import.meta.env.VITE_GROQ_API_KEY;
-    this.model = import.meta.env.VITE_GROQ_MODEL || 'gpt-oss-20b'; // Use gpt-oss-20b as default
+    this.model = import.meta.env.VITE_GROQ_MODEL || 'openai/gpt-oss-20b'; // Use openai/gpt-oss-20b as default
 
     if (!apiKey) {
       console.error('[GroqClient] Missing VITE_GROQ_API_KEY');
