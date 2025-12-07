@@ -18,7 +18,7 @@ const LANGUAGE_STORAGE_KEY = 'fortunecrack:language';
 const detectBrowserLanguage = (): Language => {
   // localStorage에 저장된 언어 우선
   const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  if (stored && (stored === 'ko' || stored === 'ja' || stored === 'en')) {
+  if (stored && (stored === 'ko' || stored === 'ja' || stored === 'en' || stored === 'zh')) {
     return stored as Language;
   }
 
@@ -32,6 +32,10 @@ const detectBrowserLanguage = (): Language => {
   // 일본어 체크
   if (browserLang.startsWith('ja')) {
     return 'ja';
+  }
+  // 중국어 체크
+  if (browserLang.startsWith('zh')) {
+    return 'zh';
   }
   // 그 외는 모두 영어
   return 'en';

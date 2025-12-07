@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import FortuneSlip from '../components/FortuneSlip';
 import { useFortuneContext } from '../context/FortuneContext';
 import { useLanguage } from '../context/LanguageContext';
+import { LoginPromptModal } from '../components/LoginPromptModal';
+import { useAuth } from '../context/AuthContext';
 
 const ResultPage: React.FC = () => {
     const { fortune, status } = useFortuneContext();
@@ -19,6 +21,20 @@ const ResultPage: React.FC = () => {
         );
     }
 
+    const [showLoginPrompt, setShowLoginPrompt] = React.useState(false);
+    const { user } = useAuth();
+    const hasPrompted = React.useRef(false);
+
+    React.useEffect(() => {
+        if (fortune && !user && !hasPrompted.current) {
+            const timer = setTimeout(() => {
+                setShowLoginPrompt(true);
+                hasPrompted.current = true;
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [fortune, user]);
+
     return (
         <div className="flex-1 flex flex-col items-center justify-center p-6">
             <FortuneSlip summary={fortune.summary} fullText={fortune.fullText} precision={fortune.precision?.toUpperCase() || 'UNKNOWN'} color={fortune.color} />
@@ -26,6 +42,8 @@ const ResultPage: React.FC = () => {
             <Link to="/" data-testid="btn-open-another" className="mt-12 px-8 py-3 bg-white/10 rounded-full hover:bg-white/20 transition-all text-sm font-medium tracking-wider backdrop-blur-md border border-white/10">
                 {t('btn_open_another')}
             </Link>
+
+            <LoginPromptModal isOpen={showLoginPrompt} onClose={() => setShowLoginPrompt(false)} />
         </div>
     );
 };

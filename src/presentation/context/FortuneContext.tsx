@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Fortune } from '../../domain/entities/fortune';
 import type { UserProfile } from '../../domain/entities/user';
@@ -9,6 +9,9 @@ import { LocalUserRepository } from '../../data/repositories/LocalUserRepository
 import { LocalStorageClient } from '../../data/storage/LocalStorageClient';
 import { GroqClient } from '../../data/services/GroqClient';
 import { useLanguage } from './LanguageContext';
+import { FirebaseFortuneRepository } from '../../data/repositories/FirebaseFortuneRepository';
+import { FirebaseUserRepository } from '../../data/repositories/FirebaseUserRepository';
+import { useAuth } from './AuthContext';
 import { analyticsEvents } from '../../config/firebase';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
@@ -27,13 +30,46 @@ interface FortuneContextValue {
 const FortuneContext = createContext<FortuneContextValue | undefined>(undefined);
 
 export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const storageClient = useMemo(() => new LocalStorageClient(typeof window !== 'undefined' ? window.localStorage : null), []);
   const { language } = useLanguage();
 
-  const fortuneRepositoryRef = useRef(new LocalFortuneRepository(storageClient));
-  const userRepositoryRef = useRef(new LocalUserRepository(storageClient));
-  const generatorRef = useRef(new GroqFortuneRepository(new GroqClient()));
-  const useCaseRef = useRef(new GetDailyFortuneUseCase(fortuneRepositoryRef.current, generatorRef.current));
+
+  const { user: authUser } = useAuth();
+  
+  // Repositories initialization
+  const repositories = useMemo(() => {
+    const localClient = new LocalStorageClient(window.localStorage);
+    
+    if (authUser) {
+      console.log('[FortuneContext] Using Firebase Repositories');
+      return {
+        userRepo: new FirebaseUserRepository(authUser.uid),
+        fortuneRepo: new FirebaseFortuneRepository(authUser.uid)
+      };
+    } else {
+      console.log('[FortuneContext] Using Local Storage Repositories');
+      return {
+        userRepo: new LocalUserRepository(localClient),
+        fortuneRepo: new LocalFortuneRepository(localClient) // Note: This uses local storage, might need Groq for generation if separate? 
+        // Actually LocalFortuneRepository likely implements generation or stores/retrieves. 
+        // Wait, LocalFortuneRepository in this codebase seemed to wrap generation too? 
+        // Let's check previous file content. 
+        // Previous Content: const fortuneRepositoryRef = useRef(new LocalFortuneRepository(storageClient));
+        // And GetDailyFortuneUseCase takes (fortuneRepo, generator).
+        // If LocalFortuneRepository is just storage, we still need a generator.
+      };
+    }
+  }, [authUser]);
+
+  const generator = useMemo(() => new GroqFortuneRepository(new GroqClient()), []);
+  const useCase = useMemo(() => new GetDailyFortuneUseCase(repositories.fortuneRepo, generator), [repositories.fortuneRepo, generator]);
+
+  // Update refs for potential imperative usage if needed, or better, remove refs and use state/effects directly.
+  // The original code used refs for repositories to avoid re-creation, but useMemo handles that.
+  // However, methods like `refreshUser` used `userRepositoryRef.current`.
+  
+  const userRepository = repositories.userRepo;
+  const fortuneRepository = repositories.fortuneRepo;
+
 
   const [user, setUser] = useState<UserProfile | null>(null);
   const [fortune, setFortune] = useState<Fortune | null>(null);
@@ -43,40 +79,46 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const loadCachedFortune = async (profile: UserProfile) => {
     const today = new Date().toISOString().slice(0, 10);
-    const cached = await fortuneRepositoryRef.current.getFortuneByDate(profile.id, today);
+    const cached = await fortuneRepository.getFortuneByDate(profile.id, today);
     setFortune(cached);
-    const recents = await fortuneRepositoryRef.current.listRecentFortunes(profile.id);
+    const recents = await fortuneRepository.listRecentFortunes(profile.id);
     setRecentFortunes(recents);
   };
 
   const normalizeLocale = (lang: string): UserProfile['locale'] => {
     if (lang.startsWith('ko')) return 'ko';
     if (lang.startsWith('ja')) return 'ja';
+    if (lang.startsWith('zh')) return 'zh';
     return 'en';
   };
 
   const refreshUser = async () => {
-    const profile = await userRepositoryRef.current.getProfile();
-    const normalized = normalizeLocale(language);
-    
-    console.log('[FortuneContext] Language sync:', { 
-      languageContext: language, 
-      profileLocale: profile.locale, 
-      normalized 
-    });
+    try {
+      const profile = await userRepository.getProfile();
+      const normalized = normalizeLocale(language);
+      
+      console.log('[FortuneContext] Language sync:', { 
+        languageContext: language, 
+        profileLocale: profile.locale, 
+        normalized 
+      });
 
-    const mergedProfile = profile.locale === normalized ? profile : { ...profile, locale: normalized };
-    if (mergedProfile !== profile) {
-      console.log('[FortuneContext] Updating profile locale:', profile.locale, '→', normalized);
-      await userRepositoryRef.current.saveProfile(mergedProfile);
+      const mergedProfile = profile.locale === normalized ? profile : { ...profile, locale: normalized };
+      if (mergedProfile.locale !== profile.locale) {
+        console.log('[FortuneContext] Updating profile locale:', profile.locale, '→', normalized);
+        await userRepository.saveProfile(mergedProfile);
+      }
+      setUser(mergedProfile);
+      await loadCachedFortune(mergedProfile);
+    } catch (e) {
+      console.error('[FortuneContext] refreshUser failed', e);
     }
-    setUser(mergedProfile);
-    await loadCachedFortune(mergedProfile);
   };
 
+  // 초기 진입 및 인증 상태 변경 시 데이터 갱신
   useEffect(() => {
     void refreshUser();
-  }, []);
+  }, [authUser]); // repositories는 authUser에 의존하므로 authUser 변경 시 실행됨
 
   // 언어 변경 시 프로필 locale 동기화
   useEffect(() => {
@@ -84,7 +126,7 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
       const normalized = normalizeLocale(language);
       if (user.locale !== normalized) {
         const mergedProfile = { ...user, locale: normalized };
-        userRepositoryRef.current.saveProfile(mergedProfile);
+        userRepository.saveProfile(mergedProfile);
         setUser(mergedProfile);
       }
     }
@@ -109,9 +151,9 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
     setStatus('loading');
     setError(null);
     try {
-      const result = await useCaseRef.current.execute({ user });
+      const result = await useCase.execute({ user });
       setFortune(result);
-      const recents = await fortuneRepositoryRef.current.listRecentFortunes(user.id);
+      const recents = await fortuneRepository.listRecentFortunes(user.id);
       setRecentFortunes(recents);
       setStatus('success');
       

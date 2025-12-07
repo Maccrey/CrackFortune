@@ -1,4 +1,4 @@
-export type Language = 'en' | 'ko' | 'ja';
+export type Language = 'en' | 'ko' | 'ja' | 'zh';
 
 export const translations = {
     en: {
@@ -108,5 +108,41 @@ export const translations = {
         chat_time_over_message: "本日の3分を使い切りました。また明日、運勢について話しましょう！",
         chat_fortune_context: "今日の運勢について",
         shaman_alt: "シャーマンキャラクター",
+    },
+    zh: {
+        greeting: "下午好",
+        nav_today: "今天",
+        nav_history: "历史",
+        nav_chat: "运势咨询",
+        nav_settings: "设置",
+        cookie_title: "今日运势",
+        cookie_hint: "敲开饼干查看你的命运",
+        cookie_generating: "正在抽取签文...",
+        cookie_slip_title: "运势",
+        dashboard_title: "运势仪表盘",
+        tab_daily: "每日",
+        tab_weekly: "每周",
+        tab_monthly: "每月",
+        tab_yearly: "每年",
+        chat_title: "占卜师的房间",
+        chat_welcome: "欢迎... 我一直在等你。你今天的运势隐藏着许多秘密。你想知道什么？",
+        chat_placeholder: "询问占卜师...",
+        chat_typing: "正在解读星象和命运...",
+        stats_cracked: "已查看运势",
+        stats_streak: "连续签到",
+        stats_recent: "最近运势",
+        quote_title: "每日格言",
+        btn_open_another: "再开一个饼干",
+        btn_watch_ad_extend: "观看广告延长咨询",
+        btn_watch_ad_extend_count: "观看广告延长咨询 (剩余 {count}/3 次)",
+        ad_watching: "正在观看广告...",
+        ad_countdown: "秒剩余",
+        ad_completed: "广告观看完成！已增加3分钟",
+        ad_already_watched: "今天的广告延长次数已用完",
+        chat_time_remaining: "剩余时间",
+        chat_time_over: "今天的聊天时间已结束",
+        chat_time_over_message: "您今天的3分钟时间已用完。明天再来聊聊运势吧！",
+        chat_fortune_context: "关于今天的运势",
+        shaman_alt: "萨满角色",
     }
 };

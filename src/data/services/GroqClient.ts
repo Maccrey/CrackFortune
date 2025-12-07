@@ -49,7 +49,7 @@ export class GroqClient {
         year: today.getFullYear(),
         month: today.getMonth() + 1,
         day: today.getDate(),
-        dayOfWeek: today.toLocaleDateString(user.locale === 'ko' ? 'ko-KR' : user.locale === 'ja' ? 'ja-JP' : 'en-US', { weekday: 'long' })
+        dayOfWeek: today.toLocaleDateString(user.locale === 'ko' ? 'ko-KR' : user.locale === 'ja' ? 'ja-JP' : user.locale === 'zh' ? 'zh-CN' : 'en-US', { weekday: 'long' })
       };
 
       const prompt = `[User Info]
@@ -105,6 +105,26 @@ Language: ${user.locale}
 
 **JSON形式のみで回答してください（MarkDownコードブロックなし）:**
 {"summary":"一行の核心運勢","fullText":"3-4文で本日の運勢の詳細説明（ヘキサコード言及禁止）","color":"本日の吉祥色を一般的な色の名前でのみ（例：金色、赤色、青色）","precision":"${user.birthTimeAccuracy}","quote":"本日の運勢にふさわしい四柱推命の格言または座右の銘（一文）"}`,
+
+        zh: `你是八字命理学的专家。请根据上述出生八字（年月日时）和今天的日期分析运势。
+
+**分析要素：**
+- 出生八字（年柱、月柱、日柱、时柱）
+- 与今日干支的相互作用
+- 五行（木火土金水）的平衡与生克
+- 天干地支的和谐
+- 大运、流年、流日的分析
+
+**包含内容：**
+请在财运、健康运、人际关系运、事业运中，重点强调今天特别重要的部分，并提供具体实用的建议。
+
+**重要：颜色表达规则**
+- 绝对不要使用十六进制代码（以#开头的代码）
+- 仅通过一般人能理解的颜色名称来描述（例如：金色、红色、蓝色、绿色、紫色）
+- fullText 中也不要提及十六进制代码
+
+**仅以 JSON 格式回答（不要使用 Markdown 代码块）：**
+{"summary":"一行核心运势","fullText":"3-4句话详细描述今日运势（禁止提及十六进制代码）","color":"仅使用通用颜色名称描述今日吉色（例如：金色、红色、蓝色）","precision":"${user.birthTimeAccuracy}","quote":"符合今日运势的八字命理格言或座右铭（一句话）"}`,
         
         en: `You are a professional Four Pillars of Destiny (Ba Zi) fortune teller. Analyze the fortune based on the birth Four Pillars and today's date.
 
@@ -173,6 +193,11 @@ Emphasize the most important aspects among wealth, health, relationships, and ca
           summary: '今日も良い一日を！',
           fullText: '健康と幸運が共にある一日になるでしょう。',
           quote: '小さな行動が大きな変化を生み出します。'
+        },
+        zh: {
+          summary: '祝你今天过得愉快！',
+          fullText: '愿健康和好运今天与你同在。',
+          quote: '细小的行动带来巨大的改变。'
         },
         en: {
           summary: 'Have a great day!',

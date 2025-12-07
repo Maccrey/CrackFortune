@@ -12,11 +12,16 @@
 ### 해결 방식 (FortuneCrack)
 - **Gemini 기반 개인화**: 명리 데이터를 바탕으로 Gemini가 자연스러운 스토리텔링 생성.
 - **인터랙티브 경험**: 포춘쿠키를 깨는(Crack) 애니메이션과 사운드로 의식적 경험 제공.
-- **글로벌 최적화**: 한국어/영어/일본어의 문화적 뉘앙스를 반영한 톤 앤 매너.
+- **인터랙티브 경험**: 포춘쿠키를 깨는(Crack) 애니메이션과 사운드로 의식적 경험 제공.
+- **글로벌 최적화**: 한국어/영어/일본어/중국어의 문화적 뉘앙스를 반영한 톤 앤 매너.
+- **하이브리드 데이터**: 비로그인 시 로컬 저장, 로그인 시 클라우드(Firebase) 동기화로 데이터 영속성 보장.
 
 ### 개발 전략 (Gemini vs Codex)
 - **Phase 1 (Gemini)**: 프론트엔드 인터랙티브 디자인, UI/UX, 애니메이션, **라우팅(페이지 전환)** 구현. (Mock 데이터 사용)
+- **Phase 1 (Gemini)**: 프론트엔드 인터랙티브 디자인, UI/UX, 애니메이션, **라우팅(페이지 전환)** 구현. (Mock 데이터 사용)
 - **Phase 2 (Codex)**: 실제 기능 구현, 로컬 저장소(Local Storage) 연동, Gemini API 연결, 비즈니스 로직.
+- **Phase 3 (Ad Extension)**: 광고 기반 채팅 연장 기능 구현.
+- **Phase 4 (Dragon)**: Firebase (Auth/Firestore) 연동, 로그인 유도 UX (3초 딜레이), 중국어 지원 추가.
 
 ## 2. 핵심 가치 제안
 - **Hyper-Personalized**: 생시 정밀도(Precision)에 따른 차별화된 운세 분석.
@@ -46,8 +51,10 @@
 - **Frontend**: React 18, Vite, TypeScript, Tailwind CSS.
 - **State/Query**: React Query, Zustand (선택).
 - **Testing**: Playwright (E2E/Integration), Vitest (Unit).
-- **Backend**: Browser Local Storage (No Backend).
-- **AI**: Gemini 2.0 Pro API.
+- **Testing**: Playwright (E2E/Integration), Vitest (Unit).
+- **Backend**: Firebase (Auth: Google Login, DB: Firestore).
+- **Client Storage**: Local Storage (Guest) -> Sync to Firestore (User).
+- **AI**: Groq API (gpt-oss-20b).
 
 ## 5. UI/UX 요구사항
 - **Design System**: **Dark Mode** 기본, **Glassmorphism** (블러, 투명도) 적용.
@@ -65,7 +72,7 @@
 - **Git Security**: `.env` 파일은 `.gitignore`에 포함하여 절대 커밋하지 않음.
 - **CI/CD**: GitHub Actions (Lint, Test, Build).
 
-## 8. 데이터 모델 (Local Storage)
-- **users**: 프로필, 생시 정보, 정밀도(birthTimeAccuracy).
-- **fortunes**: 날짜별 운세 결과(summary, fullText), Gemini 모델 정보.
-- **chats**: Q&A 내역.
+- **User Collection**: `users/{uid}` (프로필, 설정).
+- **Fortune Collection**: `users/{uid}/fortunes/{date}` (운세 결과).
+- **Chat Collection**: `users/{uid}/chats/{date}` (대화 내역).
+- **Guest Data**: Local Storage 유지, 로그인 시 Firestore로 마이그레이션.

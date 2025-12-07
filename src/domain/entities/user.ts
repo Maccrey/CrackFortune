@@ -6,7 +6,7 @@ export interface UserProfile {
   birthDate: string; // ISO date (YYYY-MM-DD)
   birthTime?: string; // HH:mm
   birthTimeAccuracy: BirthTimeAccuracy;
-  locale: 'en' | 'ko' | 'ja';
+  locale: 'en' | 'ko' | 'ja' | 'zh';
   createdAt: string; // ISO timestamp
   updatedAt: string; // ISO timestamp
 }

@@ -94,6 +94,37 @@
     - [x] localStorage에 연장 횟수/상태 저장
     - [x] *Test*: 연장 후 타이머 리셋 및 채팅 재개 확인 (수동 테스트 필요)
 
+---
+
+## PHASE 4: DRAGON (Persistence & Localization)
+*목표: Firebase 연동을 통한 데이터 영속성 확보 및 중국어 지원 확대*
+
+### 8. Firebase Integration
+- [x] **Infrastructure Setup**
+    - [x] `firebase.ts`: Auth(Google) 및 Firestore 모듈 초기화 추가.
+    - [x] **Security Rules**: Firestore 보안 규칙 설정 (`firestore.rules`).
+- [x] **Authentication Flow**
+    - [x] `AuthContext`: Firebase User 상태 관리.
+    - [x] **Login Prompt UX**: 운세 확인 3초 후 "로그인하여 운세 저장하기" 모달.
+    - [x] **Google Login**: 팝업 로그인 구현.
+    - [x] **Data Sync**: 로그인 성공 시 LocalStorage 데이터를 Firestore로 병합(Migration).
+
+### 9. Data Layer Migration (Repository Pattern)
+- [x] **Repositories**
+    - [x] `FirebaseUserRepository`: Firestore 기반 유저 저장소 구현.
+    - [x] `FirebaseFortuneRepository`: Firestore 기반 운세 저장소 구현.
+- [x] **Repository System**
+    - [x] `FortuneContext`: 로그인 여부에 따라 Local/Firebase 리포지토리 교체 (`repositories` useMemo).
+    - [x] *Test*: Guest 모드(로컬)와 Auth 모드(파이어베이스) 데이터 읽기/쓰기 확인.
+
+### 10. Localization (Chinese Support)
+- [x] **Language Infrastructure**
+    - [x] `LanguageContext`: 'zh' (Chinese) 지원 추가.
+    - [x] `translations.ts`: 중국어(간체) 번역 추가.
+- [x] **AI Prompting**
+    - [x] `GroqClient`: 중국어(사주명리/풍수 테마) 시스템 프롬프트 작성.
+    - [x] *Test*: 중국어로 운세 생성 및 UI 렌더링 확인.
+
 
 ## ✅ Test Checklist (If Playwright N/A)
 *Playwright로 테스트가 불가능한 경우 아래 리스트를 활용하여 수동 검증*

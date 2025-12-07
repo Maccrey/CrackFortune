@@ -1,5 +1,8 @@
+
 import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAnalytics, logEvent, type Analytics } from 'firebase/analytics';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 // Firebase 설정
 // Firebase Console에서 프로젝트 설정 > 일반 > 웹 앱에서 확인 가능
@@ -42,6 +45,10 @@ if (isValidConfig(firebaseConfig)) {
   console.log('[Firebase] Analytics disabled - missing configuration');
 }
 
+// Initialize services
+export const auth = app ? getAuth(app) : null;
+export const db = app ? getFirestore(app) : null;
+
 // Analytics 이벤트 로깅 헬퍼 함수
 export const logAnalyticsEvent = (eventName: string, params?: Record<string, any>) => {
   if (analytics) {
@@ -77,3 +84,4 @@ export const analyticsEvents = {
 };
 
 export { app, analytics };
+
