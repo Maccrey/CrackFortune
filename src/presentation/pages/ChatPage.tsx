@@ -192,31 +192,32 @@ Only answer questions related to the user's fortune using a fortune teller's voi
 
             const systemPrompt = systemPrompts[user?.locale || language] || systemPrompts.en;
 
-            // Call Gemini API (using same endpoint as fortune generation)
-            const response = await fetch('/api/gemini', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [
-                        {
-                            role: 'user',
-                            parts: [{ text: `${systemPrompt}\n\nUser question: ${inputValue}` }]
-                        }
-                    ],
-                    generationConfig: { temperature: 0.8 }
-                })
-            });
+            // Use GroqClient directly
+            // Note: Ideally this should be injected or accessed via Context/Repository, 
+            // but for now we instantiate it directly to fix the immediate issue.
+            const { GroqClient } = await import('../../data/services/GroqClient');
+            const groqClient = new GroqClient();
 
-            if (!response.ok) {
-                throw new Error('Failed to get AI response');
-            }
+            const chatMessages = [
+                 { role: 'system', content: systemPrompt },
+                 ...messages.map(m => ({ 
+                     role: m.sender === 'user' ? 'user' : 'assistant', 
+                     content: m.text 
+                 })),
+                 { role: 'user', content: inputValue }
+            ];
 
-            const data = await response.json();
-            const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || t('chat_typing');
+            // Filter messages to valid roles for Groq (system, user, assistant) and ensure content is string
+            const safeMessages = chatMessages.map(m => ({
+                role: m.role as 'system' | 'user' | 'assistant',
+                content: m.content
+            }));
+
+            const aiText = await groqClient.chat(safeMessages, 0.8);
 
             const newAiMessage: Message = {
                 id: (Date.now() + 1).toString(),
-                text: aiText,
+                text: aiText || t('chat_typing'), // Fallback if empty
                 sender: 'ai',
                 timestamp: new Date()
             };
