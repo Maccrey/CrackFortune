@@ -32,7 +32,13 @@ export class FirebaseFortuneRepository implements FortuneRepository {
     // Or we use fortune.id. LocalFortuneRepository uses `${userId}:${date}` as key but stores object.
     // Let's use date as document ID for subcollection 'fortunes'.
     const fortuneRef = doc(db, 'users', this.authUserId, 'fortunes', fortune.date);
-    await setDoc(fortuneRef, fortune);
+    
+    // Firestore throws invalid data error if fields are undefined.
+    // specificially: "Function setDoc() called with invalid data. Unsupported field value: undefined"
+    // We must sanitize the object.
+    const sanitizedFortune = JSON.parse(JSON.stringify(fortune));
+
+    await setDoc(fortuneRef, sanitizedFortune);
   }
 
   async listRecentFortunes(_userId: string, limitCount = 10): Promise<Fortune[]> {
