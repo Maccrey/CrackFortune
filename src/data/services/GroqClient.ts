@@ -153,36 +153,47 @@ Emphasize the most important aspects among wealth, health, relationships, and ca
 
       console.log('[GroqClient] Calling Groq API...', this.model);
 
-      const completion = await this.groq.chat.completions.create({
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant that generates fortune telling results in JSON format.',
-          },
-          {
-            role: 'user',
-            content: `${prompt}\n${fortunePrompt}`,
-          },
-        ],
-        model: this.model,
-        temperature: 0.7,
-        response_format: { type: 'json_object' }, // Enforce JSON response if supported, or rely on prompt
-      });
-
-      const textContent = completion.choices[0]?.message?.content || '';
-      
-      console.log('[GroqClient] Raw Response:', textContent);
-
       let parsedData: Partial<GroqResponse> = {};
-      try {
-        parsedData = JSON.parse(textContent);
-      } catch (e) {
-        console.warn('[GroqClient] Failed to parse JSON, falling back to text extraction', e);
-        // Fallback or regex extraction if needed, but 'json_object' mode should help
-        parsedData = {
-            summary: textContent.substring(0, 100),
-            fullText: textContent
-        };
+      const MAX_RETRIES = 3;
+
+      for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+        try {
+          const completion = await this.groq.chat.completions.create({
+            messages: [
+              {
+                role: 'system',
+                content: 'You are a helpful assistant that generates fortune telling results in JSON format.',
+              },
+              {
+                role: 'user',
+                content: `${prompt}\n${fortunePrompt}`,
+              },
+            ],
+            model: this.model,
+            temperature: 0.7,
+            response_format: { type: 'json_object' },
+          });
+
+          const textContent = completion.choices[0]?.message?.content || '';
+          console.log(`[GroqClient] Raw Response (Attempt ${attempt + 1}):`, textContent);
+
+          parsedData = JSON.parse(textContent);
+          
+          // If successful, break the loop
+          break;
+
+        } catch (e) {
+          console.warn(`[GroqClient] Attempt ${attempt + 1} failed:`, e);
+          
+          if (attempt === MAX_RETRIES - 1) {
+            console.error('[GroqClient] All retries failed. Using fallback.');
+            // Only fallback on the last attempt
+             parsedData = {}; 
+          } else {
+            // Wait before retrying (1s)
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
+        }
       }
 
       // Locale fallbacks

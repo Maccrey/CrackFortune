@@ -66,7 +66,8 @@ describe('GroqClient', () => {
     expect(result.model).toBe('openai/gpt-oss-20b');
   });
 
-  it('JSON 파싱 실패 시 텍스트를 fallback으로 사용한다', async () => {
+  it('JSON 파싱 실패 시 3번 재시도 후 fallback을 반환한다', async () => {
+    // Mock failure responses for all attempts
     mockCreate.mockResolvedValue({
       choices: [{ message: { content: 'Just text response' } }]
     });
@@ -75,7 +76,38 @@ describe('GroqClient', () => {
     const client = new GroqClient();
     const result = await client.requestDailyFortune(user, '2024-01-02');
 
-    expect(result.summary).toContain('Just text response');
-    expect(result.fullText).toBe('Just text response');
+    // Should retry 3 times
+    expect(mockCreate).toHaveBeenCalledTimes(3);
+    
+    // Result should be fallback
+    expect(result.summary).toBe('오늘도 좋은 하루 되세요!'); // Fallback summary for 'ko' locale
+    expect(result.fullText).toBe('건강과 행운이 함께하는 하루가 될 것입니다.'); // Fallback fullText
+  });
+
+  it('재시도 중 성공하면 결과를 반환한다', async () => {
+     // 1st attempt fails, 2nd succeeds
+     mockCreate
+        .mockResolvedValueOnce({ choices: [{ message: { content: 'Invalid JSON' } }] })
+        .mockResolvedValueOnce({ 
+            choices: [{ 
+                message: { 
+                    content: JSON.stringify({ 
+                        summary: '성공 요약', 
+                        fullText: '성공 본문',
+                        color: '황금색', 
+                        precision: 'high', 
+                        quote: '성공 명언' 
+                    }) 
+                } 
+            }] 
+        });
+        
+    vi.stubEnv('VITE_GROQ_API_KEY', 'test-key');
+
+    const client = new GroqClient();
+    const result = await client.requestDailyFortune(user, '2024-01-02');
+
+    expect(mockCreate).toHaveBeenCalledTimes(2);
+    expect(result.summary).toBe('성공 요약');
   });
 });
