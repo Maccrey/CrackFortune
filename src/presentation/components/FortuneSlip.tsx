@@ -57,9 +57,9 @@ const FortuneSlip: React.FC<FortuneSlipProps> = ({ summary, fullText, precision,
 
                 {/* Footer */}
                 <div className="flex items-center gap-2 text-[10px] text-gray-400 uppercase tracking-widest">
-                    <span>Powered by Gemini</span>
+                    <span>Powered by FortuneCrack AI</span>
                     <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
-                    <span>FortuneCrack</span>
+                    <span>Groq</span>
                 </div>
             </motion.div>
         </motion.div>

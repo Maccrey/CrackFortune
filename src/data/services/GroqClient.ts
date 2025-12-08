@@ -12,11 +12,17 @@ interface GroqResponse {
   quote?: string; // AI generated inspirational quote
 }
 
-const palette = ['#eab308', '#22d3ee', '#a855f7', '#f97316', '#10b981'];
+const colorNames = {
+  en: ['Golden Yellow', 'Sky Blue', 'Mystic Purple', 'Sunset Orange', 'Emerald Green'],
+  ko: ['황금색', '하늘색', '신비한 보라색', '노을빛 주황색', '에메랄드 초록색'],
+  ja: ['黄金色', '空色', '神秘的な紫色', '夕焼けのオレンジ', 'エメラルドグリーン'],
+  zh: ['金黄色', '天蓝色', '神秘紫', '夕阳橙', '祖母绿']
+};
 
 const pickColor = (user: UserProfile) => {
   const seed = (user.name || user.id || '').split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-  return palette[Math.abs(seed) % palette.length];
+  const colors = colorNames[user.locale] || colorNames.en;
+  return colors[Math.abs(seed) % colors.length];
 };
 
 export class GroqClient {
