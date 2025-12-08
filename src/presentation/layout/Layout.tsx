@@ -63,11 +63,11 @@ const LayoutContent: React.FC = () => {
                     <div className="mt-8 flex flex-col gap-6">
                         <div className="flex justify-between items-center">
                             <span className="text-gray-400 text-sm">Account</span>
-                            <GoogleLoginButton />
+                            <GoogleLoginButton className="w-36" />
                         </div>
                         <div className="flex justify-between items-center">
                             <span className="text-gray-400 text-sm">Language</span>
-                            <LanguageSelector />
+                            <LanguageSelector className="w-36" />
                         </div>
                     </div>
                 </div>

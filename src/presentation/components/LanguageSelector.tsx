@@ -2,7 +2,11 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import type { Language } from '../utils/translations';
 
-const LanguageSelector: React.FC = () => {
+interface LanguageSelectorProps {
+    className?: string;
+}
+
+const LanguageSelector: React.FC<LanguageSelectorProps> = ({ className = '' }) => {
     const { language, setLanguage } = useLanguage();
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -10,11 +14,11 @@ const LanguageSelector: React.FC = () => {
     };
 
     return (
-        <div className="relative">
+        <div className={`relative ${className}`}>
             <select
                 value={language}
                 onChange={handleChange}
-                className="appearance-none bg-white/10 border border-white/20 rounded-lg px-4 py-2 pr-8 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50 cursor-pointer hover:bg-white/20 transition-colors"
+                className="w-full appearance-none bg-white/10 border border-white/20 rounded-lg px-4 py-2 pr-8 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50 cursor-pointer hover:bg-white/20 transition-colors"
             >
                 <option value="en" className="bg-gray-800 text-white">English</option>
                 <option value="ko" className="bg-gray-800 text-white">한국어</option>
