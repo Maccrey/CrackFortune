@@ -40,6 +40,8 @@ export const translations = {
         login_prompt_desc: "Log in to save this fortune to your history and track your destiny over time.",
         login_prompt_google: "Continue with Google",
         login_prompt_later: "Maybe later",
+        auth_sign_in: "Sign In",
+        auth_sign_out: "Sign Out",
     },
     ko: {
         greeting: "좋은 오후입니다",
@@ -80,6 +82,8 @@ export const translations = {
         login_prompt_desc: "로그인하여 오늘의 운세를 기록하고, 당신의 운명 흐름을 확인하세요.",
         login_prompt_google: "Google로 계속하기",
         login_prompt_later: "나중에 하기",
+        auth_sign_in: "로그인",
+        auth_sign_out: "로그아웃",
     },
     ja: {
         greeting: "こんにちは",
@@ -120,6 +124,8 @@ export const translations = {
         login_prompt_desc: "ログインして今日の運勢を保存し、運命の流れを確認しましょう。",
         login_prompt_google: "Googleで続ける",
         login_prompt_later: "後でする",
+        auth_sign_in: "ログイン",
+        auth_sign_out: "ログアウト",
     },
     zh: {
         greeting: "下午好",
@@ -160,5 +166,7 @@ export const translations = {
         login_prompt_desc: "登录以保存今日运势，并追踪您的命运轨迹。",
         login_prompt_google: "通过 Google 继续",
         login_prompt_later: "稍后再说",
+        auth_sign_in: "登录",
+        auth_sign_out: "退出",
     }
 };

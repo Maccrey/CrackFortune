@@ -3,6 +3,7 @@ import { Outlet, Link } from 'react-router-dom';
 import DesktopSidebar from '../components/DesktopSidebar';
 import ShamanCharacter from '../components/ShamanCharacter';
 import LanguageSelector from '../components/LanguageSelector';
+import GoogleLoginButton from '../components/GoogleLoginButton';
 import { useLanguage } from '../context/LanguageContext';
 
 const LayoutContent: React.FC = () => {
@@ -23,6 +24,7 @@ const LayoutContent: React.FC = () => {
                     <Link to="/history" data-testid="nav-history" className="hover:text-white transition-colors">{t('nav_history')}</Link>
                     <Link to="/chat" data-testid="nav-chat" className="hover:text-white transition-colors">{t('nav_chat')}</Link>
                     <Link to="/settings" data-testid="nav-settings" className="hover:text-white transition-colors">{t('nav_settings')}</Link>
+                    <GoogleLoginButton />
                     <LanguageSelector />
                 </nav>
             </header>
