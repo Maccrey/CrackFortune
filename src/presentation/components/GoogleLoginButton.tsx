@@ -28,7 +28,7 @@ const GoogleLoginButton: React.FC = () => {
                 )}
                 <button 
                     onClick={logout}
-                    className="text-sm text-gray-300 hover:text-white transition-colors font-medium hover:underline"
+                    className="text-sm text-gray-100 hover:text-white transition-colors font-medium hover:underline"
                 >
                     {t('auth_sign_out')}
                 </button>
@@ -39,7 +39,7 @@ const GoogleLoginButton: React.FC = () => {
     return (
         <button
             onClick={loginWithGoogle}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-all border border-white/10 backdrop-blur-sm group"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 transition-all border border-white/10 backdrop-blur-sm group"
         >
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />

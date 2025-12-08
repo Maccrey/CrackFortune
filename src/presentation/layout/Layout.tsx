@@ -19,7 +19,7 @@ const LayoutContent: React.FC = () => {
                         FortuneCrack
                     </Link>
                 </div>
-                <nav className="flex gap-6 text-sm font-medium text-gray-300 items-center">
+                <nav className="flex gap-6 text-sm font-medium text-gray-100 items-center">
                     <Link to="/" data-testid="nav-today" className="hover:text-white transition-colors">{t('nav_today')}</Link>
                     <Link to="/history" data-testid="nav-history" className="hover:text-white transition-colors">{t('nav_history')}</Link>
                     <Link to="/chat" data-testid="nav-chat" className="hover:text-white transition-colors">{t('nav_chat')}</Link>

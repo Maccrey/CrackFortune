@@ -19,6 +19,7 @@ const LanguageSelector: React.FC = () => {
                 <option value="en" className="bg-gray-800 text-white">English</option>
                 <option value="ko" className="bg-gray-800 text-white">한국어</option>
                 <option value="ja" className="bg-gray-800 text-white">日本語</option>
+                <option value="zh" className="bg-gray-800 text-white">中文</option>
             </select>
             <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

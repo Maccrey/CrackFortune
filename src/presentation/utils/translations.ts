@@ -3,8 +3,8 @@ export type Language = 'en' | 'ko' | 'ja' | 'zh';
 export const translations = {
     en: {
         greeting: "Good Afternoon",
-        nav_today: "Today",
-        nav_history: "History",
+        nav_today: "Today's Fortune",
+        nav_history: "Review",
         nav_chat: "Consultation",
         nav_settings: "Settings",
         cookie_title: "TODAY'S FORTUNE",
@@ -45,8 +45,8 @@ export const translations = {
     },
     ko: {
         greeting: "좋은 오후입니다",
-        nav_today: "오늘",
-        nav_history: "기록",
+        nav_today: "오늘의 운세",
+        nav_history: "다시보기",
         nav_chat: "운세 상담",
         nav_settings: "설정",
         cookie_title: "오늘의 운세",
@@ -87,8 +87,8 @@ export const translations = {
     },
     ja: {
         greeting: "こんにちは",
-        nav_today: "今日",
-        nav_history: "履歴",
+        nav_today: "今日の運勢",
+        nav_history: "振り返り",
         nav_chat: "運勢相談",
         nav_settings: "設定",
         cookie_title: "今日の運勢",
@@ -129,8 +129,8 @@ export const translations = {
     },
     zh: {
         greeting: "下午好",
-        nav_today: "今天",
-        nav_history: "历史",
+        nav_today: "今日运势",
+        nav_history: "回顾",
         nav_chat: "运势咨询",
         nav_settings: "设置",
         cookie_title: "今日运势",
