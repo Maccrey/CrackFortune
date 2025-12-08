@@ -90,7 +90,8 @@ Language: ${user.locale}
 - 오직 일반인이 이해할 수 있는 색 이름만 사용하세요 (예: 황금색, 빨간색, 파란색, 초록색, 보라색)
 - fullText에서도 헥사 코드를 언급하지 마세요
 
-**JSON 형식으로만 응답해주세요 (MarkDown 코드 블록 없이):**`,
+**JSON 형식으로만 응답해주세요 (MarkDown 코드 블록 없이):**
+{"summary":"한 줄 핵심 운세","fullText":"3-4문장으로 오늘의 운세 상세 설명 (헥사 코드 언급 금지)","color":"오늘의 길한 색상을 일반적인 색 이름으로만 (예: 황금색, 빨간색, 파란색)","precision":"${user.birthTimeAccuracy}","quote":"오늘의 운세에 어울리는 사주명리 격언 또는 좌우명 (한 문장)"}`,
         
         ja: `あなたは四柱推命の専門家です。上記の出生四柱（生年月日時）と陽暦/陰暦の区分、本日の日付をもとに運勢を分析してください。
 
@@ -109,7 +110,8 @@ Language: ${user.locale}
 - 一般人が理解できる色の名前のみ使用してください（例：金色、赤色、青色、緑色、紫色）
 - fullTextでもヘキサコードを言及しないでください
 
-**JSON形式のみで回答してください（MarkDownコードブロックなし）:**`,
+**JSON形式のみで回答してください（MarkDownコードブロックなし）:**
+{"summary":"一行の核心運勢","fullText":"3-4文で本日の運勢の詳細説明（ヘキサコード言及禁止）","color":"本日の吉祥色を一般的な色の名前でのみ（例：金色、赤色、青色）","precision":"${user.birthTimeAccuracy}","quote":"本日の運勢にふさわしい四柱推命の格言または座右の銘（一文）"}`,
 
         zh: `你是八字命理学的专家。请根据上述出生八字（年月日时）及公历/农历区分，以及今天的日期分析运势。
 
@@ -128,7 +130,8 @@ Language: ${user.locale}
 - 仅通过一般人能理解的颜色名称来描述（例如：金色、红色、蓝色、绿色、紫色）
 - fullText 中也不要提及十六进制代码
 
-**仅以 JSON 格式回答（不要使用 Markdown 代码块）：**`,
+**仅以 JSON 格式回答（不要使用 Markdown 代码块）：**
+{"summary":"一行核心运势","fullText":"3-4句话详细描述今日运势（禁止提及十六进制代码）","color":"仅使用通用颜色名称描述今日吉色（例如：金色、红色、蓝色）","precision":"${user.birthTimeAccuracy}","quote":"符合今日运势的八字命理格言或座右铭（一句话）"}`,
         
         en: `You are a professional Four Pillars of Destiny (Ba Zi) fortune teller. Analyze the fortune based on the birth Four Pillars (considering Solar/Lunar calendar type) and today's date.
 
@@ -146,7 +149,8 @@ Emphasize the most important aspects among wealth, health, relationships, and ca
 - ONLY use common color names that regular people understand (e.g., golden, red, blue, green, purple)
 - Do NOT mention hex codes in fullText either
 
-**Respond ONLY in JSON format (No Markdown code blocks):**`
+**Respond ONLY in JSON format (No Markdown code blocks):**
+{"summary":"One-line core fortune","fullText":"3-4 sentences detailed fortune for today (NO hex codes)","color":"Today's auspicious color using ONLY common color names (e.g., golden, red, blue)","precision":"${user.birthTimeAccuracy}","quote":"A Four Pillars wisdom or motto that matches today's fortune (one sentence)"}`
       };
 
       const fortunePrompt = localePrompts[user.locale] || localePrompts.en;
