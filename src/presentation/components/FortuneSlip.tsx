@@ -14,7 +14,7 @@ const FortuneSlip: React.FC<FortuneSlipProps> = ({ summary, fullText, precision,
             initial={{ scaleY: 0.1, opacity: 0 }}
             animate={{ scaleY: 1, opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            className="bg-[#fdfbf7] text-gray-800 p-8 rounded-sm shadow-2xl max-w-md w-full relative overflow-hidden font-serif"
+            className="bg-[#fdfbf7] text-gray-800 p-5 md:p-8 rounded-sm shadow-2xl max-w-md w-full relative overflow-hidden font-serif"
             data-testid="fortune-slip"
             style={{ transformOrigin: 'top' }}
         >
@@ -31,16 +31,16 @@ const FortuneSlip: React.FC<FortuneSlipProps> = ({ summary, fullText, precision,
                 className="relative z-10 flex flex-col items-center text-center"
             >
                 {/* Header */}
-                <div className="mb-6">
-                    <span className="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs font-bold tracking-widest uppercase rounded-full mb-2">
+                <div className="mb-4 md:mb-6">
+                    <span className="inline-block px-3 py-1 bg-red-100 text-red-800 text-[10px] md:text-xs font-bold tracking-widest uppercase rounded-full mb-2">
                         {precision} Precision
                     </span>
-                    <h3 className="text-2xl font-bold text-red-900 mb-1">Today's Insight</h3>
+                    <h3 className="text-xl md:text-2xl font-bold text-red-900 mb-1">Today's Insight</h3>
                     <div className="w-12 h-1 bg-red-900/20 mx-auto"></div>
                 </div>
 
                 {/* Content */}
-                <p className="text-xl font-medium leading-relaxed mb-6 text-gray-900">
+                <p className="text-lg md:text-xl font-medium leading-relaxed mb-6 text-gray-900">
                     "{summary}"
                 </p>
 

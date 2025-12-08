@@ -36,10 +36,10 @@ const ResultPage: React.FC = () => {
     }
 
     return (
-        <div className="flex-1 flex flex-col items-center justify-center p-6">
+        <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-6">
             <FortuneSlip summary={fortune.summary} fullText={fortune.fullText} precision={fortune.precision?.toUpperCase() || 'UNKNOWN'} color={fortune.color} />
 
-            <Link to="/" data-testid="btn-open-another" className="mt-12 px-8 py-3 bg-white/10 rounded-full hover:bg-white/20 transition-all text-sm font-medium tracking-wider backdrop-blur-md border border-white/10">
+            <Link to="/" data-testid="btn-open-another" className="mt-8 md:mt-12 px-8 py-3 bg-white/10 rounded-full hover:bg-white/20 transition-all text-sm font-medium tracking-wider backdrop-blur-md border border-white/10 whitespace-nowrap">
                 {t('btn_open_another')}
             </Link>
 

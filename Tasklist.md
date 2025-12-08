@@ -154,6 +154,41 @@
 
 
 
+
+## PHASE 6: MOBILE MASTERY (Responsive & Optimization)
+*목표: 모든 페이지와 컴포넌트를 모바일 환경(375px~)에 완벽하게 최적화*
+
+### 13. Global Layout Optimization
+- [x] **Header Mobile Layout** <!-- id: 13-1 -->
+    - [x] 로고 및 메뉴 아이템 간격 조정 (Overlapping 방지).
+    - [x] `GoogleLoginButton` 모바일 대응 (텍스트 숨김 또는 아이콘화 고려).
+    - [x] 모바일 네비게이션 가로 스크롤 또는 햄버거 메뉴 검토.
+- [x] **Safe Area & Touch Targets** <!-- id: 13-2 -->
+    - [x] iOS Safe Area (`env(safe-area-inset-*)`) 적용 점검.
+    - [x] 모든 인터랙티브 요소 최소 터치 영역 (44x44px) 확보.
+
+### 14. Page-Specific Optimization
+- [x] **Main Page (Cookie)** <!-- id: 14-1 -->
+    - [x] 쿠키 이미지/애니메이션 모바일 사이즈 조정.
+    - [x] 텍스트 오버플로우 방지.
+- [x] **Result Page (Slip)** <!-- id: 14-2 -->
+    - [x] 운세 텍스트 가독성 (모바일 폰트 사이즈 조정).
+    - [x] 결과 종이(Slip) 애니메이션 뷰포트 맞춤.
+- [x] **History Page** <!-- id: 14-3 -->
+    - [x] 리스트 아이템 모바일 카드 뷰 최적화.
+    - [x] 텍스트 말줄임 및 더보기 UX.
+- [x] **Chat Page** <!-- id: 14-4 -->
+    - [x] 가상 키보드 대응 (Input 영역 가림 방지, `dvh` 사용 등).
+    - [x] 말풍선 최대 너비 및 패딩 조정.
+- [x] **Settings Page** <!-- id: 14-5 -->
+    - [x] 설정 옵션 리스트 터치 친화적 패딩 적용.
+
+### 15. Modals & Popups
+- [x] **Login/Fortune Modals** <!-- id: 15-1 -->
+    - [x] 모바일 화면 중앙 정렬 및 여백 확보.
+    - [x] 닫기 버튼 접근성 강화.
+
+
 ## ✅ Test Checklist (If Playwright N/A)
 *Playwright로 테스트가 불가능한 경우 아래 리스트를 활용하여 수동 검증*
 - [ ] [Manual] iOS Safari에서 쿠키 깨짐 애니메이션 부드러운가?

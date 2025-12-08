@@ -28,7 +28,7 @@ const HistoryPage: React.FC = () => {
     };
 
     return (
-        <div className="flex-1 flex flex-col p-6 h-full overflow-hidden">
+        <div className="flex-1 flex flex-col p-4 md:p-6 h-full overflow-hidden">
             <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-pink-200 font-mystical">
                 {t('dashboard_title')}
             </h2>

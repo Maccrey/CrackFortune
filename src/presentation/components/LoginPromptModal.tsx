@@ -28,7 +28,7 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ isOpen, onCl
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-md p-6 overflow-hidden rounded-2xl bg-white/10 border border-white/20 shadow-2xl backdrop-blur-md animate-scale-in">
+      <div className="relative w-full max-w-md p-6 overflow-hidden rounded-2xl bg-white/10 border border-white/20 shadow-2xl backdrop-blur-md animate-scale-in will-change-transform">
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl -translate-x-10 -translate-y-10" />
         <div className="absolute bottom-0 right-0 w-32 h-32 bg-amber-500/20 rounded-full blur-3xl translate-x-10 translate-y-10" />

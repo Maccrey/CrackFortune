@@ -33,7 +33,7 @@ const SettingsPage: React.FC = () => {
     };
 
     return (
-        <div className="p-6 pb-24 overflow-y-auto h-full">
+        <div className="p-4 md:p-6 pb-24 overflow-y-auto h-full">
             <h2 className="text-2xl font-bold mb-6 text-white tracking-wide">Settings</h2>
 
             {toast && (
@@ -58,7 +58,7 @@ const SettingsPage: React.FC = () => {
                                 value={form.name}
                                 onChange={(e) => handleFieldChange('name', e.target.value)}
                                 placeholder=""
-                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500 focus:bg-black/30 focus:ring-2 focus:ring-yellow-500/20 transition-all"
+                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-base md:text-sm text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500 focus:bg-black/30 focus:ring-2 focus:ring-yellow-500/20 transition-all"
                                 data-testid="input-name"
                                 disabled={isLoading}
                                 inputMode="text"
@@ -76,7 +76,7 @@ const SettingsPage: React.FC = () => {
                                 type="date"
                                 value={form.birthDate}
                                 onChange={(e) => handleFieldChange('birthDate', e.target.value)}
-                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors [color-scheme:dark]"
+                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-base md:text-sm text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors [color-scheme:dark]"
                                 data-testid="input-birthdate"
                                 disabled={isLoading}
                             />
@@ -89,7 +89,7 @@ const SettingsPage: React.FC = () => {
                                 type="time"
                                 value={form.birthTime}
                                 onChange={(e) => handleFieldChange('birthTime', e.target.value)}
-                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors [color-scheme:dark]"
+                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-base md:text-sm text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors [color-scheme:dark]"
                                 data-testid="input-birthtime"
                                 disabled={isLoading}
                             />

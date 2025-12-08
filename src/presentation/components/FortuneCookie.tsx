@@ -33,7 +33,7 @@ const FortuneCookie: React.FC = () => {
     };
 
     return (
-        <div className="relative w-80 h-80 flex items-center justify-center cursor-pointer" onClick={handleCrack} data-testid="fortune-cookie">
+        <div className="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center cursor-pointer" onClick={handleCrack} data-testid="fortune-cookie">
             {/* Persistent Definitions for Gradients and Filters */}
             <svg width="0" height="0" className="absolute pointer-events-none">
                 <defs>

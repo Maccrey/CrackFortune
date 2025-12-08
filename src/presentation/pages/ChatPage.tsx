@@ -377,7 +377,7 @@ Only answer questions related to the user's fortune using a fortune teller's voi
                         onChange={(e) => setInputValue(e.target.value)}
                         placeholder={isTimeOver ? t('chat_time_over') : t('chat_placeholder')}
                         disabled={isTimeOver}
-                        className="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-3 text-base md:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     <button
                         type="submit"
