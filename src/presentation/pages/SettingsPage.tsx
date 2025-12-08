@@ -1,31 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { useUserProfile } from '../hooks/useUserProfile';
 import { useLanguage } from '../context/LanguageContext';
 import { useFortuneContext } from '../context/FortuneContext';
 
 const SettingsPage: React.FC = () => {
-    const { profile, isLoading, saveProfile } = useUserProfile();
+    const { user, saveUser } = useFortuneContext();
     const { language } = useLanguage();
-    const { refreshUser } = useFortuneContext();
     const [toast, setToast] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [form, setForm] = useState({ name: '', birthDate: '', birthTime: '' });
 
     useEffect(() => {
-        if (profile) {
+        if (user) {
             setForm({
-                name: profile.name ?? '',
-                birthDate: profile.birthDate ?? '',
-                birthTime: profile.birthTime ?? '',
+                name: user.name ?? '',
+                birthDate: user.birthDate ?? '',
+                birthTime: user.birthTime ?? '',
             });
         }
-    }, [profile]);
+    }, [user]);
 
     const handleSave = async () => {
-        if (!profile) return;
-        await saveProfile({ name: form.name, birthDate: form.birthDate, birthTime: form.birthTime });
-        await refreshUser(); // FortuneContext의 user 상태 즉시 업데이트
-        setToast('프로필이 저장되었습니다');
-        setTimeout(() => setToast(''), 2000);
+        if (!user) return;
+        setIsLoading(true);
+        try {
+            await saveUser({ name: form.name, birthDate: form.birthDate, birthTime: form.birthTime });
+            setToast('프로필이 저장되었습니다');
+            setTimeout(() => setToast(''), 2000);
+        } catch (error) {
+            console.error('Failed to save profile:', error);
+            setToast('저장 실패');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleFieldChange = (field: 'name' | 'birthDate' | 'birthTime', value: string) => {

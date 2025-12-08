@@ -25,6 +25,7 @@ interface FortuneContextValue {
   crackFortune: () => Promise<boolean>;
   refreshUser: () => Promise<void>;
   selectFortune: (fortune: Fortune) => void;
+  saveUser: (updates: Partial<UserProfile>) => Promise<void>;
 }
 
 const FortuneContext = createContext<FortuneContextValue | undefined>(undefined);
@@ -173,6 +174,18 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
     setFortune(fortune);
   };
 
+  const saveUser = async (updates: Partial<UserProfile>) => {
+    if (!user) return;
+    const updatedUser = { ...user, ...updates }; 
+    try {
+      await userRepository.saveProfile(updatedUser);
+      setUser(updatedUser);
+    } catch (e) {
+      console.error('[FortuneContext] saveUser failed', e);
+      throw e;
+    }
+  };
+
   const value: FortuneContextValue = {
     user,
     fortune,
@@ -182,6 +195,7 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
     crackFortune,
     refreshUser,
     selectFortune,
+    saveUser,
   };
 
   return <FortuneContext.Provider value={value}>{children}</FortuneContext.Provider>;
