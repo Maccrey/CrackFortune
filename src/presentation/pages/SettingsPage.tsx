@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useFortuneContext } from '../context/FortuneContext';
+import { translations } from '../utils/translations';
 
 const SettingsPage: React.FC = () => {
     const { user, saveUser } = useFortuneContext();
     const { language } = useLanguage();
     const [toast, setToast] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [form, setForm] = useState({ name: '', birthDate: '', birthTime: '' });
+    const [form, setForm] = useState<{ name: string; birthDate: string; birthTime: string; calendarType: 'solar' | 'lunar' }>({ 
+        name: '', 
+        birthDate: '', 
+        birthTime: '',
+        calendarType: 'solar' 
+    });
 
     useEffect(() => {
         if (user) {
@@ -15,6 +21,7 @@ const SettingsPage: React.FC = () => {
                 name: user.name ?? '',
                 birthDate: user.birthDate ?? '',
                 birthTime: user.birthTime ?? '',
+                calendarType: user.calendarType ?? 'solar',
             });
         }
     }, [user]);
@@ -23,7 +30,12 @@ const SettingsPage: React.FC = () => {
         if (!user) return;
         setIsLoading(true);
         try {
-            await saveUser({ name: form.name, birthDate: form.birthDate, birthTime: form.birthTime });
+            await saveUser({ 
+                name: form.name, 
+                birthDate: form.birthDate, 
+                birthTime: form.birthTime,
+                calendarType: form.calendarType
+            });
             setToast('프로필이 저장되었습니다');
             setTimeout(() => setToast(''), 2000);
         } catch (error) {
@@ -34,9 +46,12 @@ const SettingsPage: React.FC = () => {
         }
     };
 
-    const handleFieldChange = (field: 'name' | 'birthDate' | 'birthTime', value: string) => {
+    const handleFieldChange = (field: keyof typeof form, value: string) => {
         setForm((prev) => ({ ...prev, [field]: value }));
     };
+
+    // Translation helper
+    const t = translations[language as keyof typeof translations] || translations.en;
 
     return (
         <div className="p-4 md:p-6 pb-24 overflow-y-auto h-full">
@@ -78,14 +93,30 @@ const SettingsPage: React.FC = () => {
                         {/* Birth Date Input */}
                         <div>
                             <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Birth Date</label>
-                            <input
-                                type="date"
-                                value={form.birthDate}
-                                onChange={(e) => handleFieldChange('birthDate', e.target.value)}
-                                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-base md:text-sm text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors [color-scheme:dark]"
-                                data-testid="input-birthdate"
-                                disabled={isLoading}
-                            />
+                            <div className="flex gap-2">
+                                <input
+                                    type="date"
+                                    value={form.birthDate}
+                                    onChange={(e) => handleFieldChange('birthDate', e.target.value)}
+                                    className="flex-1 bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-base md:text-sm text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/50 transition-colors [color-scheme:dark]"
+                                    data-testid="input-birthdate"
+                                    disabled={isLoading}
+                                />
+                                <div className="flex bg-black/20 rounded-lg p-1 border border-white/10">
+                                    <button
+                                        onClick={() => handleFieldChange('calendarType', 'solar')}
+                                        className={`px-3 py-1 rounded text-xs font-medium transition-all ${form.calendarType === 'solar' ? 'bg-yellow-500/20 text-yellow-500' : 'text-gray-400 hover:text-white'}`}
+                                    >
+                                        {(t as any).label_solar || 'Solar'}
+                                    </button>
+                                    <button
+                                        onClick={() => handleFieldChange('calendarType', 'lunar')}
+                                        className={`px-3 py-1 rounded text-xs font-medium transition-all ${form.calendarType === 'lunar' ? 'bg-purple-500/20 text-purple-400' : 'text-gray-400 hover:text-white'}`}
+                                    >
+                                        {(t as any).label_lunar || 'Lunar'}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Birth Time Input */}

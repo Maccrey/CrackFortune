@@ -42,6 +42,8 @@ export const translations = {
         login_prompt_later: "Maybe later",
         auth_sign_in: "Sign In",
         auth_sign_out: "Sign Out",
+        label_solar: "Solar",
+        label_lunar: "Lunar",
     },
     ko: {
         greeting: "좋은 오후입니다",
@@ -84,6 +86,8 @@ export const translations = {
         login_prompt_later: "나중에 하기",
         auth_sign_in: "로그인",
         auth_sign_out: "로그아웃",
+        label_solar: "양력",
+        label_lunar: "음력",
     },
     ja: {
         greeting: "こんにちは",
@@ -126,6 +130,8 @@ export const translations = {
         login_prompt_later: "後でする",
         auth_sign_in: "ログイン",
         auth_sign_out: "ログアウト",
+        label_solar: "陽暦",
+        label_lunar: "陰暦",
     },
     zh: {
         greeting: "下午好",
@@ -168,5 +174,7 @@ export const translations = {
         login_prompt_later: "稍后再说",
         auth_sign_in: "登录",
         auth_sign_out: "退出",
+        label_solar: "公历",
+        label_lunar: "农历",
     }
 };
