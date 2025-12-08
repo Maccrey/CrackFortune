@@ -33,7 +33,7 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
   const { language } = useLanguage();
 
 
-  const { user: authUser } = useAuth();
+  const { user: authUser, loading: authLoading } = useAuth();
   
   // Repositories initialization
   const repositories = useMemo(() => {
@@ -117,8 +117,9 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   // 초기 진입 및 인증 상태 변경 시 데이터 갱신
   useEffect(() => {
+    if (authLoading) return; // Wait for auth loading/migration
     void refreshUser();
-  }, [authUser]); // repositories는 authUser에 의존하므로 authUser 변경 시 실행됨
+  }, [authUser, authLoading]); // repositories는 authUser에 의존하므로 authUser 변경 시 실행됨
 
   // 언어 변경 시 프로필 locale 동기화
   useEffect(() => {

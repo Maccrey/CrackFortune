@@ -25,6 +25,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isMigrating, setIsMigrating] = useState(false);
 
   useEffect(() => {
     if (!auth) {
@@ -33,12 +34,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
+      // If we are effectively logging in manually, wait for migration to finish
+      // check isMigrating ref if needed? No, state is fine because we await in loginWithGoogle
+      if (!isMigrating) {
+         setUser(currentUser);
+         setLoading(false);
+      } else {
+         // If migrating, we just update the user but keep loading true via external combined state?
+         // Actually onAuthStateChanged might fire *before* loginWithGoogle's await returns.
+         // So we should capture the user here.
+         setUser(currentUser);
+      }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [isMigrating]);
 
   const loginWithGoogle = async () => {
     if (!auth) {
@@ -46,6 +56,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
     const provider = new GoogleAuthProvider();
+    setIsMigrating(true);
     try {
       const result = await signInWithPopup(auth, provider);
       
@@ -88,6 +99,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (error) {
       console.error('Login failed:', error);
       throw error;
+    } finally {
+        setIsMigrating(false);
+        setLoading(false);
     }
   };
 
@@ -101,7 +115,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, loading: loading || isMigrating, loginWithGoogle, logout }}>
       {children}
     </AuthContext.Provider>
   );
