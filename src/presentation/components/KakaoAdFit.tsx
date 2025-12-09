@@ -15,11 +15,12 @@ const KakaoAdFit: React.FC<KakaoAdFitProps> = ({ unitId, width, height, disabled
         if (disabled) return;
         if (!containerRef.current) return;
 
-        // Clear previous content to prevent duplicating ads if re-rendered
-        // containerRef.current.innerHTML = ''; 
-        // Actually, clearing innerHTML removes the <ins> tag we need.
-        // We should reconstruct the structure.
-        
+        // Dev Mode Check: Prevent AdFit script from running on localhost to avoid 429/CORS errors
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            containerRef.current.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;background:rgba(255,255,255,0.05);color:#888;font-size:11px;border-radius:8px;"><span>AdFit Placeholder</span><span>(${width}x${height})</span></div>`;
+            return;
+        }
+
         const ins = document.createElement('ins');
         ins.className = 'kakao_ad_area';
         ins.style.display = 'none';
@@ -32,7 +33,7 @@ const KakaoAdFit: React.FC<KakaoAdFitProps> = ({ unitId, width, height, disabled
         script.type = 'text/javascript';
         script.src = '//t1.daumcdn.net/kas/static/ba.min.js';
 
-        // Clean up previous children
+        // Clean up previous children immediately before appending
         while (containerRef.current.firstChild) {
             containerRef.current.removeChild(containerRef.current.firstChild);
         }
@@ -41,9 +42,10 @@ const KakaoAdFit: React.FC<KakaoAdFitProps> = ({ unitId, width, height, disabled
         containerRef.current.appendChild(script);
 
         return () => {
-            // Cleanup (?) - Usually not strictly necessary for script tags but good for the ins tag container
+            // Cleanup: remove the script and ins tag on unmount
+            // This prevents duplicate scripts execution and DOM clutter
             if (containerRef.current) {
-                // containerRef.current.innerHTML = '';
+                containerRef.current.innerHTML = '';
             }
         };
     }, [unitId, width, height, disabled]);
