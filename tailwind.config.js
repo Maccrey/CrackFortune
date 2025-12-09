@@ -10,6 +10,7 @@ export default {
         mystical: ['Cinzel', 'serif'],
         'serif-kr': ['Noto Serif KR', 'serif'],
         'serif-jp': ['Noto Serif JP', 'serif'],
+        'cursive': ['Ma Shan Zheng', 'cursive'],
       },
     },
   },
