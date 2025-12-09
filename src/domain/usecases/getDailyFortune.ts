@@ -2,6 +2,7 @@ import { buildFortuneId, type Fortune } from '../entities/fortune';
 import type { UserProfile } from '../entities/user';
 import type { FortuneGenerator } from '../repositories/fortuneGenerator';
 import type { FortuneRepository } from '../repositories/fortuneRepository';
+import { getLocalDateString } from '../../presentation/utils/dateUtils';
 
 export interface GetDailyFortuneParams {
   user: UserProfile;
@@ -18,7 +19,7 @@ export class GetDailyFortuneUseCase {
   }
 
   async execute({ user, date }: GetDailyFortuneParams): Promise<Fortune> {
-    const today = date ?? new Date().toISOString().slice(0, 10);
+    const today = date ?? getLocalDateString();
     const cacheHit = await this.fortuneRepository.getFortuneByDate(user.id, today);
     if (cacheHit) {
       return cacheHit;

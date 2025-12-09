@@ -13,6 +13,7 @@ import { FirebaseFortuneRepository } from '../../data/repositories/FirebaseFortu
 import { FirebaseUserRepository } from '../../data/repositories/FirebaseUserRepository';
 import { useAuth } from './AuthContext';
 import { analyticsEvents } from '../../config/firebase';
+import { getLocalDateString } from '../utils/dateUtils';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
@@ -79,7 +80,7 @@ export const FortuneProvider: React.FC<{ children: ReactNode }> = ({ children })
   const [error, setError] = useState<string | null>(null);
 
   const loadCachedFortune = async (profile: UserProfile) => {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = getLocalDateString();
     const cached = await fortuneRepository.getFortuneByDate(profile.id, today);
     setFortune(cached);
     const recents = await fortuneRepository.listRecentFortunes(profile.id);
