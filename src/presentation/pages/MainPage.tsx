@@ -39,7 +39,7 @@ const MainPage: React.FC = () => {
                         <div className="">
                             <KakaoAdFit 
                                 unitId="DAN-t5g6wLbUaZzEVlom" 
-                                width="728" 
+                                width="480" 
                                 height="90" 
                                 className="bg-white/5"
                             />

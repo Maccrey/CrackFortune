@@ -64,11 +64,11 @@ const ResultPage: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        /* PC: 728x90 */
+                        /* PC: 580x90 */
                         <div className="">
                             <KakaoAdFit 
                                 unitId="DAN-t5g6wLbUaZzEVlom" 
-                                width="728" 
+                                width="580" 
                                 height="90" 
                                 className="bg-white/5"
                             />
