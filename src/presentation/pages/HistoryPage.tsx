@@ -86,13 +86,15 @@ const HistoryPage: React.FC = () => {
             {/* AdFit Placement */}
             <div className="mt-4 w-full flex flex-col items-center gap-4 pb-4">
                 {!isDesktop ? (
-                    <div className="mx-[-1rem] min-h-[50px] flex justify-center overflow-hidden">
-                        <KakaoAdFit 
-                            unitId="DAN-0kCP49fSWyvVrgcw" 
-                            width="320" 
-                            height="50" 
-                            className="bg-white/5"
-                        />
+                    <div className="mx-[-1rem] min-h-[50px] w-full flex justify-center overflow-hidden">
+                        <div style={{ width: '320px', height: '50px' }}>
+                            <KakaoAdFit 
+                                unitId="DAN-0kCP49fSWyvVrgcw" 
+                                width="320" 
+                                height="50" 
+                                className="bg-white/5"
+                            />
+                        </div>
                     </div>
                 ) : (
                     <div className="">

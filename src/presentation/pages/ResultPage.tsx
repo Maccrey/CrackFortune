@@ -30,7 +30,7 @@ const ResultPage: React.FC = () => {
 
     if (!fortune) {
         return (
-            <div className="flex-1 flex flex-col items-center justify-center p-6 text-center gap-4">
+            <div className="flex-1 w-full h-full flex flex-col items-center justify-center p-6 text-center gap-4">
                 <p className="text-gray-300 text-sm">{status === 'loading' ? '운세를 준비하고 있어요...' : '쿠키를 먼저 깨트려 주세요!'}</p>
                 <Link to="/" className="px-6 py-3 bg-white/10 rounded-full hover:bg-white/20 transition-all text-sm font-medium tracking-wider backdrop-blur-md border border-white/10">
                     {t('btn_open_another')}
@@ -40,40 +40,44 @@ const ResultPage: React.FC = () => {
     }
 
     return (
-        <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-6">
-            <FortuneSlip summary={fortune.summary} fullText={fortune.fullText} precision={fortune.precision?.toUpperCase() || 'UNKNOWN'} color={fortune.color} />
+        <div className="flex-1 w-full h-full overflow-y-auto custom-scrollbar relative">
+            <div className="min-h-full flex flex-col items-center justify-center p-4 md:p-6 pb-20">
+                <FortuneSlip summary={fortune.summary} fullText={fortune.fullText} precision={fortune.precision?.toUpperCase() || 'UNKNOWN'} color={fortune.color} />
 
-            <Link to="/" data-testid="btn-open-another" className="mt-8 md:mt-12 px-8 py-3 bg-white/10 rounded-full hover:bg-white/20 transition-all text-sm font-medium tracking-wider backdrop-blur-md border border-white/10 whitespace-nowrap">
-                {t('btn_open_another')}
-            </Link>
+                <Link to="/" data-testid="btn-open-another" className="mt-8 md:mt-12 px-8 py-3 bg-white/10 rounded-full hover:bg-white/20 transition-all text-sm font-medium tracking-wider backdrop-blur-md border border-white/10 whitespace-nowrap">
+                    {t('btn_open_another')}
+                </Link>
 
-            {/* AdFit Placement for Result Page */}
-            <div className="mt-8 w-full flex flex-col items-center gap-4">
-                {/* Conditionally render AdFit based on screen size to prevent script conflicts */}
-                {!isDesktop ? (
-                    /* Mobile: 320x50 */
-                    <div className="mx-[-1rem] min-h-[50px] flex justify-center overflow-hidden">
-                        <KakaoAdFit 
-                            unitId="DAN-0kCP49fSWyvVrgcw" 
-                            width="320" 
-                            height="50" 
-                            className="bg-white/5"
-                        />
-                    </div>
-                ) : (
-                    /* PC: 728x90 */
-                    <div className="">
-                        <KakaoAdFit 
-                            unitId="DAN-t5g6wLbUaZzEVlom" 
-                            width="728" 
-                            height="90" 
-                            className="bg-white/5"
-                        />
-                    </div>
-                )}
+                {/* AdFit Placement for Result Page */}
+                <div className="mt-8 w-full flex flex-col items-center gap-4">
+                    {/* Conditionally render AdFit based on screen size to prevent script conflicts */}
+                    {!isDesktop ? (
+                        /* Mobile: 320x50 */
+                        <div className="mx-[-1rem] min-h-[50px] w-full flex justify-center overflow-hidden">
+                            <div style={{ width: '320px', height: '50px' }}>
+                                <KakaoAdFit 
+                                    unitId="DAN-0kCP49fSWyvVrgcw" 
+                                    width="320" 
+                                    height="50" 
+                                    className="bg-white/5"
+                                />
+                            </div>
+                        </div>
+                    ) : (
+                        /* PC: 728x90 */
+                        <div className="">
+                            <KakaoAdFit 
+                                unitId="DAN-t5g6wLbUaZzEVlom" 
+                                width="728" 
+                                height="90" 
+                                className="bg-white/5"
+                            />
+                        </div>
+                    )}
+                </div>
+
+                <LoginPromptModal isOpen={showLoginPrompt} onClose={() => setShowLoginPrompt(false)} />
             </div>
-
-            <LoginPromptModal isOpen={showLoginPrompt} onClose={() => setShowLoginPrompt(false)} />
         </div>
     );
 };
