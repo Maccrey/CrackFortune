@@ -7,9 +7,12 @@ import { LoginPromptModal } from '../components/LoginPromptModal';
 import { useAuth } from '../context/AuthContext';
 import KakaoAdFit from '../components/KakaoAdFit';
 
+import { useMediaQuery } from '../hooks/useMediaQuery';
+
 const ResultPage: React.FC = () => {
     const { fortune, status } = useFortuneContext();
     const { t } = useLanguage();
+    const isDesktop = useMediaQuery('(min-width: 768px)'); // Matches Tailwind 'md' breakpoint
 
     const [showLoginPrompt, setShowLoginPrompt] = React.useState(false);
     const { user } = useAuth();
@@ -46,28 +49,28 @@ const ResultPage: React.FC = () => {
 
             {/* AdFit Placement for Result Page */}
             <div className="mt-8 w-full flex flex-col items-center gap-4">
-                {/* Mobile Banner (Visible on mobile only usually, but we control with classes or just render both if responsive logic is complex. 
-                    AdFit doesn't responsive resize well, so we should conditionally render based on viewport or use CSS hiding) */}
-                
-                {/* Mobile: 320x100 */}
-                <div className="block md:hidden mx-[-1rem] min-h-[100px] flex justify-center overflow-hidden">
-                    <KakaoAdFit 
-                        unitId="DAN-0kCP49fSWyvVrgcw" 
-                        width="320" 
-                        height="100" 
-                        className="bg-white/5"
-                    />
-                </div>
-
-                {/* PC: 728x90 */}
-                <div className="hidden md:block">
-                    <KakaoAdFit 
-                        unitId="DAN-t5g6wLbUaZzEVlom" 
-                        width="728" 
-                        height="90" 
-                        className="bg-white/5"
-                    />
-                </div>
+                {/* Conditionally render AdFit based on screen size to prevent script conflicts */}
+                {!isDesktop ? (
+                    /* Mobile: 320x100 */
+                    <div className="mx-[-1rem] min-h-[100px] flex justify-center overflow-hidden">
+                        <KakaoAdFit 
+                            unitId="DAN-0kCP49fSWyvVrgcw" 
+                            width="320" 
+                            height="100" 
+                            className="bg-white/5"
+                        />
+                    </div>
+                ) : (
+                    /* PC: 728x90 */
+                    <div className="">
+                        <KakaoAdFit 
+                            unitId="DAN-t5g6wLbUaZzEVlom" 
+                            width="728" 
+                            height="90" 
+                            className="bg-white/5"
+                        />
+                    </div>
+                )}
             </div>
 
             <LoginPromptModal isOpen={showLoginPrompt} onClose={() => setShowLoginPrompt(false)} />
