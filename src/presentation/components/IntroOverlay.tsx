@@ -47,6 +47,15 @@ const IntroOverlay: React.FC<IntroOverlayProps> = ({ onComplete }) => {
                                 
                                 {/* Vertical Accent Line */}
                                 <div className="absolute right-12 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-amber-500/20 to-transparent" />
+
+                                {/* Fortune Character (福) - Left */}
+                                <div className="absolute top-1/4 right-1/2 translate-x-1/2 flex flex-col items-center justify-center opacity-80 mix-blend-overlay">
+                                    <div className="w-24 h-24 md:w-32 md:h-32 border border-amber-500/30 rotate-45 flex items-center justify-center bg-black/20 backdrop-blur-sm shadow-[0_0_30px_rgba(217,119,6,0.1)]">
+                                        <span className="text-4xl md:text-6xl font-serif text-transparent bg-clip-text bg-gradient-to-br from-amber-200 to-amber-600 -rotate-45 font-bold drop-shadow-md select-none">
+                                            福
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Handle Area */}
@@ -87,6 +96,15 @@ const IntroOverlay: React.FC<IntroOverlayProps> = ({ onComplete }) => {
 
                                 {/* Vertical Accent Line */}
                                 <div className="absolute left-12 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-amber-500/20 to-transparent" />
+
+                                {/* Fortune Character (福) - Right */}
+                                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center opacity-80 mix-blend-overlay">
+                                    <div className="w-24 h-24 md:w-32 md:h-32 border border-amber-500/30 rotate-45 flex items-center justify-center bg-black/20 backdrop-blur-sm shadow-[0_0_30px_rgba(217,119,6,0.1)]">
+                                        <span className="text-4xl md:text-6xl font-serif text-transparent bg-clip-text bg-gradient-to-br from-amber-200 to-amber-600 -rotate-45 font-bold drop-shadow-md select-none">
+                                            福
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                             
                             {/* Handle Area (Mirror) - Visual only, logic handled by left or global click */}

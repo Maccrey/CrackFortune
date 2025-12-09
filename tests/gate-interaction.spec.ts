@@ -18,44 +18,28 @@ test.describe('Gate Interaction', () => {
     });
 
     test('왼쪽 문고리를 클릭하면 대문이 열립니다', async ({ page }) => {
-        // The intro overlay should be visible
-        // We need to target the handle. 
-        // Since there are two handles, and they are both similar, we might need to be specific.
-        // The left handle is in the first motion.div child of the overlay container's door section.
-        // Or we can query by the unique visual elements or order.
-        
-        // Left Handle
-        // It's the first one that appears in the DOM usually if left is rendered first.
-        // Let's use a locator that distinguishes them if possible, or just nth(0).
-        
-        // Wait for overlay to be present
         const overlay = page.locator('.fixed.inset-0.z-\\[100\\]');
         await expect(overlay).toBeVisible();
 
-        // There are two handles. We can distinguish by their container alignment?
-        // Left handle container has `right-0` (in left door).
-        // Right handle container has `left-0` (in right door).
-        
-        // Let's try to click the left one (first one in DOM order usually if left door is first)
-        const handles = page.locator('.cursor-pointer'); 
-        // Note: Right handle just got cursor-pointer added.
-        
-        // We can be more specific:
+        // Verify "福" character is visible on the left door
+        const leftFortuneChar = page.locator('.w-1\\/2.justify-end').getByText('福');
+        await expect(leftFortuneChar).toBeVisible();
+
         const leftDoorHandle = page.locator('.w-1\\/2.justify-end').locator('.cursor-pointer');
-        
         await expect(leftDoorHandle).toBeVisible();
         await leftDoorHandle.click();
 
-        // Expect overlay to disappear (opacity 0 or removed from DOM)
         await expect(overlay).not.toBeVisible({ timeout: 5000 });
     });
 
     test('오른쪽 문고리를 클릭하면 대문이 열립니다', async ({ page }) => {
         const overlay = page.locator('.fixed.inset-0.z-\\[100\\]');
         await expect(overlay).toBeVisible();
+
+        // Verify "福" character is visible on the right door
+        const rightFortuneChar = page.locator('.w-1\\/2.justify-start').getByText('福');
+        await expect(rightFortuneChar).toBeVisible();
         
-        // Right door handle
-        // Right door has `justify-start` class
         const rightDoorHandle = page.locator('.w-1\\/2.justify-start').locator('.cursor-pointer');
         
         await expect(rightDoorHandle).toBeVisible();
