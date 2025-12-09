@@ -37,12 +37,12 @@ const MainPage: React.FC = () => {
                     ) : (
                          /* PC: 728x90 (Optional, can omit if cleaner) */
                         <div className="">
-                            <KakaoAdFit 
+                            {/* <KakaoAdFit 
                                 unitId="DAN-t5g6wLbUaZzEVlom" 
-                                width="480" 
+                                width="728" 
                                 height="90" 
                                 className="bg-white/5"
-                            />
+                            /> */}
                         </div>
                     )}
                 </div>
