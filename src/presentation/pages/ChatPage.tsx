@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useFortuneContext } from '../context/FortuneContext';
 import { useAuth } from '../context/AuthContext';
+import KakaoAdFit from '../components/KakaoAdFit';
 
 interface Message {
     id: string;
@@ -436,6 +437,16 @@ Only answer questions related to the user's fortune using a fortune teller's voi
                                     }
                                 </button>
                             )}
+
+                            {/* AdFit Placement for Popup */}
+                            <div className="mt-6 flex justify-center overflow-hidden rounded-lg">
+                                <KakaoAdFit 
+                                    unitId="DAN-U6oSiTpR0dyJwtKb" 
+                                    width="320" 
+                                    height="50" 
+                                    className="bg-white/5"
+                                />
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}
