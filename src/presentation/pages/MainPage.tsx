@@ -1,9 +1,12 @@
 import React from 'react';
 import FortuneCookie from '../components/FortuneCookie';
 import { useLanguage } from '../context/LanguageContext';
+import KakaoAdFit from '../components/KakaoAdFit';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
 const MainPage: React.FC = () => {
     const { t } = useLanguage();
+    const isDesktop = useMediaQuery('(min-width: 768px)');
 
     return (
         <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 gap-8 relative overflow-hidden w-full h-full">
@@ -18,6 +21,31 @@ const MainPage: React.FC = () => {
                 <p className="mt-12 text-gray-400 text-center text-sm animate-pulse tracking-wider">
                     {t('cookie_hint')}
                 </p>
+
+                {/* AdFit Placement for Main Page */}
+                <div className="mt-8 w-full flex flex-col items-center gap-4">
+                    {!isDesktop ? (
+                         /* Mobile: 320x100 */
+                         <div className="mx-[-1rem] min-h-[100px] flex justify-center overflow-hidden">
+                             <KakaoAdFit 
+                                 unitId="DAN-0kCP49fSWyvVrgcw" 
+                                 width="320" 
+                                 height="100" 
+                                 className="bg-white/5"
+                             />
+                         </div>
+                    ) : (
+                         /* PC: 728x90 (Optional, can omit if cleaner) */
+                        <div className="">
+                            <KakaoAdFit 
+                                unitId="DAN-t5g6wLbUaZzEVlom" 
+                                width="728" 
+                                height="90" 
+                                className="bg-white/5"
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

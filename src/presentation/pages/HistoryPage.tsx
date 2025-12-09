@@ -2,12 +2,15 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useFortuneContext } from '../context/FortuneContext';
+import KakaoAdFit from '../components/KakaoAdFit';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
 const HistoryPage: React.FC = () => {
     const { t } = useLanguage();
     const { recentFortunes, status, selectFortune } = useFortuneContext();
     const [activeTab, setActiveTab] = useState<'daily' | 'weekly' | 'monthly' | 'yearly'>('daily');
     const navigate = useNavigate();
+    const isDesktop = useMediaQuery('(min-width: 768px)');
 
     const tabs = [
         { id: 'daily', label: t('tab_daily') },
@@ -79,6 +82,32 @@ const HistoryPage: React.FC = () => {
                         </p>
                     </div>
                 ))}
+            </div>
+            {/* AdFit Placement */}
+            <div className="mt-4 w-full flex flex-col items-center gap-4 pb-4">
+                {!isDesktop ? (
+                    <div className="mx-[-1rem] min-h-[100px] flex justify-center overflow-hidden">
+                        <KakaoAdFit 
+                            unitId="DAN-0kCP49fSWyvVrgcw" 
+                            width="320" 
+                            height="100" 
+                            className="bg-white/5"
+                        />
+                    </div>
+                ) : (
+                    <div className="">
+                         {/* Optional: Add Desktop Ad here if desired, or keep mobile-only if desktop sidebar handles it. 
+                            For consistency with other pages, we can show it or hide it. 
+                            Since desktop already has a sidebar ad, maybe we don't need another one here? 
+                            But user asked for it. Let's replicate ResultPage logic. */}
+                        <KakaoAdFit 
+                            unitId="DAN-t5g6wLbUaZzEVlom" 
+                            width="728" 
+                            height="90" 
+                            className="bg-white/5"
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );
