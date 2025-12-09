@@ -20,11 +20,26 @@ export class MigrationService {
       if (localProfileJson) {
         const localProfile = JSON.parse(localProfileJson) as UserProfile;
         const userRepo = new FirebaseUserRepository(this.authUserId);
-        // Keep local data but update ID to match Firebase Auth UID
-        await userRepo.saveProfile({ ...localProfile, id: this.authUserId });
-        localStorage.removeItem('fortunecrack:user');
-        console.log('Profile migrated to Firebase');
-        profileMigrated = true;
+        
+        // Check if remote profile already exists and is valid
+        const remoteProfile = await userRepo.getProfile();
+        const isRemoteValid = remoteProfile.name && remoteProfile.birthDate;
+
+        if (isRemoteValid) {
+          console.log('Valid remote profile exists, skipping overwrite from local');
+          // We still want to clear local storage to prevent confusion, 
+          // or maybe we should just leave it? 
+          // If we don't clear it, next time it might try again?
+          // Actually, if we logged in, we switch to Firebase Repo, so local storage is ignored.
+          // But cleaning up is good practice after "sync" attempt.
+          localStorage.removeItem('fortunecrack:user');
+        } else {
+          // Keep local data but update ID to match Firebase Auth UID
+          await userRepo.saveProfile({ ...localProfile, id: this.authUserId });
+          localStorage.removeItem('fortunecrack:user');
+          console.log('Profile migrated to Firebase');
+          profileMigrated = true;
+        }
       }
 
       // 2. Fortune Migration
