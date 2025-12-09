@@ -16,7 +16,13 @@ const KakaoAdFit: React.FC<KakaoAdFitProps> = ({ unitId, width, height, disabled
         if (!containerRef.current) return;
 
         // Dev Mode Check: Prevent AdFit script from running on localhost to avoid 429/CORS errors
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        // Dev Mode Check: Prevent AdFit script from running on localhost or 127.0.0.1 to avoid 429/CORS errors
+        const isLocalhost = window.location.hostname === 'localhost' || 
+                            window.location.hostname === '127.0.0.1' || 
+                            window.location.hostname.includes('192.168.') ||
+                            window.location.port !== '';
+
+        if (isLocalhost) {
             containerRef.current.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;background:rgba(255,255,255,0.05);color:#888;font-size:11px;border-radius:8px;"><span>AdFit Placeholder</span><span>(${width}x${height})</span></div>`;
             return;
         }
