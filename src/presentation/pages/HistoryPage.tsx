@@ -104,7 +104,7 @@ const HistoryPage: React.FC = () => {
                             But user asked for it. Let's replicate ResultPage logic. */}
                         <KakaoAdFit 
                             unitId="DAN-t5g6wLbUaZzEVlom" 
-                            width="480" 
+                            width="580" 
                             height="90" 
                             className="bg-white/5"
                         />
