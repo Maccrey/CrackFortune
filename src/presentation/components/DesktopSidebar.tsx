@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useFortuneContext } from '../context/FortuneContext';
+import KakaoAdFit from './KakaoAdFit';
 
 const DesktopSidebar: React.FC = () => {
     const { t } = useLanguage();
@@ -73,6 +74,17 @@ const DesktopSidebar: React.FC = () => {
                 <blockquote className="text-sm text-gray-300 italic leading-relaxed font-serif">
                     "{hasTodaysFortune && fortune?.quote ? fortune.quote : 'The future belongs to those who believe in the beauty of their dreams.'}"
                 </blockquote>
+            </div>
+
+            {/* AdFit Placement for PC Sidebar */}
+            {/* Suggested size: 300x250 */}
+            <div className="mt-6 relative z-10 flex justify-center">
+                <KakaoAdFit 
+                    unitId="DAN-v6FTObnKG2MeUAct" 
+                    width="300" 
+                    height="250" 
+                    className="rounded-xl overflow-hidden shadow-lg bg-white/5"
+                />
             </div>
         </div>
     );

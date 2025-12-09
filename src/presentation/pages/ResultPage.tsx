@@ -5,6 +5,7 @@ import { useFortuneContext } from '../context/FortuneContext';
 import { useLanguage } from '../context/LanguageContext';
 import { LoginPromptModal } from '../components/LoginPromptModal';
 import { useAuth } from '../context/AuthContext';
+import KakaoAdFit from '../components/KakaoAdFit';
 
 const ResultPage: React.FC = () => {
     const { fortune, status } = useFortuneContext();
@@ -42,6 +43,32 @@ const ResultPage: React.FC = () => {
             <Link to="/" data-testid="btn-open-another" className="mt-8 md:mt-12 px-8 py-3 bg-white/10 rounded-full hover:bg-white/20 transition-all text-sm font-medium tracking-wider backdrop-blur-md border border-white/10 whitespace-nowrap">
                 {t('btn_open_another')}
             </Link>
+
+            {/* AdFit Placement for Result Page */}
+            <div className="mt-8 w-full flex flex-col items-center gap-4">
+                {/* Mobile Banner (Visible on mobile only usually, but we control with classes or just render both if responsive logic is complex. 
+                    AdFit doesn't responsive resize well, so we should conditionally render based on viewport or use CSS hiding) */}
+                
+                {/* Mobile: 320x100 */}
+                <div className="block md:hidden">
+                    <KakaoAdFit 
+                        unitId="DAN-0kCP49fSWyvVrgcw" 
+                        width="320" 
+                        height="100" 
+                        className="rounded-lg overflow-hidden bg-white/5"
+                    />
+                </div>
+
+                {/* PC: 728x90 */}
+                <div className="hidden md:block">
+                    <KakaoAdFit 
+                        unitId="DAN-t5g6wLbUaZzEVlom" 
+                        width="728" 
+                        height="90" 
+                        className="rounded-lg overflow-hidden bg-white/5"
+                    />
+                </div>
+            </div>
 
             <LoginPromptModal isOpen={showLoginPrompt} onClose={() => setShowLoginPrompt(false)} />
         </div>
