@@ -50,7 +50,7 @@ const ResultPage: React.FC = () => {
                     AdFit doesn't responsive resize well, so we should conditionally render based on viewport or use CSS hiding) */}
                 
                 {/* Mobile: 320x100 */}
-                <div className="block md:hidden">
+                <div className="block md:hidden mx-[-1rem] min-h-[100px] flex justify-center overflow-hidden">
                     <KakaoAdFit 
                         unitId="DAN-0kCP49fSWyvVrgcw" 
                         width="320" 

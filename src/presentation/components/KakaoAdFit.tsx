@@ -33,6 +33,9 @@ const KakaoAdFit: React.FC<KakaoAdFitProps> = ({ unitId, width, height, disabled
         script.type = 'text/javascript';
         script.src = '//t1.daumcdn.net/kas/static/ba.min.js';
 
+        // Debug log to confirm attempt to load
+        console.log(`[KakaoAdFit] Initializing ad unit: ${unitId} (${width}x${height})`);
+
         // Clean up previous children immediately before appending
         while (containerRef.current.firstChild) {
             containerRef.current.removeChild(containerRef.current.firstChild);
