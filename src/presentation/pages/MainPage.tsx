@@ -25,12 +25,12 @@ const MainPage: React.FC = () => {
                 {/* AdFit Placement for Main Page */}
                 <div className="mt-8 w-full flex flex-col items-center gap-4">
                     {!isDesktop ? (
-                         /* Mobile: 320x100 */
-                         <div className="mx-[-1rem] min-h-[100px] flex justify-center overflow-hidden">
+                         /* Mobile: 320x50 */
+                         <div className="mx-[-1rem] min-h-[50px] flex justify-center overflow-hidden">
                              <KakaoAdFit 
                                  unitId="DAN-0kCP49fSWyvVrgcw" 
                                  width="320" 
-                                 height="100" 
+                                 height="50" 
                                  className="bg-white/5"
                              />
                          </div>
