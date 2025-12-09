@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import DesktopSidebar from '../components/DesktopSidebar';
 import ShamanCharacter from '../components/ShamanCharacter';
+import KakaoAdFit from '../components/KakaoAdFit';
 import LanguageSelector from '../components/LanguageSelector';
 import GoogleLoginButton from '../components/GoogleLoginButton';
 import { useLanguage } from '../context/LanguageContext';
@@ -68,6 +69,17 @@ const LayoutContent: React.FC = () => {
                         <div className="flex justify-between items-center">
                             <span className="text-gray-400 text-sm">Language</span>
                             <LanguageSelector className="w-36" />
+                        </div>
+                    </div>
+                     {/* Mobile Menu AdFit */}
+                     <div className="mt-auto pt-6 flex justify-center w-full">
+                        <div style={{ width: '320px', height: '50px' }}>
+                            <KakaoAdFit 
+                                unitId="DAN-0B7ixhvJ9taKW6Zn" 
+                                width="320" 
+                                height="50" 
+                                className="bg-white/5"
+                            />
                         </div>
                     </div>
                 </div>
