@@ -50,8 +50,8 @@ const IntroOverlay: React.FC<IntroOverlayProps> = ({ onComplete }) => {
 
                                 {/* Fortune Character (福) - Left */}
                                 <div className="absolute top-1/3 right-1/2 translate-x-1/2 flex flex-col items-center justify-center z-20">
-                                    <div className="w-40 h-40 md:w-56 md:h-56 flex items-center justify-center">
-                                        <span className="text-7xl md:text-9xl font-cursive text-transparent bg-clip-text bg-gradient-to-br from-amber-100 via-amber-300 to-amber-500 font-bold drop-shadow-[0_0_15px_rgba(251,191,36,0.6)] select-none animate-pulse">
+                                    <div className="w-24 h-24 md:w-48 md:h-48 border border-amber-500/30 rotate-45 flex items-center justify-center bg-black/20 backdrop-blur-sm shadow-[0_0_30px_rgba(217,119,6,0.2)]">
+                                        <span className="text-5xl md:text-8xl font-cursive text-transparent bg-clip-text bg-gradient-to-br from-amber-100 via-amber-300 to-amber-500 -rotate-45 font-bold drop-shadow-[0_0_15px_rgba(251,191,36,0.6)] select-none animate-pulse">
                                             福
                                         </span>
                                     </div>
@@ -99,8 +99,8 @@ const IntroOverlay: React.FC<IntroOverlayProps> = ({ onComplete }) => {
 
                                 {/* Fortune Character (福) - Right */}
                                 <div className="absolute top-1/3 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center z-20">
-                                    <div className="w-40 h-40 md:w-56 md:h-56 flex items-center justify-center">
-                                        <span className="text-7xl md:text-9xl font-cursive text-transparent bg-clip-text bg-gradient-to-br from-amber-100 via-amber-300 to-amber-500 font-bold drop-shadow-[0_0_15px_rgba(251,191,36,0.6)] select-none animate-pulse">
+                                    <div className="w-24 h-24 md:w-48 md:h-48 border border-amber-500/30 rotate-45 flex items-center justify-center bg-black/20 backdrop-blur-sm shadow-[0_0_30px_rgba(217,119,6,0.2)]">
+                                        <span className="text-5xl md:text-8xl font-cursive text-transparent bg-clip-text bg-gradient-to-br from-amber-100 via-amber-300 to-amber-500 -rotate-45 font-bold drop-shadow-[0_0_15px_rgba(251,191,36,0.6)] select-none animate-pulse">
                                             福
                                         </span>
                                     </div>
