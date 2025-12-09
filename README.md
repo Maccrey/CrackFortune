@@ -9,6 +9,9 @@
 - `npm run test:e2e`: Playwright E2E 테스트
 - `npm run test:e2e`: Playwright E2E 테스트
 
+## 배포 (Deployment)
+- **Firebase Hosting**: https://fortunecrack-1b398.web.app
+
 ## 주요 기능
 - **포춘 쿠키**: 3D 애니메이션과 함께 오늘의 운세 확인.
 - **AI 점술가 채팅**: 운세 결과를 바탕으로 AI와 3분간 무료 상담.

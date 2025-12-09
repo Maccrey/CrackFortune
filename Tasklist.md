@@ -110,6 +110,7 @@
 - [x] **Infrastructure Setup**
     - [x] `firebase.ts`: Auth(Google) 및 Firestore 모듈 초기화 추가.
     - [x] **Security Rules**: Firestore 보안 규칙 설정 (`firestore.rules`).
+    - [x] **Hosting Deployment**: Firebase Hosting 배포 완료 ([URL](https://fortunecrack-1b398.web.app)).
 - [x] **Authentication Flow**
     - [x] `AuthContext`: Firebase User 상태 관리.
     - [x] **Login Prompt UX**: 운세 확인 3초 후 "로그인하여 운세 저장하기" 모달.
@@ -195,5 +196,3 @@
 - [ ] [Manual] Android WebView에서 뒤로가기 제스처 정상 동작하는가?
 - [ ] [Manual] 다크모드 해제 시(혹은 시스템 설정 변경 시) UI 깨짐 없는가?
 - [ ] [Manual] Groq API Response Speed Check (Is it faster than Gemini?)
-
-
