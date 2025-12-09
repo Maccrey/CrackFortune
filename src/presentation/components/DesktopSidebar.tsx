@@ -83,7 +83,7 @@ const DesktopSidebar: React.FC = () => {
                     unitId="DAN-v6FTObnKG2MeUAct" 
                     width="300" 
                     height="250" 
-                    className="rounded-xl overflow-hidden shadow-lg bg-white/5"
+                    className="bg-white/5"
                 />
             </div>
         </div>

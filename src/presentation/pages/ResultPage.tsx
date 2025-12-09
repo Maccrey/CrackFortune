@@ -55,7 +55,7 @@ const ResultPage: React.FC = () => {
                         unitId="DAN-0kCP49fSWyvVrgcw" 
                         width="320" 
                         height="100" 
-                        className="rounded-lg overflow-hidden bg-white/5"
+                        className="bg-white/5"
                     />
                 </div>
 
@@ -65,7 +65,7 @@ const ResultPage: React.FC = () => {
                         unitId="DAN-t5g6wLbUaZzEVlom" 
                         width="728" 
                         height="90" 
-                        className="rounded-lg overflow-hidden bg-white/5"
+                        className="bg-white/5"
                     />
                 </div>
             </div>
