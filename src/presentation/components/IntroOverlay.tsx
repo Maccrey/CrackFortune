@@ -90,12 +90,20 @@ const IntroOverlay: React.FC<IntroOverlayProps> = ({ onComplete }) => {
                             </div>
                             
                             {/* Handle Area (Mirror) - Visual only, logic handled by left or global click */}
-                            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-20 pointer-events-none">
-                                 <div className="w-24 h-24 rounded-full border-2 border-amber-600/40 bg-black/80 backdrop-blur-md flex items-center justify-center shadow-[0_0_50px_rgba(217,119,6,0.15)]">
+                            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+                                 <motion.div
+                                    className="w-24 h-24 rounded-full border-2 border-amber-600/40 bg-black/80 backdrop-blur-md flex items-center justify-center cursor-pointer shadow-[0_0_50px_rgba(217,119,6,0.15)] group relative"
+                                    whileHover={{ scale: 1.05, borderColor: 'rgba(217,119,6,0.8)' }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={handleOpen}
+                                >
                                     <div className="w-16 h-16 rounded-full border border-amber-500/20 flex items-center justify-center bg-gradient-to-br from-amber-900/20 to-black">
                                        <div className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.8)]" />
                                     </div>
-                                </div>
+                                    
+                                    {/* Pulsing Ring Effect (Optional for right handle, adding for symmetry if desired, or keep it subtle) */}
+                                    <div className="absolute inset-0 rounded-full border border-amber-500/30 animate-ping opacity-20" />
+                                </motion.div>
                             </div>
                         </motion.div>
 
