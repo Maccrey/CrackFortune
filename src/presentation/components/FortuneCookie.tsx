@@ -3,16 +3,40 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useFortuneContext } from '../context/FortuneContext';
+import { ProfileCreationModal } from './ProfileCreationModal';
 
 const FortuneCookie: React.FC = () => {
     const navigate = useNavigate();
     const { t } = useLanguage();
-    const { crackFortune, status, error, fortune } = useFortuneContext();
+    const { crackFortune, status, error, fortune, user } = useFortuneContext();
     const [isCracked, setIsCracked] = useState(false);
+    const [showProfileModal, setShowProfileModal] = useState(false);
+    const [isWaitingForProfile, setIsWaitingForProfile] = useState(false);
 
     // 오늘 날짜의 운세가 이미 있는지 확인
     const today = new Date().toISOString().slice(0, 10);
     const hasTodaysFortune = fortune && fortune.date === today;
+
+    const performCrack = async () => {
+         const ok = await crackFortune();
+        if (!ok) return;
+        setIsCracked(true);
+
+        const waitForAnimation = new Promise((resolve) => setTimeout(resolve, 1400));
+        await waitForAnimation;
+        navigate('/result');
+    }
+
+    // Effect to trigger crack after profile is updated
+    React.useEffect(() => {
+        if (isWaitingForProfile && user && user.name && user.birthDate) {
+            const timer = setTimeout(() => {
+                performCrack();
+                setIsWaitingForProfile(false);
+            }, 500);
+            return () => clearTimeout(timer);
+        }
+    }, [user, isWaitingForProfile]);
 
     const handleCrack = async () => {
         if (isCracked || status === 'loading') return;
@@ -22,14 +46,19 @@ const FortuneCookie: React.FC = () => {
             navigate('/result');
             return;
         }
-        
-        const ok = await crackFortune();
-        if (!ok) return;
-        setIsCracked(true);
 
-        const waitForAnimation = new Promise((resolve) => setTimeout(resolve, 1400));
-        await waitForAnimation;
-        navigate('/result');
+        // Check if profile exists
+        if (!user || !user.name || !user.birthDate) {
+            setShowProfileModal(true);
+            return;
+        }
+        
+        await performCrack();
+    };
+
+    const handleProfileSuccess = async () => {
+        setShowProfileModal(false);
+        setIsWaitingForProfile(true);
     };
 
     return (
@@ -178,11 +207,15 @@ const FortuneCookie: React.FC = () => {
             {error && (
                 <div className="absolute -bottom-8 text-xs text-red-300 bg-red-900/30 border border-red-400/30 rounded-full px-3 py-1 backdrop-blur-md shadow-inner text-center">
                     {error}
-                    <div className="mt-1 text-[10px] text-yellow-200">설정에서 프로필을 입력해 주세요.</div>
                 </div>
             )}
+            
+            <ProfileCreationModal 
+                isOpen={showProfileModal} 
+                onClose={() => setShowProfileModal(false)}
+                onSuccess={handleProfileSuccess}
+            />
         </div>
     );
 };
-
 export default FortuneCookie;
