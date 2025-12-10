@@ -18,7 +18,7 @@ const LayoutContent: React.FC = () => {
                 <div className="flex items-center gap-3">
                     <img src={`${import.meta.env.BASE_URL}logo.png`} alt="Logo" className="w-8 h-8" />
                     <Link to="/" className="text-xl font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-500 font-mystical">
-                        FortuneCrack
+                        CRACK FORTUNE
                     </Link>
                 </div>
                 <div className="flex gap-6 text-sm font-medium text-gray-100 items-center">
