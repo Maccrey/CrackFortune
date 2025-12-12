@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://crackfortune.maccrey.com/sitemap.xml

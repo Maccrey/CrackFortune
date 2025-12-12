@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
+import SEOHead from '../components/SEOHead';
 import DesktopSidebar from '../components/DesktopSidebar';
 import ShamanCharacter from '../components/ShamanCharacter';
 import KakaoAdFit from '../components/KakaoAdFit';
@@ -13,6 +14,7 @@ const LayoutContent: React.FC = () => {
 
     return (
         <div className="h-[100dvh] flex flex-col bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden font-mystical">
+            <SEOHead />
             {/* Glassmorphism Header */}
             <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/10 border-b border-white/10 h-16 flex items-center justify-between px-6">
                 <div className="flex items-center gap-3">

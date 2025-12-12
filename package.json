@@ -19,6 +19,7 @@
     "groq-sdk": "^0.37.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
+    "react-helmet-async": "^2.0.5",
     "react-router-dom": "^7.10.0"
   },
   "devDependencies": {
