@@ -20,6 +20,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
+      <meta name="naver-site-verification" content="57483e5964c442498c82a2eae5cb297ac2ebb773" />
       
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
